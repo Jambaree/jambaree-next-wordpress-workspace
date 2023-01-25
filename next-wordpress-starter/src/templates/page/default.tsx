@@ -5,5 +5,3 @@ export default async function DefaultPageTemplate({ uri, preview }) {
     </>
   );
 }
-
-// todo: need to query correct data depending on if preview === "true" or not

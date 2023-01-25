@@ -4,6 +4,7 @@ import getContentType from "./src/getContentType";
 import WordpressTemplate from "./src/WordpressTemplate";
 import FlexibleContent from "./src/FlexibleContent";
 import getMenuItems from "./src/getMenuItems";
+import YoastSEO from "./src/YoastSEO";
 
 export {
   getSeedData,
@@ -12,4 +13,5 @@ export {
   WordpressTemplate,
   FlexibleContent,
   getMenuItems,
+  YoastSEO,
 };
