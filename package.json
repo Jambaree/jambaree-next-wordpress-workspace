@@ -1,0 +1,7 @@
+{
+  "private": true,
+  "workspaces": [
+    "next-wordpress-starter",
+    "@jambaree/next-wordpress"
+  ]
+}
