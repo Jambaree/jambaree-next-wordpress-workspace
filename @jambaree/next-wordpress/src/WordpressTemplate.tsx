@@ -4,7 +4,14 @@ import getSeedData from "./getSeedData";
 import getContentType from "./getContentType";
 import getTemplate from "./getTemplate";
 
-export default async function WordpressTemplate({ uri, paths, templates }) {
+export default async function WordpressTemplate({
+  paths,
+  templates,
+}: {
+  paths: string[];
+  templates: any;
+}) {
+  const uri = paths?.join?.("/") || "/";
   const seedData = await getSeedData({ uri });
 
   if (!seedData) {
@@ -30,7 +37,7 @@ export async function generateStaticParams() {
 
   return types.map((type) => {
     return {
-      paths: [type.uri || "/products"],
+      paths: [type.uri || "/"],
     };
   });
 }

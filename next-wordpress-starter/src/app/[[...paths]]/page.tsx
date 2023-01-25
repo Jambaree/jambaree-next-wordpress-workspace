@@ -1,4 +1,4 @@
-import WordpressTemplate from "@jambaree/next-wordpress/WordpressTemplate";
+import { WordpressTemplate } from "@jambaree/next-wordpress";
 import templates from "../../templates";
 
 export default async function PageTemplate(props: {
@@ -8,7 +8,5 @@ export default async function PageTemplate(props: {
     params: { paths },
   } = props;
 
-  const uri = paths?.join?.("/") || "/";
-
-  return <WordpressTemplate uri={uri} paths={paths} templates={templates} />;
+  return <WordpressTemplate paths={paths} templates={templates} />;
 }
