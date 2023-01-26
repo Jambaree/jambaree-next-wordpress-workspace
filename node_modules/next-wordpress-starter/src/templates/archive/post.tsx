@@ -37,8 +37,12 @@ export default async function DefaultPostArchiveTemplate({ uri }) {
               <div className="flex flex-1 flex-col justify-between bg-white p-6">
                 <div className="flex-1">
                   <p className="text-sm font-medium text-indigo-600 flex flex-col">
-                    {post?.categories?.nodes.map((category) => (
-                      <a href={category.uri} className="hover:underline">
+                    {post?.categories?.nodes.map((category, index) => (
+                      <a
+                        key={index}
+                        href={category.uri}
+                        className="hover:underline"
+                      >
                         {category.slug}
                       </a>
                     ))}

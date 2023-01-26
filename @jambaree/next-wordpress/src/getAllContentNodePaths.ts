@@ -1,7 +1,7 @@
 import { gql, request } from "graphql-request";
 
 const queryDocument = gql`
-  query ContentTypeQuery {
+  query getAllContentNodePathsQuery {
     contentNodes {
       nodes {
         uri
@@ -10,7 +10,7 @@ const queryDocument = gql`
   }
 `;
 
-const getContentType = async () => {
+const getAllContentNodePaths = async () => {
   if (!process.env.NEXT_PUBLIC_WP_URL) {
     throw new Error("Missing WP_URL environment variable");
   }
@@ -25,4 +25,4 @@ const getContentType = async () => {
   return typeSlugs;
 };
 
-export default getContentType;
+export default getAllContentNodePaths;

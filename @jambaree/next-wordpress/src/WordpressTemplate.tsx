@@ -1,10 +1,11 @@
-import React from "react";
+import React, { use } from "react";
+
 import { notFound } from "next/navigation";
 import getSeedData from "./getSeedData";
-import getContentType from "./getContentType";
+import getAllContentNodePaths from "./getAllContentNodePaths";
 import getTemplate from "./getTemplate";
 
-export default async function WordpressTemplate({
+export default function WordpressTemplate({
   paths,
   templates,
 }: {
@@ -12,16 +13,18 @@ export default async function WordpressTemplate({
   templates: any;
 }) {
   const uri = paths?.join?.("/") || "/";
-  const seedData = await getSeedData({ uri });
+  const seedData = use(getSeedData({ uri }));
 
   if (!seedData) {
     notFound();
   }
 
-  const PageTemplate = await getTemplate({
-    seedData,
-    templates,
-  });
+  const PageTemplate = use(
+    getTemplate({
+      seedData,
+      templates,
+    })
+  );
 
   if (!PageTemplate) {
     notFound();
@@ -33,11 +36,11 @@ export default async function WordpressTemplate({
 export const revalidate = "force-cache";
 
 export async function generateStaticParams() {
-  const types = await getContentType();
+  const nodePaths = await getAllContentNodePaths();
 
-  return types.map((type) => {
+  return nodePaths.map((node) => {
     return {
-      paths: [type.uri || "/"],
+      paths: [node.uri || "/"],
     };
   });
 }

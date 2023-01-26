@@ -11,7 +11,7 @@ Functions Available
 
 import { getSeedData } from "@jambaree/next-wordpress";
 import { getTemplate } from "@jambaree/next-wordpress";
-import { getContentType } from "@jambaree/next-wordpress";
+import { getAllContentNodePaths } from "@jambaree/next-wordpress";
 import { WordpressTemplate } from "@jambaree/next-wordpress";
 import { FlexibleContent } from "@jambaree/next-wordpress";
 import { getMenuItems } from "@jambaree/next-wordpress";
