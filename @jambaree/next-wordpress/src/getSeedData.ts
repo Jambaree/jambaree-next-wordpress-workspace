@@ -80,13 +80,11 @@ export default async function getSeedData({ uri }: { uri: string }) {
   // must be a better way to do this instead of using the Typename of the taxonomy
 
   if (uriRes?.nodeByUri?.isTermNode) {
+    const filterTaxonomyUri = uri.split("/")[0];
     const taxonomyRes = await request({
       url: process.env.NEXT_PUBLIC_WP_URL,
       variables: {
-        id:
-          uriRes?.nodeByUri?.__typename.toLowerCase() === "tag"
-            ? "post_tag"
-            : uriRes?.nodeByUri?.__typename.toLowerCase(),
+        id: filterTaxonomyUri === "tag" ? "post_tag" : filterTaxonomyUri,
       },
       document: queryDocumentTaxonomyName,
     });
