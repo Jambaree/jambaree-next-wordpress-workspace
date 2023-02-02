@@ -4,7 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
-
+@jambaree\next-wordpress\node_modules
 # testing
 /coverage
 
@@ -25,7 +25,7 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-
+@jambaree\next-wordpress\node_modules
 # vercel
 .vercel
 
