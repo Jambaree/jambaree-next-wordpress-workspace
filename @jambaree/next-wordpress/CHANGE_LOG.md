@@ -7,3 +7,7 @@
   0.1.5
 
 - remove revalidate function
+
+  0.1.6
+
+- added getData() function

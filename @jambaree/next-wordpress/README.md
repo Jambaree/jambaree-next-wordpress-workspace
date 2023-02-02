@@ -8,7 +8,6 @@ The following plugins are required for this project:
 - [Custom Post Type UI](https://wordpress.org/plugins/custom-post-type-ui/): A plugin that allows for custom post types to be created in WordPress.
 - [Yoast SEO](https://wordpress.org/plugins/wordpress-seo/): A plugin that provides SEO features for WordPress sites.
 - [WPGraphQL Yoast SEO Addon](https://wordpress.org/plugins/add-wpgraphql-seo/): An addon for WPGraphQL that allows for Yoast SEO fields to be queried with GraphQL.
-- []
 
 # Functions Available
 
@@ -21,7 +20,7 @@ The following functions are available for use in this project:
 - `FlexibleContent` : Exported from "@jambaree/next-wordpress"
 - `getMenuItems` : Exported from "@jambaree/next-wordpress"
 - `YoastSEO` : Exported from "@jambaree/next-wordpress"
-- `Revalidation` : Exported from "@jambaree/next-wordpress";
+- `getData` : Exported from "@jambaree/next-wordpress";
 
 Please note that the documentation for these functions is not provided and you should refer to the source code for understanding the usage of these functions.
 

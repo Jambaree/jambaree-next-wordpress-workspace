@@ -5,8 +5,10 @@ import WordpressTemplate from "./src/WordpressTemplate";
 import FlexibleContent from "./src/flexibleContent";
 import getMenuItems from "./src/getMenuItems";
 import YoastSEO from "./src/YoastSEO";
+import getData from "./src/getData";
 
 export {
+  getData,
   getSeedData,
   getTemplate,
   getAllContentNodePaths,
