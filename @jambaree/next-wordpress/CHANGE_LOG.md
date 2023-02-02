@@ -11,3 +11,7 @@
   0.1.6
 
 - added getData() function
+
+  0.1.7
+
+- added YoastSEO support for taxonomies
