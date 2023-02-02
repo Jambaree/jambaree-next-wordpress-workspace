@@ -4,6 +4,6 @@
 
 - Revamped query to handle more complicated taxonomies
 
-  0.1.3
+  0.1.5
 
-- add revalidate function
+- remove revalidate function

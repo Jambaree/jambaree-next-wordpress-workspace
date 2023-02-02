@@ -1,6 +1,9 @@
 {
   "name": "@jambaree/next-wordpress",
-  "version": "0.1.4",
+  "version": "0.1.5",
+  "scripts": {
+    "build": "tsc"
+  },
   "dependencies": {
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.27",

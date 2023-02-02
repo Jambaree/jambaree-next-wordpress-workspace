@@ -5,10 +5,8 @@ import WordpressTemplate from "./src/WordpressTemplate";
 import FlexibleContent from "./src/flexibleContent";
 import getMenuItems from "./src/getMenuItems";
 import YoastSEO from "./src/YoastSEO";
-import Revalidation from "./src/api/revalidation";
 
 export {
-  Revalidation,
   getSeedData,
   getTemplate,
   getAllContentNodePaths,
