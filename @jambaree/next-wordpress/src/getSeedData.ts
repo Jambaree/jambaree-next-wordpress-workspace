@@ -33,21 +33,12 @@ const queryDocumentById = gql`
           templateName
           __typename
         }
+        contentTypeName
         contentType {
           node {
             uri
             graphqlSingleName
           }
-        }
-        seo {
-          title
-          metaDesc
-          opengraphTitle
-          opengraphDescription
-          opengraphImage {
-            sourceUrl
-          }
-          opengraphSiteName
         }
       }
 

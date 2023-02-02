@@ -15,7 +15,9 @@ export default async function getPageData({
     throw new Error("Missing WP_URL environment variable");
   }
   const queryDocument = gql`
-    ${query}
+    ${query},
+
+
   `;
 
   const res = await request({
