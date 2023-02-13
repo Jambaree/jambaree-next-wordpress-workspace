@@ -18,7 +18,7 @@ The following functions are available for use in this project:
 - `getAllContentNodePaths` : Exported from "@jambaree/next-wordpress"
 - `WordpressTemplate` : Exported from "@jambaree/next-wordpress"
 - `FlexibleContent` : Exported from "@jambaree/next-wordpress"
-- `getMenuItems` : Exported from "@jambaree/next-wordpress"
+- `useMenuItems` : Exported from "@jambaree/next-wordpress"
 - `YoastSEO` : Exported from "@jambaree/next-wordpress"
 - `getData` : Exported from "@jambaree/next-wordpress";
 

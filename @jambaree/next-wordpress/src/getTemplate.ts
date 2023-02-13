@@ -33,7 +33,6 @@ export default async function getTemplate({
   }
 
   if (isCategory) {
-    console.log(seedData?.name);
     const template = templates?.taxonomy?.[`${seedData?.name}`];
     return template;
   }

@@ -3,8 +3,7 @@ import getTemplate from "./src/getTemplate";
 import getAllContentNodePaths from "./src/getAllContentNodePaths";
 import WordpressTemplate from "./src/WordpressTemplate";
 import FlexibleContent from "./src/flexibleContent";
-import getMenuItems from "./src/getMenuItems";
-import YoastSEO from "./src/YoastSEO";
+import useMenuItems from "./src/useMenuItems";
 import getData from "./src/getData";
 import getYoastData from "./src/getYoastData";
 
@@ -16,6 +15,5 @@ export {
   getAllContentNodePaths,
   WordpressTemplate,
   FlexibleContent,
-  getMenuItems,
-  YoastSEO,
+  useMenuItems,
 };

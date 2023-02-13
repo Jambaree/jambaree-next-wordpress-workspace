@@ -16,12 +16,10 @@ export default async function getPageData({
   }
   const queryDocument = gql`
     ${query},
-
-
   `;
 
   const res = await request({
-    url: url || process.env.NEXT_PUBLIC_WP_URL,
+    url: url || process.env.NEXT_PUBLIC_WP_URL || "",
     variables: {
       uri,
       ...variables,
