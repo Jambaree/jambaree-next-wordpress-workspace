@@ -19,7 +19,8 @@ The following functions are available for use in this project:
 - `WordpressTemplate` : Exported from "@jambaree/next-wordpress"
 - `FlexibleContent` : Exported from "@jambaree/next-wordpress"
 - `useMenuItems` : Exported from "@jambaree/next-wordpress"
-- `YoastSEO` : Exported from "@jambaree/next-wordpress"
+- `generateMetaData` : Exported from "@jambaree/next-wordpress"
+- `generateStaticParams` : Exported from "@jambaree/next-wordpress"
 - `getData` : Exported from "@jambaree/next-wordpress";
 
 Please note that the documentation for these functions is not provided and you should refer to the source code for understanding the usage of these functions.

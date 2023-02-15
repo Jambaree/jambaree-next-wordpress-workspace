@@ -2,7 +2,7 @@ import { getData } from "@jambaree/next-wordpress";
 import Image from "next/image";
 
 export default async function DefaultPostArchiveTemplate({ uri }) {
-  const { posts } = await getData({ uri, query });
+  const { posts } = await getData({ variables: { uri }, query });
 
   return (
     <div className="relative bg-gray-50 px-6 pt-16 pb-20 lg:px-8 lg:pt-24 lg:pb-28">

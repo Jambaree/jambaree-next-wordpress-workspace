@@ -1,7 +1,7 @@
 import { getData } from "@jambaree/next-wordpress";
 
 export default async function DefaultPageTemplate({ uri }) {
-  const { page } = await getData({ uri, query });
+  const { page } = await getData({ variables: { uri }, query });
   return (
     <>
       <h1>Default Page Template for {page?.title}</h1>

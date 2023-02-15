@@ -1,12 +1,10 @@
 import { gql, request } from "graphql-request";
 
 export default async function getPageData({
-  uri,
   query,
   url,
   variables,
 }: {
-  uri: string;
   url?: string;
   query: any;
   variables?: any;
@@ -21,7 +19,6 @@ export default async function getPageData({
   const res = await request({
     url: url || process.env.NEXT_PUBLIC_WP_URL || "",
     variables: {
-      uri,
       ...variables,
     },
     document: queryDocument,

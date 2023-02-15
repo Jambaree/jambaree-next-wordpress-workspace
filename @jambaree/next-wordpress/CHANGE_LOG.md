@@ -36,3 +36,19 @@
 
 - Removed YoastSEO as there is a new way to handle this now with beta.next app directory (generateMetaData)
 - Remove generateStaticParams from package
+
+  0.3.0
+
+- Added generateStaticParams and generateMetadata fexportable functions
+
+  0.3.1
+
+- fixed type in generateMetaData
+
+  0.3.2
+
+- added more seo data to getSeedData and default image for openGraph
+
+  0.3.3
+
+- conditional to prevent error on archive pages seo

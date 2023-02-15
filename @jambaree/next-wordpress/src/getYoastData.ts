@@ -1,6 +1,6 @@
 import { gql, request } from "graphql-request";
 
-export default async function getPageData({
+export default async function getYoastData({
   name,
   uri,
 }: {
@@ -24,6 +24,15 @@ export default async function getPageData({
             sourceUrl
           }
           opengraphSiteName
+          opengraphUrl
+          opengraphType
+          opengraphPublishedTime
+          twitterDescription
+          twitterTitle
+          twitterImage {
+            sourceUrl
+          }
+          opengraphAuthor
         }
       }
     }

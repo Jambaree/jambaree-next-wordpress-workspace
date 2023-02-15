@@ -2,7 +2,6 @@ import React from "react";
 // import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import getSeedData from "./getSeedData";
-// import getAllContentNodePaths from "./getAllContentNodePaths";
 import getTemplate from "./getTemplate";
 // import getYoastData from "./getYoastData";
 
@@ -24,6 +23,7 @@ export default async function WordpressTemplate({
     seedData,
     templates,
   });
+
   if (!PageTemplate) {
     notFound();
   }
