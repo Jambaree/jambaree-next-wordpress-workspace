@@ -52,3 +52,15 @@
   0.3.3
 
 - conditional to prevent error on archive pages seo
+
+  0.3.4
+
+- added maximum-scale=5 to viewport
+
+  0.3.5
+
+- added revalidation to support functions
+
+  0.3.6
+
+- remove revalidation.

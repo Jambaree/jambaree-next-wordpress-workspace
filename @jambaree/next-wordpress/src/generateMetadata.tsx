@@ -34,7 +34,7 @@ export async function generateMetadata({ params }): Promise<Metadata> {
     viewport: {
       width: "device-width",
       initialScale: 1,
-      maximumScale: 1,
+      maximumScale: 5,
     },
     twitter: {
       card: yoastData?.seo?.twitterImage?.sourceUrl,
