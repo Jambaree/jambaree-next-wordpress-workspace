@@ -64,3 +64,7 @@
   0.3.6
 
 - remove revalidation.
+
+  0.3.7
+
+- renamed const in generateStaticParam
