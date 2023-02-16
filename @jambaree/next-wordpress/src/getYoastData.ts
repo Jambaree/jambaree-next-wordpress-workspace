@@ -3,11 +3,13 @@ import { gql, request } from "graphql-request";
 export default async function getYoastData({
   name,
   uri,
+  url,
 }: {
   name: string;
   uri: string;
+  url?: string;
 }) {
-  if (!process.env.NEXT_PUBLIC_WP_URL) {
+  if (!process.env.NEXT_PUBLIC_WPGRAPHQL_URL && !url) {
     throw new Error("Missing WP_URL environment variable");
   }
 
@@ -39,7 +41,7 @@ export default async function getYoastData({
   `;
 
   const res = await request({
-    url: process.env.NEXT_PUBLIC_WP_URL,
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
     variables: {
       uri,
     },

@@ -2,6 +2,7 @@ import { gql, request } from "graphql-request";
 
 interface UseMenuItemsProps {
   name?: string;
+  url?: string;
 }
 
 const GET_MENU_ITEMS = gql`
@@ -38,9 +39,9 @@ const GET_MENU_ITEMS = gql`
   }
 `;
 
-const useMenuItems = async ({ name }: UseMenuItemsProps) => {
+const useMenuItems = async ({ name, url }: UseMenuItemsProps) => {
   const data = await request({
-    url: process.env.NEXT_PUBLIC_WP_URL || "",
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
     variables: {
       name,
     },

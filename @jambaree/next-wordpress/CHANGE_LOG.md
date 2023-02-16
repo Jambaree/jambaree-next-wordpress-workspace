@@ -68,3 +68,11 @@
   0.3.7
 
 - renamed const in generateStaticParam
+
+  0.3.8
+
+- by default uses NEXT_PUBLIC_WPGRAPHQL_URL for queries but can now overwrite by passing in url: {process.env.NEXT_PUBLIC_WPGRAPHQL_URL} to any of "getData, getYoastData, getSeedData" etc.
+
+  0.3.9
+
+- remove overwrite url for generateStaticParams, must use process.env.NEXT_PUBLIC_WPGRAPHQL_UR

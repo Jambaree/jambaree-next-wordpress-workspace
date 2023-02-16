@@ -10,13 +10,13 @@ const queryDocument = gql`
   }
 `;
 
-const getAllContentNodePaths = async () => {
-  if (!process.env.NEXT_PUBLIC_WP_URL) {
+const getAllContentNodePaths = async ({ url }: { url?: string }) => {
+  if (!process.env.NEXT_PUBLIC_WPGRAPHQL_URL && !url) {
     throw new Error("Missing WP_URL environment variable");
   }
 
   const res = await request({
-    url: process.env.NEXT_PUBLIC_WP_URL,
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
     document: queryDocument,
   });
 

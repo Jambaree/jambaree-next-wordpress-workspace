@@ -9,7 +9,7 @@ export default async function getPageData({
   query: any;
   variables?: any;
 }) {
-  if (!process.env.NEXT_PUBLIC_WP_URL && !url) {
+  if (!process.env.NEXT_PUBLIC_WPGRAPHQL_URL && !url) {
     throw new Error("Missing WP_URL environment variable");
   }
   const queryDocument = gql`
@@ -17,7 +17,7 @@ export default async function getPageData({
   `;
 
   const res = await request({
-    url: url || process.env.NEXT_PUBLIC_WP_URL || "",
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
     variables: {
       ...variables,
     },

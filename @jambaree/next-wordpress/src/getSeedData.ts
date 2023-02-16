@@ -52,13 +52,19 @@ const queryDocumentById = gql`
   }
 `;
 
-export default async function getSeedData({ uri }: { uri: string }) {
-  if (!process.env.NEXT_PUBLIC_WP_URL) {
+export default async function getSeedData({
+  uri,
+  url,
+}: {
+  uri: string;
+  url?: string;
+}) {
+  if (!process.env.NEXT_PUBLIC_WPGRAPHQL_URL && !url) {
     throw new Error("Missing WP_URL environment variable");
   }
 
   const uriRes = await request({
-    url: process.env.NEXT_PUBLIC_WP_URL,
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
     variables: {
       uri,
     },
@@ -73,7 +79,7 @@ export default async function getSeedData({ uri }: { uri: string }) {
   if (uriRes?.nodeByUri?.isTermNode) {
     const filterTaxonomyUri = uri.split("/")[0];
     const taxonomyRes = await request({
-      url: process.env.NEXT_PUBLIC_WP_URL,
+      url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
       variables: {
         id: filterTaxonomyUri === "tag" ? "post_tag" : filterTaxonomyUri,
       },
@@ -83,7 +89,7 @@ export default async function getSeedData({ uri }: { uri: string }) {
   }
 
   const idRes = await request({
-    url: process.env.NEXT_PUBLIC_WP_URL,
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
     variables: {
       id: uriRes?.nodeByUri?.id,
     },
