@@ -1,5 +1,8 @@
 {
   "private": true,
+  "scripts": {
+    "dev": "yarn workspace next-wordpress-starter dev"
+  },
   "workspaces": [
     "next-wordpress-starter",
     "@jambaree/next-wordpress"
