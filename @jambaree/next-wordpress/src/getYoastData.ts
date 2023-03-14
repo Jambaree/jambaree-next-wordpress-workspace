@@ -41,7 +41,7 @@ export default async function getYoastData({
   `;
 
   const res = await request({
-    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
     variables: {
       uri,
     },

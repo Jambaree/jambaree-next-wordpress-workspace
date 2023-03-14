@@ -64,7 +64,7 @@ export default async function getSeedData({
   }
 
   const uriRes = await request({
-    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
     variables: {
       uri,
     },
@@ -79,7 +79,7 @@ export default async function getSeedData({
   if (uriRes?.nodeByUri?.isTermNode) {
     const filterTaxonomyUri = uri.split("/")[0];
     const taxonomyRes = await request({
-      url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
+      url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
       variables: {
         id: filterTaxonomyUri === "tag" ? "post_tag" : filterTaxonomyUri,
       },
@@ -89,7 +89,7 @@ export default async function getSeedData({
   }
 
   const idRes = await request({
-    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
     variables: {
       id: uriRes?.nodeByUri?.id,
     },

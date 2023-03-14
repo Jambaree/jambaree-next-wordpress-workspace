@@ -16,7 +16,7 @@ const getAllContentNodePaths = async ({ url }: { url?: string }) => {
   }
 
   const res = await request({
-    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
+    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
     document: queryDocument,
   });
 

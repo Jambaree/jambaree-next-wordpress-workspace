@@ -76,3 +76,7 @@
   0.3.9
 
 - remove overwrite url for generateStaticParams, must use process.env.NEXT_PUBLIC_WPGRAPHQL_UR
+
+  0.4.1
+
+- add "" to prevent typescript error in all functions
