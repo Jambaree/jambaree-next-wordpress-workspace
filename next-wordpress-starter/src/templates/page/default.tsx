@@ -2,13 +2,14 @@ import { getData } from "@jambaree/next-wordpress";
 
 export default async function DefaultPageTemplate({ uri }) {
   const { page } = await getData({ variables: { uri }, query });
+
   return (
     <>
       <h1>Default Page Template for {page?.title}</h1>
     </>
   );
 }
-const query = `
+const query = /* GraphQL */ `
   query PageQuery($uri: ID!) {
     page(id: $uri, idType: URI) {
       __typename
@@ -17,4 +18,5 @@ const query = `
       uri
       slug
     }
-  }`;
+  }
+`;
