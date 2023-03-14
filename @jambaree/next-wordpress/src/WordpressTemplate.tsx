@@ -5,14 +5,20 @@ import getSeedData from "./getSeedData";
 import getTemplate from "./getTemplate";
 // import getYoastData from "./getYoastData";
 
-export default async function WordpressTemplate({
-  paths,
-  templates,
-}: {
+import WordpressPreview from "./WordpressPreview";
+
+export default async function WordpressTemplate(props: {
   paths: string[];
   templates: any;
 }) {
+  const { paths, templates } = props;
+
   const uri = paths?.join?.("/") || "/";
+
+  if (uri === "preview") {
+    return <WordpressPreview {...props} />;
+  }
+
   const seedData = await getSeedData({ uri });
 
   if (!seedData) {
