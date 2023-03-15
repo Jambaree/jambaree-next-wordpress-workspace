@@ -1,20 +1,48 @@
 import { getData } from "@jambaree/next-wordpress";
 
-export default async function DefaultPageTemplate({ uri }) {
-  const { page } = await getData({ variables: { uri }, query });
+export default async function DefaultPageTemplate({
+  uri,
+  isPreview,
+  searchParams,
+}) {
+  const data = await getData({
+    variables: { id: uri, idType: "URI" },
+    query,
+    isPreview,
+    searchParams,
+  });
+
   return (
     <>
-      <h1>Default Page Template for {page?.title}</h1>
+      <h1>Default Page Template for {data?.page?.title}</h1>
+      <div>
+        <pre>
+          <code>{JSON.stringify({ data }, null, 2)}</code>
+        </pre>
+      </div>
     </>
   );
 }
-const query = `
-  query PageQuery($uri: ID!) {
-    page(id: $uri, idType: URI) {
+const query = /* GraphQL */ `
+  query PageQuery($id: ID!, $idType: PageIdType) {
+    page(id: $id, idType: $idType) {
       __typename
       id
       title
       uri
       slug
+      template {
+        ... on DefaultTemplate {
+          acf {
+            modules {
+              __typename
+              ... on DefaultTemplate_Acf_Modules_Hero {
+                headline
+              }
+            }
+          }
+        }
+      }
     }
-  }`;
+  }
+`;

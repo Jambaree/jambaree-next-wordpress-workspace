@@ -1,100 +1,151 @@
 import { gql, request } from "graphql-request";
 
-const queryDocumentByUri = gql`
-  query contentNodeSeedQueryUri($uri: String!) {
-    nodeByUri(uri: $uri) {
-      id
-      uri
-      isTermNode
-      __typename
-    }
-  }
-`;
-
-const queryDocumentTaxonomyName = gql`
-  query contentNodeSeedQueryUri($id: ID!) {
-    taxonomy(id: $id, idType: NAME) {
-      id
-      __typename
-      graphqlSingleName
-      name
-    }
-  }
-`;
-
-const queryDocumentById = gql`
-  query contentNodeSeedQueryId($id: ID!) {
-    node(id: $id) {
-      id
-
-      __typename # this will be ContentType if its an archive
-      ... on ContentNode {
-        template {
-          templateName
-          __typename
-        }
-        contentTypeName
-        contentType {
-          node {
-            uri
-            graphqlSingleName
-          }
-        }
-      }
-
-      ... on ContentType {
-        # this is for archive pages
-        name
-        graphqlSingleName
-        uri
-      }
-    }
-  }
-`;
-
 export default async function getSeedData({
   uri,
-  url,
+  graphqlUrl = process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
+  isPreview,
+  searchParams,
 }: {
+  /**
+   * uri is the path of the page from nextjs
+   */
   uri: string;
-  url?: string;
+
+  /**
+   * graphqlUrl is the url of the graphql endpoint
+   * if not passed it will use the NEXT_PUBLIC_WPGRAPHQL_URL environment variable
+   */
+  graphqlUrl?: string;
+
+  /**
+   * isPreview is used to determine if we are in preview mode
+   * if true it will use the searchParams to get the revision id and jwt
+   */
+  isPreview?: boolean;
+
+  /**
+   * searchParams are used for preview authentication jwt and revision id
+   */
+  searchParams?: any;
 }) {
-  if (!process.env.NEXT_PUBLIC_WPGRAPHQL_URL && !url) {
-    throw new Error("Missing WP_URL environment variable");
+  if (!graphqlUrl) {
+    throw new Error(
+      "Missing graphqlUrl in getSeedData, add NEXT_PUBLIC_WPGRAPHQL_URL environment variable or pass it as an argument"
+    );
+  }
+
+  if (isPreview) {
+    const previewSeedData = await request({
+      url: graphqlUrl,
+      variables: {
+        id: searchParams?.revision_id,
+      },
+      requestHeaders: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${searchParams?.key}`,
+      },
+      document: gql`
+        query PreviewContentNodeSeedQuery($id: ID!) {
+          contentNode(id: $id, idType: DATABASE_ID) {
+            __typename
+            template {
+              templateName
+              __typename
+            }
+            contentTypeName
+            contentType {
+              node {
+                uri
+                graphqlSingleName
+              }
+            }
+          }
+        }
+      `,
+    });
+
+    return previewSeedData?.contentNode;
   }
 
   const uriRes = await request({
-    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
+    url: graphqlUrl,
     variables: {
       uri,
     },
-    document: queryDocumentByUri,
+    document: gql`
+      query contentNodeSeedQueryUri($uri: String!) {
+        nodeByUri(uri: $uri) {
+          id
+          uri
+          isTermNode
+          __typename
+        }
+      }
+    `,
   });
 
   if (!uriRes?.nodeByUri?.id) {
     return null;
   }
+
   // must be a better way to do this instead of using the Typename of the taxonomy
 
   if (uriRes?.nodeByUri?.isTermNode) {
     const filterTaxonomyUri = uri.split("/")[0];
     const taxonomyRes = await request({
-      url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
+      url: graphqlUrl,
       variables: {
         id: filterTaxonomyUri === "tag" ? "post_tag" : filterTaxonomyUri,
       },
-      document: queryDocumentTaxonomyName,
+      document: gql`
+        query contentNodeSeedQueryUri($id: ID!) {
+          taxonomy(id: $id, idType: NAME) {
+            id
+            __typename
+            graphqlSingleName
+            name
+          }
+        }
+      `,
     });
     return taxonomyRes?.taxonomy;
   }
 
-  const idRes = await request({
-    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
+  const seedData = await request({
+    url: graphqlUrl,
     variables: {
       id: uriRes?.nodeByUri?.id,
     },
-    document: queryDocumentById,
+    document: gql`
+      query contentNodeSeedQueryId($id: ID!) {
+        node(id: $id) {
+          id
+
+          __typename # this will be ContentType if its an archive
+          ... on ContentNode {
+            template {
+              templateName
+              __typename
+            }
+            contentTypeName
+            contentType {
+              node {
+                uri
+                graphqlSingleName
+              }
+            }
+          }
+
+          ... on ContentType {
+            # this is for archive pages
+            name
+            graphqlSingleName
+            uri
+          }
+        }
+      }
+    `,
   });
 
-  return idRes?.node;
+  return seedData?.node;
 }

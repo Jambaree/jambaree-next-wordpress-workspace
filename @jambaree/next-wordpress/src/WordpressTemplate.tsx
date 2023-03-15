@@ -1,19 +1,20 @@
 import React from "react";
-// import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import getSeedData from "./getSeedData";
 import getTemplate from "./getTemplate";
-// import getYoastData from "./getYoastData";
 
-export default async function WordpressTemplate({
-  paths,
-  templates,
-}: {
+export default async function WordpressTemplate(props: {
   paths: string[];
   templates: any;
+  searchParams?: any;
 }) {
+  const { paths, templates, searchParams } = props;
+
   const uri = paths?.join?.("/") || "/";
-  const seedData = await getSeedData({ uri });
+
+  const isPreview = uri === "preview";
+
+  const seedData = await getSeedData({ uri, isPreview, searchParams });
 
   if (!seedData) {
     notFound();
@@ -28,5 +29,12 @@ export default async function WordpressTemplate({
     notFound();
   }
 
-  return <PageTemplate uri={uri} seedData={seedData} paths={paths} />;
+  return (
+    <PageTemplate
+      uri={uri}
+      seedData={seedData}
+      isPreview={isPreview}
+      {...props}
+    />
+  );
 }

@@ -1,27 +1,39 @@
 import { gql, request } from "graphql-request";
 
-export default async function getPageData({
+export default async function getData({
   query,
-  url,
+  graphqlUrl = process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
   variables,
+  isPreview,
+  searchParams,
 }: {
-  url?: string;
+  graphqlUrl?: string;
   query: any;
   variables?: any;
+  isPreview?: boolean;
+  searchParams?: any;
 }) {
-  if (!process.env.NEXT_PUBLIC_WPGRAPHQL_URL && !url) {
-    throw new Error("Missing WP_URL environment variable");
+  if (!graphqlUrl) {
+    throw new Error(
+      "Missing graphqlUrl,add the NEXT_PUBLIC_WPGRAPHQL_URL env or pass it as a param"
+    );
   }
   const queryDocument = gql`
     ${query},
   `;
 
   const res = await request({
-    url: url || process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
-    variables: {
-      ...variables,
-    },
+    url: graphqlUrl,
+    variables: isPreview
+      ? { id: searchParams?.revision_id, idType: "DATABASE_ID" }
+      : variables,
     document: queryDocument,
+    requestHeaders: isPreview
+      ? {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${searchParams?.key}`,
+        }
+      : undefined,
   });
 
   return res;
