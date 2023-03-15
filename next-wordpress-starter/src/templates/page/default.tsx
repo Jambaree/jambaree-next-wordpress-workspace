@@ -31,6 +31,18 @@ const query = /* GraphQL */ `
       title
       uri
       slug
+      template {
+        ... on DefaultTemplate {
+          acf {
+            modules {
+              __typename
+              ... on DefaultTemplate_Acf_Modules_Hero {
+                headline
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;

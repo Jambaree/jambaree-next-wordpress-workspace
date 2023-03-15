@@ -9,6 +9,7 @@ export default async function WordpressTemplate(props: {
   searchParams?: any;
 }) {
   const { paths, templates, searchParams } = props;
+
   const uri = paths?.join?.("/") || "/";
 
   const isPreview = uri === "preview";

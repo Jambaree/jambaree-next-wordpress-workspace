@@ -6,10 +6,23 @@ export default async function getSeedData({
   isPreview,
   searchParams,
 }: {
+  /**
+   * uri is the path of the page from nextjs
+   */
   uri: string;
+
+  /**
+   * graphqlUrl is the url of the graphql endpoint
+   * if not passed it will use the NEXT_PUBLIC_WPGRAPHQL_URL environment variable
+   */
   graphqlUrl?: string;
 
+  /**
+   * isPreview is used to determine if we are in preview mode
+   * if true it will use the searchParams to get the revision id and jwt
+   */
   isPreview?: boolean;
+
   /**
    * searchParams are used for preview authentication jwt and revision id
    */
