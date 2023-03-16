@@ -3,25 +3,23 @@ import {
   generateStaticParams,
   generateMetadata,
 } from "@jambaree/next-wordpress";
-import templates from "../../templates";
+
+import templates from "@/templates";
 
 export default async function PageTemplate(props: {
   params: { paths: string[] };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const {
-    params: { paths },
-  } = props;
-
   return (
     <>
-      {/* https://beta.nextjs.org/docs/configuring/typescript  for more info*/}
-      {/* @ts-expect-error Server Component */}
-
-      <WordpressTemplate templates={templates} paths={paths} {...props} />
+      {/* @ts-expect-error Async Server Component */}
+      <WordpressTemplate
+        templates={templates}
+        params={props.params}
+        searchParams={props.searchParams}
+      />
     </>
   );
 }
-
-export const revalidate = "force-cache";
 
 export { generateStaticParams, generateMetadata };

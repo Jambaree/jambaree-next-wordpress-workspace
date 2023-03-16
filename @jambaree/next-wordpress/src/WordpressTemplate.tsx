@@ -4,14 +4,12 @@ import getSeedData from "./getSeedData";
 import getTemplate from "./getTemplate";
 
 export default async function WordpressTemplate(props: {
-  paths: string[];
+  params: { paths: string[] };
   templates: any;
-  searchParams?: any;
+  searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const { paths, templates, searchParams } = props;
-
-  const uri = paths?.join?.("/") || "/";
-
+  const { params, templates, searchParams } = props;
+  const uri = params?.paths?.join?.("/") || "/";
   const isPreview = uri === "preview";
 
   const seedData = await getSeedData({ uri, isPreview, searchParams });

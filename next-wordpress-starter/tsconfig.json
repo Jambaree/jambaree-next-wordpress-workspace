@@ -1,11 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
@@ -23,7 +19,12 @@
         "name": "next"
       }
     ],
-    "strictNullChecks": true
+    "strictNullChecks": true,
+
+    "baseUrl": ".", // alias @ imports for src directory
+    "paths": {
+      "@/*": ["./src/*"] // alias @ imports for src directory
+    }
   },
   "include": [
     "next-env.d.ts",
@@ -32,7 +33,5 @@
     ".next/types/**/*.ts",
     "src/app/[[...paths]]/page.tsx"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }
