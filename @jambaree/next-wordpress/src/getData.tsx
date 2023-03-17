@@ -38,3 +38,5 @@ export default async function getData({
 
   return res;
 }
+
+export { getData };
