@@ -108,8 +108,6 @@ export async function getSeedData({
     `,
   });
 
-  console.log({ seedData });
-
   return seedData;
 }
 
