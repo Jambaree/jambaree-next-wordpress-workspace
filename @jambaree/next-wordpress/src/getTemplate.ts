@@ -1,3 +1,6 @@
+import chalk from "chalk";
+import log from "./utils/log";
+
 type GetTemplateArgs = {
   seedData: {
     name: string;
@@ -9,6 +12,8 @@ type GetTemplateArgs = {
       templateName: string;
     };
 
+    contentTypeName?: string;
+
     contentType?: {
       node: {
         graphqlSingleName: string;
@@ -16,6 +21,9 @@ type GetTemplateArgs = {
         uri: string;
       };
     };
+
+    taxonomyName?: string;
+    isTermNode?: boolean;
   };
   templates: any;
 };
@@ -25,22 +33,33 @@ export default async function getTemplate({
   templates,
 }: GetTemplateArgs) {
   const isArchive = seedData?.__typename === "ContentType";
-  const isCategory = seedData?.__typename === "Taxonomy";
 
   if (isArchive) {
     const template = templates?.archive?.[toCamel(seedData?.graphqlSingleName)];
     return template;
   }
 
-  if (isCategory) {
-    const template = templates?.taxonomy?.[`${seedData?.name}`];
+  if (seedData?.isTermNode) {
+    const template = templates?.taxonomy?.[`${seedData?.taxonomyName}`];
     return template;
   }
 
-  const contentType = toCamel(seedData?.contentType?.node?.graphqlSingleName);
+  const contentType = toCamel(seedData?.contentTypeName);
 
   const templateName = toCamel(seedData?.template?.templateName);
   const template = templates?.[contentType]?.[templateName];
+
+  if (!template) {
+    log(
+      `Warn: Template "${templateName}" not found for type "${seedData?.__typename}" on uri '${seedData?.uri}'. Did you forget to add it to the templates object in src/templates/index? `
+    );
+
+    log(seedData, {
+      prefix: "seedData",
+      prefixColor: "cyan",
+      separator: ":",
+    });
+  }
 
   return template;
 }
@@ -54,3 +73,5 @@ const toCamel = (string) => {
   );
   return string.substr(0, 1).toLowerCase() + string.substr(1);
 };
+
+export { getTemplate };
