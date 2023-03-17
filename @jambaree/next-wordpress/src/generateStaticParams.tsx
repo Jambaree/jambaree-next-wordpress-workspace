@@ -1,14 +1,44 @@
-import getAllContentNodePaths from "./getAllContentNodePaths";
-export async function generateStaticParams() {
-  const nodePaths = await getAllContentNodePaths({
-    url: process.env.NEXT_PUBLIC_WPGRAPHQL_URL,
+import { gql, request } from "graphql-request";
+
+export async function generateStaticParams({
+  graphqlUrl = process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
+}: {
+  /**
+   * The URL of the GraphQL endpoint.
+   * @default process.env.NEXT_PUBLIC_WPGRAPHQL_URL
+   */
+  graphqlUrl?: string;
+}) {
+  if (!graphqlUrl) {
+    throw new Error(
+      "generateStaticParams: No GraphQL URL provided. Please set `NEXT_PUBLIC_WPGRAPHQL_URL` environment variable or pass `graphqlUrl` to `generateStaticParams`."
+    );
+  }
+
+  const res: {
+    contentNodes: {
+      nodes: {
+        uri: string;
+      }[];
+    };
+  } = await request({
+    url: graphqlUrl,
+    document: gql`
+      query ContentNodesQuery {
+        contentNodes {
+          nodes {
+            uri
+          }
+        }
+      }
+    `,
   });
 
-  return nodePaths.map((node) => {
-    // /soltions-and-products/product-1 will turn into -> ["soltions-and-products", "product-1"]
+  const nodes = res?.contentNodes?.nodes;
+
+  return nodes.map((node) => {
     const pathBreadcrumbs = node.uri.split("/").slice(1);
 
-    // previously was /solutions%20and%20products/product-1
     const paths = [...(pathBreadcrumbs || "/")];
 
     return {
