@@ -1,7 +1,7 @@
 import { getData } from "@jambaree/next-wordpress";
 import Image from "next/image";
 
-export default async function DefaultPostArchiveTemplate({ uri }) {
+export default async function PostArchive({ uri }) {
   const { posts } = await getData({ variables: { uri }, query });
 
   return (
