@@ -39,7 +39,7 @@ export default function Button({
         "relative flex items-center select-none justify-center gap-1 rounded-md border border-white/20 text-sm font-semibold transition duration-200 ease-in-out hover:border-white/50 focus:outline-none focus:ring-2 focus:ring-slate-500 shadow-sm",
 
         variant === "primary" &&
-          "bg-primary text-white/60 hover:bg-primary/80 hover:text-white/80",
+          "bg-primary text-white hover:bg-primary/80 hover:text-white/80",
 
         variant === "secondary" &&
           "rounded-md bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
