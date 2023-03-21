@@ -47,6 +47,7 @@ export async function getSeedData({
       document: gql`
         query PreviewContentNodeSeedQuery($id: ID!) {
           contentNode(id: $id, idType: DATABASE_ID) {
+            uri
             __typename
             template {
               templateName

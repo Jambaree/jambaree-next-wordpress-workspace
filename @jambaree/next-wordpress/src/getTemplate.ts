@@ -68,7 +68,7 @@ export default async function getTemplate({
     return template;
   }
 
-  const contentType = toCamel(seedData?.contentTypeName);
+  const contentType = toCamel(seedData?.contentType?.node?.graphqlSingleName);
 
   const templateName = toCamel(seedData?.template?.templateName);
   const template = templates?.[contentType]?.[templateName];

@@ -13,7 +13,6 @@ export default async function WordpressTemplate(props: {
   const isPreview = uri === "preview";
 
   const seedData = await getSeedData({ uri, isPreview, searchParams });
-
   if (!seedData) {
     notFound();
   }

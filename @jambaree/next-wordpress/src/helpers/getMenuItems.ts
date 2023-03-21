@@ -1,13 +1,10 @@
 import { gql, request } from "graphql-request";
 
 type MenuItemsArgs = {
-  /**
-   * The name of the menu to retrieve.
-   * @example "primary"
-   * @example "secondary"
-   * @example "footer"
-   */
-  name?: string;
+  id: string;
+
+  idType?: "DATABASE_ID" | "ID" | "SLUG" | "LOCATION" | "NAME";
+
   /**
    * The URL of the WordPress GraphQL endpoint. Defaults to the value of the NEXT_PUBLIC_WPGRAPHQL_URL environment variable.
    */
@@ -45,7 +42,8 @@ type Menu = {
 };
 
 export const getMenuItems = async ({
-  name,
+  id = "main-menu",
+  idType = "NAME",
   graphqlUrl = process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
 }: MenuItemsArgs) => {
   const data: {
@@ -53,8 +51,8 @@ export const getMenuItems = async ({
   } = await request({
     url: graphqlUrl,
     document: gql`
-      query getMenuItems($name: ID!) {
-        menu(id: $name, idType: NAME) {
+      query getMenuItems($id: ID!, $idType: MenuNodeIdTypeEnum!) {
+        menu(id: $id, idType: $idType) {
           id
           slug
           locations
@@ -87,7 +85,8 @@ export const getMenuItems = async ({
     `,
 
     variables: {
-      name,
+      id,
+      idType,
     },
   });
 
