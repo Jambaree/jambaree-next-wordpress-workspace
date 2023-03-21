@@ -55,6 +55,9 @@ const query = /* GraphQL */ `
                   }
                 }
               }
+              ... on DefaultTemplate_Acf_Modules_Textarea {
+                text
+              }
             }
           }
         }

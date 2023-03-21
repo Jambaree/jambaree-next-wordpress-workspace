@@ -36,10 +36,10 @@ export default function Button({
   return (
     <Component
       className={clsx(
-        "relative flex items-center select-none justify-center gap-1 rounded-md border border-white/20 text-sm font-semibold transition duration-200 ease-in-out hover:border-white/50 focus:outline-none focus:ring-2 focus:ring-slate-500 shadow-sm",
+        "relative flex items-center select-none justify-center gap-1 rounded-md border font-semibold transition duration-200 ease-in-out hover:border-white/50 focus:outline-none focus:ring-2 focus:ring-slate-500 shadow-sm",
 
         variant === "primary" &&
-          "bg-primary text-white hover:bg-primary/80 hover:text-white/80",
+          "bg-primary text-white hover:bg-primary/90 hover:text-white/90",
 
         variant === "secondary" &&
           "rounded-md bg-white text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50",
@@ -47,7 +47,7 @@ export default function Button({
         `disabled:cursor-not-allowed disabled:opacity-70`,
 
         size === "sm" && "px-2 py-1 text-xs md:py-2 md:px-3 md:text-sm",
-        size === "md" && "py-2.5 px-3.5 text-sm md:py-3 md:px-4 md:text-base",
+        size === "md" && "px-4 py-2 text-base",
         size === "lg" && "px-8 py-3 text-base md:py-4 md:px-10 md:text-lg",
 
         className
