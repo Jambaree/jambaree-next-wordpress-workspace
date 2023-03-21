@@ -37,6 +37,15 @@ const query = /* GraphQL */ `
               __typename
               ... on DefaultTemplate_Acf_Modules_Hero {
                 headline
+                subline
+                links {
+                  link {
+                    target
+                    title
+                    url
+                  }
+                  variant
+                }
                 image {
                   altText
                   sourceUrl
