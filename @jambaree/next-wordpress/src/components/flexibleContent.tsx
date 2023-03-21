@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense } from "react";
+import React, { Fragment } from "react";
 
 interface IFlexibleContentProps {
   blocks: any;
@@ -6,7 +6,7 @@ interface IFlexibleContentProps {
   /**
    * Extra data that will be passed to each individual component
    */
-  data: any;
+  data?: any;
 }
 
 export const FlexibleContent = ({

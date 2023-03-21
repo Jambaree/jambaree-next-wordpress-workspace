@@ -1,4 +1,6 @@
-import { getData } from "@jambaree/next-wordpress";
+import { FlexibleContent, getData } from "@jambaree/next-wordpress";
+
+import * as blocks from "../../components/blocks";
 
 export default async function DefaultPageTemplate({
   uri,
@@ -13,16 +15,13 @@ export default async function DefaultPageTemplate({
   });
 
   return (
-    <>
-      <h1>Default Page Template for {data?.page?.title}</h1>
-      <div>
-        <pre>
-          <code>{JSON.stringify({ data }, null, 2)}</code>
-        </pre>
-      </div>
-    </>
+    <FlexibleContent
+      rows={data?.page?.template?.acf?.modules}
+      blocks={blocks}
+    />
   );
 }
+
 const query = /* GraphQL */ `
   query PageQuery($id: ID!, $idType: PageIdType) {
     page(id: $id, idType: $idType) {

@@ -1,7 +1,7 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import getSeedData from "./getSeedData";
-import getTemplate from "./getTemplate";
+import getSeedData from "../getSeedData";
+import getTemplate from "../getTemplate";
 
 export default async function WordpressTemplate(props: {
   params: { paths: string[] };

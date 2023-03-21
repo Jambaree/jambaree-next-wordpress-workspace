@@ -1,7 +1,9 @@
 export { generateStaticParams } from "./src/generateStaticParams";
-export { getSeedData } from "./src/getSeedData";
-export { getMenuItems } from "./src/getMenuItems";
 export { generateMetadata } from "./src/generateMetadata";
-export { FlexibleContent } from "./src/flexibleContent";
-export { getData } from "./src/getData";
-export { WordpressTemplate } from "./src/WordpressTemplate";
+export { getSeedData } from "./src/getSeedData";
+
+export { getData } from "./src/helpers/getData";
+export { getMenuItems } from "./src/helpers/getMenuItems";
+
+export { FlexibleContent } from "./src/components/flexibleContent";
+export { WordpressTemplate } from "./src/components/WordpressTemplate";
