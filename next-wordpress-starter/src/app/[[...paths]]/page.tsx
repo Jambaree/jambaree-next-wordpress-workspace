@@ -1,8 +1,4 @@
-import {
-  WordpressTemplate,
-  generateStaticParams,
-  generateMetadata,
-} from "@jambaree/next-wordpress";
+import { WordpressTemplate } from "@jambaree/next-wordpress";
 
 import templates from "@/templates";
 
@@ -22,4 +18,7 @@ export default async function PageTemplate(props: {
   );
 }
 
-export { generateStaticParams, generateMetadata };
+export {
+  generateStaticParams,
+  generateMetadata,
+} from "@jambaree/next-wordpress";
