@@ -34,6 +34,9 @@ export async function generateStaticParams({
     `,
   });
 
+  //todo: filter out null uri (happens for blog page)
+  //todo: also query for content types
+
   const nodes = res?.contentNodes?.nodes;
 
   return nodes.map((node) => {
