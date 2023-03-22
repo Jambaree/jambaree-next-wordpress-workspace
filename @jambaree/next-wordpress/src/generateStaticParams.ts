@@ -34,6 +34,7 @@ export async function generateStaticParams({
     `,
   });
 
+  //todo: paginated queries to get more than 10 or 100 nodes (need to recursively get all until none left)
   //todo: filter out null uri (happens for blog page)
   //todo: also query for content types
 
