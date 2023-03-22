@@ -1,17 +1,37 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
+// import { getSeedData } from "@jambaree/next-wordpress";
+
 type Data = {
   status: "success" | "error";
   message?: string;
-  path?: string[];
+  path?: string;
 };
 
 export default async function Revalidation(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  const path: string[] = req.body.path;
+  const path = req.body.path;
+
   console.log(`Revalidating: ${path}`);
+
+  // todo: handle revalidating content nodes and content types
+  // const seedData = await getSeedData({uri: path})
+
+  // if (seedData.isContentNode) {
+  //   // handle revalidating this and it's archive
+  // }
+
+  // if (seedData.isTermNode) {
+  //   // handle revalidating this term and also all nodes that are in this term
+  // }
+
+  // if (seedData.__typename === "ContentType") {
+  //   // this is an archive node
+  //   // handle revalidating this and all nodes that are in this archive
+  // }
+
   // todo: add secret to prevent unauthorized requestset to confirm this is a valid request
   //   if (req.query.secret !== process.env.MY_SECRET_TOKEN) {
   //     return res.status(401).json({ message: "Invalid token" });
