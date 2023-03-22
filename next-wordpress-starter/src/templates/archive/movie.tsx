@@ -8,6 +8,7 @@ export default async function MovieArchive() {
           nodes {
             id
             title
+            uri
           }
         }
       }
