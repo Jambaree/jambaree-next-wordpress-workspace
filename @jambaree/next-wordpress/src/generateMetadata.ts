@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { gql, request } from "graphql-request";
 
 import getSeedData from "./getSeedData";
+import toCamel from "./utils/toCamel";
 
 export async function generateMetadata({
   params,
@@ -20,7 +21,25 @@ export async function generateMetadata({
   if (seedData?.isContentNode) {
     const res: {
       contentNode: {
-        seo: Seo;
+        seo: {
+          title: string;
+          metaDesc: string;
+          opengraphTitle: string;
+          opengraphDescription: string;
+          opengraphImage: {
+            sourceUrl: string;
+          };
+          opengraphSiteName: string;
+          opengraphUrl: string;
+          opengraphType: string;
+          opengraphPublishedTime: string;
+          twitterDescription: string;
+          twitterTitle: string;
+          twitterImage: {
+            sourceUrl: string;
+          };
+          opengraphAuthor: string;
+        };
       };
     } = await request({
       url: graphqlUrl,
@@ -55,146 +74,127 @@ export async function generateMetadata({
       },
     });
 
-    // console.log(res.contentNode);
+    const seo = res?.contentNode?.seo;
 
-    return formatSeo(res.contentNode.seo);
+    return {
+      title: seo?.title,
+      description: seo?.metaDesc,
+      openGraph: {
+        title: seo?.opengraphTitle,
+        description: seo?.opengraphDescription,
+        siteName: seo?.opengraphSiteName,
+        url: seo?.opengraphUrl,
+        type: seo?.opengraphType,
+        publishedTime: seo?.opengraphPublishedTime,
+        authors: [seo?.opengraphAuthor],
+        images: seo?.opengraphImage?.sourceUrl
+          ? [seo?.opengraphImage?.sourceUrl]
+          : undefined,
+        locale: "en-US",
+      },
+      viewport: {
+        width: "device-width",
+        initialScale: 1,
+        maximumScale: 5,
+      },
+      twitter: {
+        card: seo?.twitterImage?.sourceUrl,
+        title: seo?.twitterTitle,
+        description: seo?.twitterDescription,
+        images: seo?.twitterImage?.sourceUrl
+          ? [seo?.twitterImage?.sourceUrl]
+          : undefined,
+      },
+    } as Metadata;
   }
 
   if (seedData?.__typename === "ContentType") {
-    // const res: {
-    //   contentNode: {
-    //     seo: Seo;
-    //   };
-    // } = await request({
-    //   url: graphqlUrl,
-    //   document: gql`
-    //     query yoastSeo($uri: ID!) {
-    //       seo(id: $uri, idType: URI) {
-    //         contentTypes {
-    //           ${seedData?.graphqlSingleName} {
-    //             title
-    //             archive {
-    //               fullHead
-    //             }
-    //           }
-    //         }
-    //       }
-    //     }
-    //   `,
-    //   variables: {
-    //     uri,
-    //   },
-    // });
-    // console.log(res.contentNode);
-    // return formatSeo(res.contentNode.seo);
+    const res: {
+      generalSettings: {
+        title: string;
+      };
+      seo: {
+        openGraph: {
+          frontPage: {
+            title: string;
+          };
+          defaultImage: {
+            uri: string;
+          };
+        };
+        contentTypes: {
+          [key: string]: {
+            archive: {
+              title: string;
+              metaDesc: string;
+              archiveLink: string;
+            };
+            title: string;
+          };
+        };
+      };
+    } = await request({
+      url: graphqlUrl,
+      document: gql`
+        {
+          generalSettings {
+            title
+          }
+          seo {
+            openGraph {
+               frontPage {
+                 title
+               }
+               defaultImage {
+                  uri
+               }
+            }
+            contentTypes {
+              ${toCamel(seedData?.graphqlSingleName)} {
+                archive {
+                  title
+                  metaDesc
+                  archiveLink
+                }
+                title
+              }
+            }
+          }
+        }
+      `,
+      variables: {
+        uri,
+      },
+    });
+
+    const seo = res?.seo?.contentTypes?.[toCamel(seedData?.graphqlSingleName)];
+
+    // * This is to handle the weird behavior for the default post type title defaulting to the site title
+    let archiveTitle = seo?.archive?.title;
+    if (
+      archiveTitle === res?.generalSettings?.title &&
+      seedData?.graphqlSingleName === "post"
+    ) {
+      archiveTitle = `Blog Archive ${seo?.title}`;
+    }
+
+    return {
+      title: archiveTitle,
+      description: seo?.archive?.metaDesc,
+      openGraph: {
+        title: archiveTitle,
+        description: seo?.archive?.metaDesc,
+        siteName: res?.seo?.openGraph?.frontPage?.title,
+        images: res?.seo?.openGraph?.defaultImage?.uri
+          ? [res?.seo?.openGraph?.defaultImage?.uri]
+          : undefined,
+        locale: "en-US",
+      },
+      viewport: {
+        width: "device-width",
+        initialScale: 1,
+        maximumScale: 5,
+      },
+    } as Metadata;
   }
-
-  // if (!nodeType) return {};
-
-  // const res: {
-  //   seo: Seo;
-  // } = await request({
-  //   url: graphqlUrl,
-  //   document: gql`
-  //   query yoastSeo($uri: ID!) {
-  //     ${nodeType}(id: $uri, idType: URI) {
-  //       __typename
-  //       ${seoString}
-  //     }
-  //   }
-  // `,
-  //   variables: {
-  //     uri,
-  //   },
-  // });
-
-  // const yoastData = res?.[nodeType];
-
-  // return {
-  //   title: yoastData?.seo?.title,
-  //   description: yoastData?.seo?.metaDesc,
-  //   openGraph: {
-  //     title: yoastData?.seo?.opengraphTitle,
-  //     description: yoastData?.seo?.opengraphDescription,
-  //     siteName: yoastData?.seo?.opengraphSiteName,
-  //     url: yoastData?.seo?.opengraphUrl,
-  //     type: yoastData?.seo?.opengraphType,
-  //     publishedTime: yoastData?.seo?.opengraphPublishedTime,
-  //     authors: [yoastData?.seo?.opengraphAuthor],
-  //     images: [
-  //       yoastData?.seo?.opengraphImage?.sourceUrl ||
-  //         "https://yoast.com/app/uploads/2013/02/Yoast_Logo_Large_RGB-250x115.png",
-  //     ],
-  //     locale: "en-US",
-  //   },
-  //   viewport: {
-  //     width: "device-width",
-  //     initialScale: 1,
-  //     maximumScale: 5,
-  //   },
-  //   twitter: {
-  //     card: yoastData?.seo?.twitterImage?.sourceUrl,
-  //     title: yoastData?.seo?.twitterTitle,
-  //     description: yoastData?.seo?.twitterDescription,
-  //     images: [
-  //       yoastData?.seo?.twitterImage?.sourceUrl ||
-  //         "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/2491px-Twitter-logo.svg.png",
-  //     ],
-  //   },
-  // };
 }
-
-type Seo = {
-  title: string;
-  metaDesc: string;
-  opengraphTitle: string;
-  opengraphDescription: string;
-  opengraphImage: {
-    sourceUrl: string;
-  };
-  opengraphSiteName: string;
-  opengraphUrl: string;
-  opengraphType: string;
-  opengraphPublishedTime: string;
-  twitterDescription: string;
-  twitterTitle: string;
-  twitterImage: {
-    sourceUrl: string;
-  };
-  opengraphAuthor: string;
-};
-
-const formatSeo = (seo): Metadata => {
-  return {
-    title: seo?.title,
-    description: seo?.metaDesc,
-    openGraph: {
-      title: seo?.opengraphTitle,
-      description: seo?.opengraphDescription,
-      siteName: seo?.opengraphSiteName,
-      url: seo?.opengraphUrl,
-      type: seo?.opengraphType,
-      publishedTime: seo?.opengraphPublishedTime,
-      authors: [seo?.opengraphAuthor],
-      images: [
-        seo?.opengraphImage?.sourceUrl ||
-          "https://yoast.com/app/uploads/2013/02/Yoast_Logo_Large_RGB-250x115.png",
-      ],
-      locale: "en-US",
-    },
-    viewport: {
-      width: "device-width",
-      initialScale: 1,
-      maximumScale: 5,
-    },
-    twitter: {
-      card: seo?.twitterImage?.sourceUrl,
-      title: seo?.twitterTitle,
-      description: seo?.twitterDescription,
-      images: [
-        seo?.twitterImage?.sourceUrl ||
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Twitter-logo.svg/2491px-Twitter-logo.svg.png",
-      ],
-    },
-  };
-};

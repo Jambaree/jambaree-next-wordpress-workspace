@@ -1,3 +1,4 @@
+import { toCamel } from "./utils/toCamel";
 import log from "./utils/log";
 
 type GetTemplateArgs = {
@@ -87,15 +88,5 @@ export default async function getTemplate({
 
   return template;
 }
-
-const toCamel = (string) => {
-  if (!string) {
-    return null;
-  }
-  string = string.replace(/[-_\s.]+(.)?/g, (_, c) =>
-    c ? c.toUpperCase() : ""
-  );
-  return string.substr(0, 1).toLowerCase() + string.substr(1);
-};
 
 export { getTemplate };
