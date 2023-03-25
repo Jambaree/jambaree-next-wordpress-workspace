@@ -1,12 +1,14 @@
+import { getSeparator } from "./yoast/separators";
 import type { Metadata } from "next";
 import { gql, request } from "graphql-request";
 
 import getSeedData from "./getSeedData";
 import toCamel from "./utils/toCamel";
+import type { Seperator } from "./yoast/separators";
 
 export async function generateMetadata({
   params,
-  searchParams,
+  // searchParams,
   graphqlUrl = process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
 }): Promise<Metadata> {
   if (!graphqlUrl) {
@@ -196,5 +198,44 @@ export async function generateMetadata({
         maximumScale: 5,
       },
     } as Metadata;
+  }
+
+  if (seedData?.isTermNode) {
+    const res: {
+      generalSettings: {
+        title: string;
+      };
+      seo: {
+        meta: {
+          config: {
+            separator: Seperator["value"];
+          };
+        };
+      };
+    } = await request({
+      url: graphqlUrl,
+      document: gql`
+        {
+          generalSettings {
+            title
+          }
+          seo {
+            meta {
+              config {
+                separator
+              }
+            }
+          }
+        }
+      `,
+    });
+
+    const seperator = getSeparator(
+      res?.seo?.meta?.config?.separator || "sc-dash"
+    );
+
+    return {
+      title: `${seedData?.name} ${seperator} ${res?.generalSettings?.title}`,
+    };
   }
 }
