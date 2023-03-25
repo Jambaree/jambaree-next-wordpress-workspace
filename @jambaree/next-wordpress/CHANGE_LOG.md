@@ -85,3 +85,7 @@
 
 - fixed issue with getTemplate not resolving correctly in preview causing 404 (error introduced in 0.4.3)
 - breaking change for getMenuItems -> provide id and idType instead of just name (easy fix now is just change it from name to id, the idType will default to NAME.) This allows more flexibility for querying by location, id, name, slug, etc.
+
+  0.4.6
+
+- add some yoast meta for archives and taxonomy term nodes
