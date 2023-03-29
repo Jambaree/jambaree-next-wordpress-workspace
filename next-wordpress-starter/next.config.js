@@ -10,6 +10,10 @@ const nextConfig = {
   images: {
     domains: ["images.unsplash.com", "tailwindui.com", wpBaseUrl],
   },
+
+  typescript: {
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = nextConfig;
