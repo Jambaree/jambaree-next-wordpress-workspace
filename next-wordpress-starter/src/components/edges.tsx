@@ -9,7 +9,7 @@ export default function Edges({
   component?: React.ElementType;
   children?: React.ReactNode;
   className?: string;
-  [key: string]: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  [key: string]: any;
 }) {
   return (
     <Component
