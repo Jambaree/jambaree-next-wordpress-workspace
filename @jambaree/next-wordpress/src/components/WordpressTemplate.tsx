@@ -10,7 +10,7 @@ export default async function WordpressTemplate(props: {
 }) {
   const { params, templates, searchParams } = props;
   const uri = params?.paths?.join?.("/") || "/";
-  const isPreview = uri === "preview";
+  const isPreview = !!searchParams?.revision_id;
 
   const seedData = await getSeedData({ uri, isPreview, searchParams });
   if (!seedData) {
