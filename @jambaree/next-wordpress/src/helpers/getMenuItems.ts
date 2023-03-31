@@ -69,11 +69,13 @@ export const getMenuItems = async ({
                   id
                   label
                   url
+                  path
                   childItems {
                     nodes {
                       id
                       label
                       url
+                      path
                     }
                   }
                 }
