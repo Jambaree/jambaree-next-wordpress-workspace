@@ -21,11 +21,21 @@ export async function generateStaticParams({
         uri: string;
       }[];
     };
+    contentTypes: {
+      nodes: {
+        uri: string;
+      }[];
+    };
   } = await request({
     url: graphqlUrl,
     document: gql`
       query ContentNodesQuery {
         contentNodes(first: 99) {
+          nodes {
+            uri
+          }
+        }
+        contentTypes {
           nodes {
             uri
           }
@@ -39,8 +49,11 @@ export async function generateStaticParams({
   //todo: also query for content types
 
   const nodes = res?.contentNodes?.nodes;
+  const types = res?.contentTypes?.nodes;
 
-  return nodes.map((node) => {
+  const allNodes = [...nodes, ...types];
+
+  return allNodes.map((node) => {
     if (node.uri === null) {
       return;
     }
