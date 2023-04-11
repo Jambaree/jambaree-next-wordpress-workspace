@@ -89,3 +89,10 @@
   0.4.6
 
 - add some yoast meta for archives and taxonomy term nodes
+
+  0.4.9
+
+- Updated generateStaticParams to query first: 99 instead of 10
+- Pass uri into template to handle null uri bug with wordpress archive pages.
+- Regarding null uri bug -> naming convention for post archive page will be whatever the page uri is
+  Example: archive/post.tsx is now -> archive/blog.tsx (this is temporary until they fix null uri on blog archvies)
