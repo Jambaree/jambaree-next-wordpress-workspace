@@ -25,7 +25,7 @@ export async function generateStaticParams({
     url: graphqlUrl,
     document: gql`
       query ContentNodesQuery {
-        contentNodes {
+        contentNodes(first: 99) {
           nodes {
             uri
           }
@@ -41,6 +41,10 @@ export async function generateStaticParams({
   const nodes = res?.contentNodes?.nodes;
 
   return nodes.map((node) => {
+    if (node.uri === null) {
+      return;
+    }
+
     const pathBreadcrumbs = node.uri.split("/").slice(1);
 
     const paths = [...(pathBreadcrumbs || "/")];
