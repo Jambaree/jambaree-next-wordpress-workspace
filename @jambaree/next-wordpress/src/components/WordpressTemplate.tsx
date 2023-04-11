@@ -18,6 +18,7 @@ export default async function WordpressTemplate(props: {
   }
 
   const PageTemplate = await getTemplate({
+    uri,
     seedData,
     templates,
   });

@@ -1,6 +1,6 @@
 import DefaultPageTemplate from "./page/default";
 import DefaultPostTemplate from "./post/default";
-import PostArchive from "./archive/post";
+import PostArchive from "./archive/blog";
 import CategoryTaxonomyTemplate from "./taxonomy/category";
 import TagTaxonomyTemplate from "./taxonomy/tag";
 import DefaultMovieTemplate from "./movie/default";
@@ -17,7 +17,7 @@ const templates = {
     default: DefaultPostTemplate,
   },
   archive: {
-    post: PostArchive,
+    blog: PostArchive,
     movie: MovieArchive,
   },
   taxonomy: {
