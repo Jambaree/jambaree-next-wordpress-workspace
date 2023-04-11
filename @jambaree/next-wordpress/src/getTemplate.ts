@@ -2,6 +2,7 @@ import { toCamel } from "./utils/toCamel";
 import log from "./utils/log";
 
 type GetTemplateArgs = {
+  uri: string;
   seedData: {
     name: string;
     __typename: string;
@@ -29,13 +30,18 @@ type GetTemplateArgs = {
 };
 
 export default async function getTemplate({
+  uri,
   seedData,
   templates,
 }: GetTemplateArgs) {
   const isArchive = seedData?.__typename === "ContentType";
 
   if (isArchive) {
-    const templateName = toCamel(seedData?.graphqlSingleName);
+    // check if seedData?.uri exists, if not use uri instead
+    const templateName = toCamel(
+      seedData?.uri ? seedData?.graphqlSingleName : uri
+    );
+
     const template = templates?.archive?.[templateName];
 
     if (!template) {
