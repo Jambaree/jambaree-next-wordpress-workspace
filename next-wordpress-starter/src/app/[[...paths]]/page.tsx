@@ -8,7 +8,6 @@ export default async function PageTemplate(props: {
 }) {
   return (
     <>
-    
       {/* @ts-expect-error Async Server Component */}
       <WordpressTemplate
         templates={templates}
