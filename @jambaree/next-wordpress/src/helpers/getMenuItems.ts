@@ -55,7 +55,7 @@ export const getMenuItems = async ({
         menu(id: $id, idType: $idType) {
           id
           slug
-          locations
+
           menuItems {
             nodes {
               path
