@@ -79,8 +79,12 @@ export async function generateMetadata({
     const seo = res?.contentNode?.seo;
 
     return {
+      metadataBase: new URL(
+        process.env.NEXT_PUBLIC_WP_URL || "http://localhost"
+      ),
       title: seo?.title,
       description: seo?.metaDesc,
+
       openGraph: {
         title: seo?.opengraphTitle,
         description: seo?.opengraphDescription,
@@ -181,6 +185,9 @@ export async function generateMetadata({
     }
 
     return {
+      metadataBase: new URL(
+        process.env.NEXT_PUBLIC_WP_URL || "http://localhost"
+      ),
       title: archiveTitle,
       description: seo?.archive?.metaDesc,
       openGraph: {
