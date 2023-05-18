@@ -100,3 +100,8 @@
   0.5.0
 
 - added support for contentTypes in generateStaticParams
+
+  0.5.1
+
+- added metadataBase to seo
+- removed "location" from menuitems query
