@@ -11,8 +11,8 @@ export default async function PageTemplate(props: {
       {/* @ts-expect-error Async Server Component */}
       <WordpressTemplate
         templates={templates}
-        params={props.params}
-        searchParams={props.searchParams}
+        params={props?.params}
+        searchParams={props?.searchParams}
       />
     </>
   );

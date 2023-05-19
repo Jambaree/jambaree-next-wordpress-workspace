@@ -1,6 +1,6 @@
 import React from "react";
 
-function Loading(props) {
+function Loading() {
   return <div></div>;
 }
 

@@ -2,12 +2,14 @@ import { gql, request } from "graphql-request";
 
 export async function generateStaticParams({
   graphqlUrl = process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
+  siteMap = false,
 }: {
   /**
    * The URL of the GraphQL endpoint.
    * @default process.env.NEXT_PUBLIC_WPGRAPHQL_URL
    */
   graphqlUrl?: string;
+  siteMap?: boolean;
 }) {
   if (!graphqlUrl) {
     throw new Error(
@@ -54,6 +56,9 @@ export async function generateStaticParams({
   return allNodes.map((node) => {
     if (node.uri === null) {
       return;
+    }
+    if (siteMap) {
+      return node.uri;
     }
 
     const pathBreadcrumbs = node.uri.split("/").slice(1);
