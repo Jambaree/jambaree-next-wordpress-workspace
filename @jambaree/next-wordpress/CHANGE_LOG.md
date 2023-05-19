@@ -109,3 +109,7 @@
   0.5.3
 
 - added generateSiteMap and attempting to give searchParams error
+
+  0.5.4
+
+  - Fix issue where home page "/" was not being statically generated properly
