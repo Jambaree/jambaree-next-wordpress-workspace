@@ -9,11 +9,12 @@ export default async function handler(
     method,
   } = req;
 
-  if (
-    req.headers.authorization !== `Bearer ${process.env.REVALIDATE_SECRET_KEY}`
-  ) {
-    return res.status(401).json({ message: "Invalid token" });
-  }
+  console.log(req.body);
+  // if (
+  //   req.headers.authorization !== `Bearer ${process.env.REVALIDATE_SECRET_KEY}`
+  // ) {
+  //   return res.status(401).json({ message: "Invalid token" });
+  // }
 
   if (method !== "PUT") {
     return res.status(405).json({ message: `Method ${method} Not Allowed` });
