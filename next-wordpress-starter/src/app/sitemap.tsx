@@ -5,7 +5,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const paths = await generateSiteMap();
 
   return paths?.map((path) => ({
-    url: process.env.NEXT_SITE_URL || "http://localhost:3000" + path,
+    url: `${process.env.NEXT_SITE_URL}` + `${path}`,
     lastModified: new Date(),
   }));
 }

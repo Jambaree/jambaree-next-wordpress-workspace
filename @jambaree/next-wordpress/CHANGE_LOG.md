@@ -105,3 +105,7 @@
 
 - added metadataBase to seo
 - removed "location" from menuitems query
+
+  0.5.3
+
+- added generateSiteMap and attempting to give searchParams error
