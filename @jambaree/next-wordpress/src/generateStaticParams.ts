@@ -62,12 +62,10 @@ export async function generateStaticParams({
     }
 
     const pathBreadcrumbs =
-      node.uri != "/" ? node.uri.split("/").slice(1) : ["/"];
+      node.uri != "/" ? node.uri.split("/").slice(1) : ["/", ""];
 
     const paths = [...(pathBreadcrumbs || "/")];
-    // add the home page "/" to the paths array
 
-    console.log(paths);
     return {
       paths,
     };
