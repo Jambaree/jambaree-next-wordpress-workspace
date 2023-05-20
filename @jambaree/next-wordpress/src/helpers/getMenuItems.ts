@@ -33,6 +33,20 @@ type Menu = {
               id: string;
               label: string;
               url: string;
+              childItems: {
+                nodes: {
+                  id: string;
+                  label: string;
+                  url: string;
+                  childItems: {
+                    nodes: {
+                      id: string;
+                      label: string;
+                      url: string;
+                    }[];
+                  };
+                }[];
+              };
             }[];
           };
         }[];
@@ -76,6 +90,22 @@ export const getMenuItems = async ({
                       label
                       url
                       path
+                      childItems {
+                        nodes {
+                          id
+                          label
+                          url
+                          path
+                          childItems {
+                            nodes {
+                              id
+                              label
+                              url
+                              path
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }

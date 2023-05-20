@@ -70,7 +70,6 @@ export default async function Footer() {
   const footerMenuItems = await getMenuItems({
     id: "footer-menu",
     idType: "NAME",
-    nestedChildItems: 2,
   });
 
   return (
