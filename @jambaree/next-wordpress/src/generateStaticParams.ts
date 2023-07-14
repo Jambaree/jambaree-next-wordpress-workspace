@@ -32,12 +32,12 @@ export async function generateStaticParams({
     url: graphqlUrl,
     document: gql`
       query ContentNodesQuery {
-        contentNodes(first: 99) {
+        contentNodes(first: 1000) {
           nodes {
             uri
           }
         }
-        contentTypes(first: 99) {
+        contentTypes(first: 1000) {
           nodes {
             uri
           }
