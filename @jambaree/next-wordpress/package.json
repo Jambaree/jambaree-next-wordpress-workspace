@@ -1,6 +1,6 @@
 {
   "name": "@jambaree/next-wordpress",
-  "version": "1.0.1",
+  "version": "1.0.7",
   "scripts": {
     "build": "tsc"
   },
