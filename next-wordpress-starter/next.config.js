@@ -3,12 +3,21 @@
 const wpBaseUrl = process.env.NEXT_PUBLIC_WP_URL?.replace("https://", "");
 
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
-
   images: {
-    domains: ["images.unsplash.com", "tailwindui.com", wpBaseUrl],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: wpBaseUrl,
+      },
+      {
+        protocol: "https",
+        hostname: "images.unsplash.com",
+      },
+      {
+        protocol: "https",
+        hostname: "tailwindui.com",
+      },
+    ],
   },
 
   typescript: {
