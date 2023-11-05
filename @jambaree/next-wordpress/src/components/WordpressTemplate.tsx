@@ -23,6 +23,7 @@ export default async function WordpressTemplate(props: {
     <div className="prose">
       {/* <pre>
         <code>{JSON.stringify({ postTypes }, null, 2)}</code>
+      </pre> */}
 
       <pre>
         <code>{JSON.stringify({ pageData: data }, null, 2)}</code>
