@@ -17,7 +17,6 @@ export function Hero({ headline, subline, links, image }) {
               </span>
             )}
           </h1>
-          <Link href="/movie/batman">batman</Link>
 
           {subline && (
             <p className="mx-auto mt-3 max-w-md text-lg text-gray-500 sm:text-xl md:mt-5 md:max-w-3xl">
