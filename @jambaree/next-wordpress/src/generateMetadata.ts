@@ -199,11 +199,11 @@ export async function generateMetadata({
           : undefined,
         locale: "en-US",
       },
-      viewport: {
-        width: "device-width",
-        initialScale: 1,
-        maximumScale: 5,
-      },
+      // viewport: {
+      //   width: "device-width",
+      //   initialScale: 1,
+      //   maximumScale: 5,
+      // },
     } as Metadata;
   }
 

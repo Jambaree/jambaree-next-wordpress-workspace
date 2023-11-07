@@ -46,10 +46,10 @@ export function Hero({ headline, subline, links, image }) {
         {image && (
           <Image
             className="absolute inset-0 h-full w-full object-cover"
-            src={image.sourceUrl}
-            alt={image.altText}
-            width={image.mediaDetails.width}
-            height={image.mediaDetails.height}
+            src={image.url}
+            alt={image.alt || ""}
+            width={image.width}
+            height={image.height}
           />
         )}
       </div>

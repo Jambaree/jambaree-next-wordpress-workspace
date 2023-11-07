@@ -17,10 +17,15 @@ export const FlexibleContent = ({
   if (!!rows) {
     return rows
       .filter((o) => o !== null)
-      .map(({ __typename, ...rest }: any, index: number) => {
-        const type = __typename.split("_").slice(-1)[0];
+      .map(({ acf_fc_layout, ...rest }: any, index: number) => {
+        // capitalize each word and remove underscores
+        const type = acf_fc_layout
+          .replace(/_/g, " ")
+          .replace(/\w\S*/g, (txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+          });
 
-        const rowData = { __typename, type, ...rest };
+        const rowData = { type, ...rest };
 
         const Component = blocks?.[type];
 

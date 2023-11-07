@@ -1,10 +1,10 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import getSeedData from "../getSeedData";
+// import getSeedData from "../getSeedData";
 import getTemplate from "../getTemplate";
 import { getPageData } from "../api/get-page-data";
-import { getSiteSettings } from "../api/get-site-settings";
-import { getPostTypes } from "../api/get-post-types";
+// import { getSiteSettings } from "../api/get-site-settings";
+// import { getPostTypes } from "../api/get-post-types";
 
 export default async function WordpressTemplate(props: {
   params: { paths: string[] };
@@ -14,33 +14,18 @@ export default async function WordpressTemplate(props: {
   const { params, templates, searchParams } = props;
   const uri = params?.paths?.join?.("/") || "/";
 
-  // const siteSettings = await getSiteSettings();
-  const postTypes = await getPostTypes();
-  const data = await getPageData(uri);
-  // console.log({ postTypes });
+  const { data, archive } = await getPageData(uri);
 
-  return (
-    <div className="prose">
-      {/* <pre>
-        <code>{JSON.stringify({ postTypes }, null, 2)}</code>
-      </pre> */}
+  // if (!data) {
+  //   notFound();
+  // }
 
-      <pre>
-        <code>{JSON.stringify({ pageData: data }, null, 2)}</code>
-      </pre>
-    </div>
-  );
-
-  const isPreview = !!searchParams?.revision_id;
-
-  const seedData = await getSeedData({ uri, isPreview, searchParams });
-  if (!seedData) {
-    notFound();
-  }
+  // const isPreview = !!searchParams?.revision_id;
 
   const PageTemplate = await getTemplate({
     uri,
-    seedData,
+    data,
+    archive,
     templates,
   });
 
@@ -48,11 +33,20 @@ export default async function WordpressTemplate(props: {
     notFound();
   }
 
+  // return (
+  //   <div className="prose">
+  //     <pre>
+  //       <code>{JSON.stringify({ uri, archive, data }, null, 2)}</code>
+  //     </pre>
+  //   </div>
+  // );
+
   return (
     <PageTemplate
       uri={uri}
-      seedData={seedData}
-      isPreview={isPreview}
+      data={data}
+      archive={archive}
+      // isPreview={isPreview}
       {...props}
     />
   );
