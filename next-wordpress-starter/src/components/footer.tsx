@@ -1,4 +1,5 @@
-import { getMenuItems } from "@jambaree/next-wordpress";
+import { getMenuItems } from "@jambaree/next-wordpress/src/api/get-menu-items";
+import Link from "next/link";
 
 const navigation = {
   social: [
@@ -68,8 +69,7 @@ const navigation = {
 
 export default async function Footer() {
   const footerMenuItems = await getMenuItems({
-    id: "footer-menu",
-    idType: "NAME",
+    slug: "footer-menu",
   });
 
   return (
@@ -81,12 +81,12 @@ export default async function Footer() {
         >
           {footerMenuItems?.map((item, index) => (
             <div key={index} className="pb-6">
-              <a
+              <Link
                 href={item.path}
                 className="text-sm leading-6 text-gray-600 hover:text-gray-900"
               >
                 {item.label}
-              </a>
+              </Link>
             </div>
           ))}
         </nav>

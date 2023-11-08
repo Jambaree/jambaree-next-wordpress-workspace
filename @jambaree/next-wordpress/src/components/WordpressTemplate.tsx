@@ -16,9 +16,9 @@ export default async function WordpressTemplate(props: {
 
   const { data, archive } = await getPageData(uri);
 
-  // if (!data) {
-  //   notFound();
-  // }
+  if (!data) {
+    notFound();
+  }
 
   // const isPreview = !!searchParams?.revision_id;
 
