@@ -1,4 +1,4 @@
-import { FlexibleContent, getData } from "@jambaree/next-wordpress";
+import { FlexibleContent } from "@jambaree/next-wordpress";
 
 import * as blocks from "../../components/blocks";
 

@@ -1,73 +1,49 @@
-import { gql, request } from "graphql-request";
+import { getItems } from "../src/api/get-items";
+import { getPostTypes } from "./api/get-post-types";
 
 export async function generateStaticParams({
-  graphqlUrl = process.env.NEXT_PUBLIC_WPGRAPHQL_URL || "",
-  siteMap = false,
+  wpUrl = process.env.NEXT_PUBLIC_WP_URL || "",
+  includedPostTypes = ["page", "post"],
 }: {
   /**
    * The URL of the GraphQL endpoint.
-   * @default process.env.NEXT_PUBLIC_WPGRAPHQL_URL
+   * @default process.env.NEXT_PUBLIC_WP_URL
    */
-  graphqlUrl?: string;
-  siteMap?: boolean;
+  wpUrl?: string;
+  includedPostTypes?: string[];
 }) {
-  if (!graphqlUrl) {
+  if (!wpUrl) {
     throw new Error(
-      "generateStaticParams: No GraphQL URL provided. Please set `NEXT_PUBLIC_WPGRAPHQL_URL` environment variable or pass `graphqlUrl` to `generateStaticParams`."
+      "generateStaticParams: No wpUrl provided. Please set `NEXT_PUBLIC_WP_URL` environment variable or pass `wpUrl` to `generateStaticParams`."
     );
   }
 
-  const res: {
-    contentNodes: {
-      nodes: {
-        uri: string;
-      }[];
-    };
-    contentTypes: {
-      nodes: {
-        uri: string;
-      }[];
-    };
-  } = await request({
-    url: graphqlUrl,
-    document: gql`
-      query ContentNodesQuery {
-        contentNodes(first: 1000) {
-          nodes {
-            uri
-          }
-        }
-        contentTypes(first: 1000) {
-          nodes {
-            uri
-          }
-        }
+  const allItems: { paths: string[] }[] = [];
+  const postTypes = await getPostTypes();
+
+  for (const key in postTypes) {
+    if (!includedPostTypes.includes(postTypes?.[key]?.slug)) {
+      continue;
+    }
+
+    const postType = postTypes[key];
+    const result = await getItems({ restBase: postType.rest_base });
+
+    for (const item of result) {
+      if (item.path === "/") {
+        allItems.push({
+          paths: ["/"],
+        });
+        continue;
       }
-    `,
-  });
 
-  //todo: paginated queries to get more than 10 or 100 nodes (need to recursively get all until none left)
+      const pathBreadcrumbs = item.path.split("/").filter((x) => x);
 
-  const nodes = res?.contentNodes?.nodes;
-  const types = res?.contentTypes?.nodes;
-
-  const allNodes = [...nodes, ...types];
-
-  return allNodes.map((node) => {
-    if (node.uri === null) {
-      return;
+      allItems.push({
+        paths: [...(pathBreadcrumbs || "/")],
+      });
     }
-    if (siteMap) {
-      return node.uri;
-    }
+  }
 
-    const pathBreadcrumbs =
-      node.uri != "/" ? node.uri.split("/").slice(1) : ["/", ""];
-
-    const paths = [...(pathBreadcrumbs || "/")];
-
-    return {
-      paths,
-    };
-  });
+  return allItems;
 }

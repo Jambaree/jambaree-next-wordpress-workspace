@@ -87,10 +87,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-2.0.1.tgz"
   integrity sha512-dvuCeX5fC9dXgJn9t+X5atfmgQAzUOWqS1254Gh0m6i8wKd10ebXkfNKiRK+1GWi/yTvvLDHpoxLr0xxxeslWw==
 
-"@jambaree/next-wordpress@1.0.7":
-  version "1.0.7"
-  resolved "https://registry.npmjs.org/@jambaree/next-wordpress/-/next-wordpress-1.0.7.tgz"
-  integrity sha512-3argzSrXUDQHKYfcwsIt1dLmNrpcGHWxrNTFWQIV9eD2gzrZFnYjgIxa14Za//9dmPDHBID8cqj5pQwO6FDhTg==
+"@jambaree/next-wordpress@2.0.0-beta.3":
+  version "2.0.0-beta.3"
+  resolved "https://registry.npmjs.org/@jambaree/next-wordpress/-/next-wordpress-2.0.0-beta.3.tgz"
+  integrity sha512-mlXPLjYNt6n99fRN87ouQ7i1+tZb8V1f+5E+LrWhJ0s5BFs2GuL25D7icN55fabayAVefzkeglFHNzAFFzbJVA==
   dependencies:
     "@types/node" "^20.8.10"
     "@types/react" "^18.2.33"
@@ -104,7 +104,7 @@
     typescript "^5.2.2"
 
 "@jambaree/next-wordpress@file:/Users/caleb/jambaree-next-wordpress-workspace/@jambaree/next-wordpress":
-  version "2.0.0-beta.1"
+  version "2.0.0-beta.4"
   resolved "file:@jambaree/next-wordpress"
   dependencies:
     "@types/node" "^20.8.10"
@@ -150,10 +150,10 @@
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
-"@next/env@14.0.1":
-  version "14.0.1"
-  resolved "https://registry.npmjs.org/@next/env/-/env-14.0.1.tgz"
-  integrity sha512-Ms8ZswqY65/YfcjrlcIwMPD7Rg/dVjdLapMcSHG26W6O67EJDF435ShW4H4LXi1xKO1oRc97tLXUpx8jpLe86A==
+"@next/env@14.0.2":
+  version "14.0.2"
+  resolved "https://registry.npmjs.org/@next/env/-/env-14.0.2.tgz"
+  integrity sha512-HAW1sljizEaduEOes/m84oUqeIDAUYBR1CDwu2tobNlNDFP3cSm9d6QsOsGeNlIppU1p/p1+bWbYCbvwjFiceA==
 
 "@next/eslint-plugin-next@14.0.1":
   version "14.0.1"
@@ -162,10 +162,10 @@
   dependencies:
     glob "7.1.7"
 
-"@next/swc-darwin-arm64@14.0.1":
-  version "14.0.1"
-  resolved "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.0.1.tgz"
-  integrity sha512-JyxnGCS4qT67hdOKQ0CkgFTp+PXub5W1wsGvIq98TNbF3YEIN7iDekYhYsZzc8Ov0pWEsghQt+tANdidITCLaw==
+"@next/swc-darwin-arm64@14.0.2":
+  version "14.0.2"
+  resolved "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-14.0.2.tgz"
+  integrity sha512-i+jQY0fOb8L5gvGvojWyZMfQoQtDVB2kYe7fufOEiST6sicvzI2W5/EXo4lX5bLUjapHKe+nFxuVv7BA+Pd7LQ==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
@@ -1769,12 +1769,12 @@ natural-compare@^1.4.0:
   integrity sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==
 
 "next-wordpress-starter@file:/Users/caleb/jambaree-next-wordpress-workspace/next-wordpress-starter":
-  version "0.1.0"
+  version "1.0.0"
   resolved "file:next-wordpress-starter"
   dependencies:
     "@headlessui/react" "^1.7.17"
     "@heroicons/react" "^2.0.18"
-    "@jambaree/next-wordpress" "1.0.7"
+    "@jambaree/next-wordpress" "2.0.0-beta.3"
     "@types/node" "^20.8.10"
     clsx "^2.0.0"
     eslint "^8.52.0"
@@ -1786,11 +1786,11 @@ natural-compare@^1.4.0:
     react-dom "^18.2.0"
 
 next@latest:
-  version "14.0.1"
-  resolved "https://registry.npmjs.org/next/-/next-14.0.1.tgz"
-  integrity sha512-s4YaLpE4b0gmb3ggtmpmV+wt+lPRuGtANzojMQ2+gmBpgX9w5fTbjsy6dXByBuENsdCX5pukZH/GxdFgO62+pA==
+  version "14.0.2"
+  resolved "https://registry.npmjs.org/next/-/next-14.0.2.tgz"
+  integrity sha512-jsAU2CkYS40GaQYOiLl9m93RTv2DA/tTJ0NRlmZIBIL87YwQ/xR8k796z7IqgM3jydI8G25dXvyYMC9VDIevIg==
   dependencies:
-    "@next/env" "14.0.1"
+    "@next/env" "14.0.2"
     "@swc/helpers" "0.5.2"
     busboy "1.6.0"
     caniuse-lite "^1.0.30001406"
@@ -1798,15 +1798,15 @@ next@latest:
     styled-jsx "5.1.1"
     watchpack "2.4.0"
   optionalDependencies:
-    "@next/swc-darwin-arm64" "14.0.1"
-    "@next/swc-darwin-x64" "14.0.1"
-    "@next/swc-linux-arm64-gnu" "14.0.1"
-    "@next/swc-linux-arm64-musl" "14.0.1"
-    "@next/swc-linux-x64-gnu" "14.0.1"
-    "@next/swc-linux-x64-musl" "14.0.1"
-    "@next/swc-win32-arm64-msvc" "14.0.1"
-    "@next/swc-win32-ia32-msvc" "14.0.1"
-    "@next/swc-win32-x64-msvc" "14.0.1"
+    "@next/swc-darwin-arm64" "14.0.2"
+    "@next/swc-darwin-x64" "14.0.2"
+    "@next/swc-linux-arm64-gnu" "14.0.2"
+    "@next/swc-linux-arm64-musl" "14.0.2"
+    "@next/swc-linux-x64-gnu" "14.0.2"
+    "@next/swc-linux-x64-musl" "14.0.2"
+    "@next/swc-win32-arm64-msvc" "14.0.2"
+    "@next/swc-win32-ia32-msvc" "14.0.2"
+    "@next/swc-win32-x64-msvc" "14.0.2"
 
 node-fetch@^2.6.12:
   version "2.7.0"
