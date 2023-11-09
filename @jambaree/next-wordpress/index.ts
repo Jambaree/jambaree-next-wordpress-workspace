@@ -6,5 +6,5 @@ export { generateSiteMap } from "./src/generateSiteMap";
 export { getData } from "./src/helpers/getData";
 export { getMenuItems } from "./src/helpers/getMenuItems";
 
-export { FlexibleContent } from "./src/components/flexibleContent";
-export { WordpressTemplate } from "./src/components/WordpressTemplate";
+export { FlexibleContent } from "./src/components/flexible-content";
+export { WordpressTemplate } from "./src/components/wordpress-template";
