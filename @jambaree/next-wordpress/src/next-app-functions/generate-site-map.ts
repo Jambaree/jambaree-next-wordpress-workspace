@@ -7,7 +7,7 @@ import { getAllItems } from "../api/get-all-items";
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
  */
 export async function generateSiteMap({
-  postTypes = ["pages", "post"],
+  postTypes = ["pages", "posts"],
 }): Promise<MetadataRoute.Sitemap> {
   const allItems = await getAllItems(postTypes);
 

@@ -1,5 +1,4 @@
-import { getItems } from "../api/get-items";
-import { getPostTypes } from "../api/get-post-types";
+import { getAllItems } from "../api/get-all-items";
 
 /**
  * The generateStaticParams function can be exported from your Next.js App's page.js and
@@ -8,7 +7,7 @@ import { getPostTypes } from "../api/get-post-types";
  */
 export async function generateStaticParams({
   wpUrl = process.env.NEXT_PUBLIC_WP_URL || "",
-  includedPostTypes = ["page", "post"],
+  postTypes = ["pages", "posts"],
 }: {
   /**
    * The URL of the GraphQL endpoint.
@@ -18,7 +17,7 @@ export async function generateStaticParams({
   /**
    * The post types to include in the static generation.
    */
-  includedPostTypes?: string[];
+  postTypes?: string[];
 }) {
   if (!wpUrl) {
     throw new Error(
@@ -26,32 +25,23 @@ export async function generateStaticParams({
     );
   }
 
-  const allItems: { paths: string[] }[] = [];
-  const postTypes = await getPostTypes();
+  const staticParams: { paths: string[] }[] = [];
+  const allItems = await getAllItems(postTypes);
 
-  for (const key in postTypes) {
-    if (!includedPostTypes.includes(postTypes?.[key]?.slug)) {
+  for (const item of allItems) {
+    if (item.path === "/") {
+      staticParams.push({
+        paths: ["/"],
+      });
       continue;
     }
 
-    const postType = postTypes[key];
-    const result = await getItems({ restBase: postType.rest_base });
+    const pathBreadcrumbs = item.path.split("/").filter((x) => x);
 
-    for (const item of result) {
-      if (item.path === "/") {
-        allItems.push({
-          paths: ["/"],
-        });
-        continue;
-      }
-
-      const pathBreadcrumbs = item.path.split("/").filter((x) => x);
-
-      allItems.push({
-        paths: [...(pathBreadcrumbs || "/")],
-      });
-    }
+    staticParams.push({
+      paths: [...(pathBreadcrumbs || "/")],
+    });
   }
 
-  return allItems;
+  return staticParams;
 }

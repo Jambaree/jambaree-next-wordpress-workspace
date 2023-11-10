@@ -1,10 +1,7 @@
 import React from "react";
 import { notFound } from "next/navigation";
-// import getSeedData from "../getSeedData";
-import getTemplate from "../getTemplate";
+import getTemplate from "../utils/get-template";
 import { getPageData } from "../api/get-page-data";
-// import { getSiteSettings } from "../api/get-site-settings";
-// import { getPostTypes } from "../api/get-post-types";
 
 export default async function WordpressTemplate(props: {
   params: { paths: string[] };
@@ -32,14 +29,6 @@ export default async function WordpressTemplate(props: {
   if (!PageTemplate) {
     notFound();
   }
-
-  // return (
-  //   <div className="prose">
-  //     <pre>
-  //       <code>{JSON.stringify({ uri, archive, data }, null, 2)}</code>
-  //     </pre>
-  //   </div>
-  // );
 
   return (
     <PageTemplate

@@ -1,5 +1,4 @@
-// import { toCamel } from "./utils/toCamel";
-import log from "./utils/log";
+import log from "./log";
 
 type GetTemplateArgs = {
   uri: string;
@@ -8,15 +7,15 @@ type GetTemplateArgs = {
   templates: any;
 };
 
+/**
+ * Get the template for a given uri
+ */
 export default async function getTemplate({
   uri,
   data,
   archive,
   templates,
 }: GetTemplateArgs) {
-  // console.log("getTemplate");
-  // console.log({ uri, archive, data });
-
   if (archive?.slug) {
     const template = templates?.archive?.[archive.slug];
     if (!template) {
