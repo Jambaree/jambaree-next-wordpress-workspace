@@ -15,7 +15,4 @@ export default async function PageRoute(props: {
   );
 }
 
-export {
-  generateStaticParams,
-  // generateMetadata,
-} from "@jambaree/next-wordpress";
+export { generateMetadata } from "@jambaree/next-wordpress";
