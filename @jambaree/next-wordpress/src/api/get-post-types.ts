@@ -10,6 +10,9 @@ export type PostType = {
   rest_base: string;
 };
 
+/**
+ * Get all post types from the WordPress REST API.
+ */
 export async function getPostTypes(): Promise<{
   post: PostType;
   page: PostType;
@@ -24,7 +27,10 @@ export async function getPostTypes(): Promise<{
     `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/types`
   );
 
-  const data = await req.json();
-
-  return data;
+  try {
+    const data = await req.json();
+    return data;
+  } catch (err) {
+    throw new Error(`getPostTypes: Error fetching post types: ${err.message}`);
+  }
 }

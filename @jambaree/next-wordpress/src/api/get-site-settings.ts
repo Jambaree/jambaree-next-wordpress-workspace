@@ -10,7 +10,12 @@ export async function getSiteSettings() {
     }
   );
 
-  const data = await req.json();
-
-  return data;
+  try {
+    const data = await req.json();
+    return data;
+  } catch (err) {
+    throw new Error(
+      `getSiteSettings: Error fetching site settings: ${err.message}`
+    );
+  }
 }

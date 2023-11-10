@@ -14,15 +14,20 @@ export async function getMenuItems({ slug }: { slug: string }): Promise<
     url: string;
   }[]
 > {
+  // get menu by slug
   const menu = await fetch(
     `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/menus?slug=${slug}`,
     args
   ).then(async (res) => {
-    const json = await res.json();
-
-    return json?.[0];
+    try {
+      const json = await res.json();
+      return json?.[0];
+    } catch (err) {
+      throw new Error(`Error fetching menu with slug ${slug}: ${err.message}`);
+    }
   });
 
+  // get menu items by menu id
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/menu-items?menus=${menu.id}`,
     args
@@ -32,7 +37,9 @@ export async function getMenuItems({ slug }: { slug: string }): Promise<
   try {
     data = await req.json();
   } catch (err) {
-    throw new Error(`Error fetching menu items: ${err.message}`);
+    throw new Error(
+      `Error fetching menu items for menu id ${menu.id}: ${err.message}`
+    );
   }
 
   const flatMenu = data?.map?.((menuItem) => {
@@ -46,6 +53,9 @@ export async function getMenuItems({ slug }: { slug: string }): Promise<
   return structureMenuItems(flatMenu);
 }
 
+/**
+ * Structure menu items into a tree with childItems instead of a single shallow array that the REST API returns.
+ */
 function structureMenuItems(menuItems) {
   // Create a map for easy lookup of child items
   const itemsById = new Map(

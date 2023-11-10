@@ -1,6 +1,16 @@
 import { PostType, getPostTypes } from "./get-post-types";
 import { getSiteSettings } from "./get-site-settings";
 // import { getTaxonomies } from "./get-taxonomies";
+
+/**
+ * Get data for a specific page from a WordPress REST API endpoint based on the URI
+ * @param {string} uri - The URI of the page to fetch
+ * @returns {Promise} - A promise that resolves to an object containing the data for the page
+ * @example
+ * ```
+ * const pageData = await getPageData("/about");
+ * ```
+ */
 export async function getPageData(uri: string) {
   const paths = uri?.split("/");
   const postTypes = await getPostTypes();

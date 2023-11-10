@@ -19,6 +19,11 @@ export async function getTaxonomies(): Promise<{
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/taxonomies`
   );
-  const data = await req.json();
-  return data;
+
+  try {
+    const data = await req.json();
+    return data;
+  } catch (err) {
+    throw new Error(`getTaxonomies: Error fetching taxonomies: ${err.message}`);
+  }
 }

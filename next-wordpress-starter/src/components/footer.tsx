@@ -1,4 +1,4 @@
-import { getMenuItems } from "@jambaree/next-wordpress/src/api/get-menu-items";
+import { getMenuItems } from "@jambaree/next-wordpress";
 import Link from "next/link";
 
 const navigation = {

@@ -1,7 +1,13 @@
 import type { Metadata } from "next";
-import { getSiteSettings } from "./api/get-site-settings";
-import { getPageData } from "./api/get-page-data";
-
+import { getSiteSettings } from "../api/get-site-settings";
+import { getPageData } from "../api/get-page-data";
+import { swapWpUrl } from "../utils/swap-wp-url";
+/**
+ * The generateMetadata function can be exported from your Next.js page.js and used to generate metadata for your page.
+ * This function uses the yoast_head_json field from the WordPress REST API to generate the metadata.
+ * The WordPress plugin YoastSEO is required for this to work.
+ * @see https://nextjs.org/docs/app/api-reference/functions/generate-metadata
+ */
 export async function generateMetadata({
   params,
   // searchParams,
@@ -41,12 +47,3 @@ export async function generateMetadata({
     },
   } as Metadata;
 }
-
-const swapWpUrl = (url: string) => {
-  const newUrl = url?.replace?.(
-    process.env.NEXT_PUBLIC_WP_URL as string,
-    process.env.NEXT_SITE_URL as string
-  );
-
-  return newUrl;
-};

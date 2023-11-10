@@ -1,5 +1,4 @@
 import { WordpressTemplate } from "@jambaree/next-wordpress";
-
 import templates from "@/templates";
 
 export default async function PageRoute(props: {
@@ -15,4 +14,7 @@ export default async function PageRoute(props: {
   );
 }
 
-export { generateMetadata } from "@jambaree/next-wordpress";
+export {
+  generateMetadata,
+  generateStaticParams,
+} from "@jambaree/next-wordpress";
