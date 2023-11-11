@@ -1,5 +1,6 @@
 import { PostType, getPostTypes } from "./get-post-types";
 import { getSiteSettings } from "./get-site-settings";
+import { draftMode } from "next/headers";
 // import { getTaxonomies } from "./get-taxonomies";
 
 /**
@@ -12,6 +13,8 @@ import { getSiteSettings } from "./get-site-settings";
  * ```
  */
 export async function getPageData(uri: string) {
+  const preview = draftMode();
+
   const paths = uri?.split("/");
   const postTypes = await getPostTypes();
   // const taxonomies = await getTaxonomies();
@@ -28,6 +31,16 @@ export async function getPageData(uri: string) {
     );
 
     const data = await req.json();
+
+    if (preview.isEnabled) {
+      const previewData = await getPreviewData({
+        id: data?.id,
+        postTypeRestBase,
+      });
+
+      return { data, previewData };
+    }
+
     return { data };
   }
 
@@ -41,28 +54,6 @@ export async function getPageData(uri: string) {
       archive = postTypes[key];
     }
   }
-
-  // // check if uri matches a taxonomy
-  // for (const key in taxonomies) {
-  //   if (taxonomies[key]?.slug === paths[1]) {
-  //     taxonomy = taxonomies[key];
-  //   }
-  // }
-  // if (paths[0] === "tag") {
-  //   taxonomy = taxonomies.post_tag;
-  // }
-
-  // if (taxonomy) {
-  //   // todo: handle taxonomy pages
-  //   // const req = await fetch(
-  //   //   `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${taxonomy.rest_base}?slug=${paths.slice(
-  //   //     -1
-  //   //   )}&acf_format=standard`
-  //   // );
-  //   // const data = await req.json();
-  //   // return { data, taxonomy };
-  //   return null;
-  // }
 
   // handle fetching archive pages
   if (archive) {
@@ -83,9 +74,34 @@ export async function getPageData(uri: string) {
   );
 
   const data = await req.json();
+
+  if (preview.isEnabled) {
+    const previewData = await getPreviewData({
+      id: data?.[0]?.id,
+      postTypeRestBase,
+    });
+
+    return { data: data?.[0], previewData };
+  }
+
   // todo: handle nested pages by checking length of data,
   // todo: if there is length > 1 we need to narrow down our selection to single page that has a parent if its a nested page,
   // todo: if its not nested then we get the one with no parent id
 
   return { data: data?.[0] };
 }
+
+const getPreviewData = async ({ id, postTypeRestBase }) => {
+  const req = await fetch(
+    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/autosaves?acf_format=standard`,
+    {
+      headers: {
+        Authorization: `Basic ${btoa(
+          process.env.WP_APPLICATION_PASSWORD as string
+        )}`,
+      },
+    }
+  );
+  const autosaves = await req.json();
+  return autosaves?.[0];
+};

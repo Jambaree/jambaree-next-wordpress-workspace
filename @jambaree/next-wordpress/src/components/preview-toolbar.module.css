@@ -1,0 +1,48 @@
+.previewToolbar {
+  position: fixed;
+  left: 0;
+  top: 50%;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 5px;
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
+  border-radius: 0 10px 10px 0;
+}
+
+.tooltip {
+  border-radius: 10px;
+  padding: 10px;
+  position: relative;
+  text-align: center;
+}
+
+.tooltip:hover {
+  background-color: #ddd;
+}
+
+.tooltip:hover::after {
+  display: block;
+}
+
+.tooltip::after {
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
+  background-color: #333;
+  border-radius: 10px;
+  color: #fff;
+  display: none;
+  padding: 10px 15px;
+  position: absolute;
+  text-align: center;
+  z-index: 999;
+  width: 150px;
+}
+
+.tooltip.right::after {
+  content: "Exit draft mode";
+  top: 0;
+  right: 0;
+  transform: translateX(calc(100% + 10px));
+}

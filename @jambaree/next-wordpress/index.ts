@@ -3,6 +3,8 @@ export { generateMetadata } from "./src/next-app-functions/generate-meta-data";
 export { generateStaticParams } from "./src/next-app-functions/generate-static-params";
 export { generateSiteMap } from "./src/next-app-functions/generate-site-map";
 
+// draft mode preview route handler
+export { NextWordPressPreview } from "./src/draft/draft-route-handler";
 // rest api functions
 export { getPageData } from "./src/api/get-page-data";
 export { getMenuItems } from "./src/api/get-menu-items";
