@@ -12,22 +12,22 @@
   border-radius: 0 10px 10px 0;
 }
 
-.tooltip {
+.preview-tooltip {
   border-radius: 10px;
   padding: 10px;
   position: relative;
   text-align: center;
 }
 
-.tooltip:hover {
+.preview-tooltip:hover {
   background-color: #ddd;
 }
 
-.tooltip:hover::after {
+.preview-tooltip:hover::after {
   display: block;
 }
 
-.tooltip::after {
+.preview-tooltip::after {
   box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
   background-color: #333;
   border-radius: 10px;
@@ -40,7 +40,7 @@
   width: 150px;
 }
 
-.tooltip.right::after {
+.preview-tooltip.right::after {
   content: "Exit draft mode";
   top: 0;
   right: 0;

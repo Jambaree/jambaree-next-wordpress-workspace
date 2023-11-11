@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import styles from "./preview-toolbar.module.css";
+
+import "./preview-toolbar.css";
 import { useSearchParams } from "next/navigation";
 
 export function PreviewToolbar({ uri }) {
@@ -13,11 +14,11 @@ export function PreviewToolbar({ uri }) {
   }
 
   return (
-    <div className={styles.previewToolbar}>
+    <div className={"previewToolbar"}>
       <Link
         prefetch={false}
         href={`/api/draft/disable-draft?uri=${uri}`}
-        className={`${styles.tooltip} ${styles.right}`}
+        className={`preview-tooltip right`}
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
