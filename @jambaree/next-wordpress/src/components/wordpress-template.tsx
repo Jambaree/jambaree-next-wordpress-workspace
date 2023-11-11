@@ -60,7 +60,9 @@ export default async function WordpressTemplate(props: {
         {...props}
       />
 
-      {preview.isEnabled && <PreviewToolbar uri={uri} />}
+      {preview.isEnabled && (
+        <PreviewToolbar uri={uri} searchParams={props.searchParams} />
+      )}
     </>
   );
 }

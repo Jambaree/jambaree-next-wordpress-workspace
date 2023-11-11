@@ -2,11 +2,9 @@ import React from "react";
 import Link from "next/link";
 
 import "./preview-toolbar.css";
-import { useSearchParams } from "next/navigation";
 
-export function PreviewToolbar({ uri }) {
-  const searchParams = useSearchParams();
-  const toolbar = searchParams.get("toolbar");
+export function PreviewToolbar({ uri, searchParams }) {
+  const { toolbar } = searchParams;
 
   if (toolbar === "false") {
     return null;
