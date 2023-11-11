@@ -1,5 +1,5 @@
 "use client";
-
+import React from "react";
 import Link from "next/link";
 
 import "./preview-toolbar.css";
@@ -14,7 +14,7 @@ export function PreviewToolbar({ uri }) {
   }
 
   return (
-    <div className={"previewToolbar"}>
+    <div className="previewToolbar">
       <Link
         prefetch={false}
         href={`/api/draft/disable-draft?uri=${uri}`}
