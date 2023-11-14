@@ -30,7 +30,12 @@ export async function getPageData(uri: string) {
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/pages/${settings.page_on_front}?acf_format=standard`
     );
 
-    const data = await req.json();
+    let data;
+    try {
+      data = await req.json();
+    } catch (err) {
+      throw new Error(`Error fetching front page: ${err.message}`);
+    }
 
     if (preview.isEnabled) {
       const previewData = await getPreviewData({
@@ -60,20 +65,29 @@ export async function getPageData(uri: string) {
     const req = await fetch(
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?acf_format=standard`
     );
-    const data = await req.json();
-    return { data, archive };
+    try {
+      const data = await req.json();
+      return { data, archive };
+    } catch (err) {
+      throw new Error(`Error fetching archive page: ${err.message}`);
+    }
   }
 
-  // handle regular pages
-  const req = await fetch(
-    `${
-      process.env.NEXT_PUBLIC_WP_URL
-    }/wp-json/wp/v2/${postTypeRestBase}?slug=${paths.slice(
-      -1
-    )}&acf_format=standard`
-  );
+  // handle single items
+  const endpoint = `${
+    process.env.NEXT_PUBLIC_WP_URL
+  }/wp-json/wp/v2/${postTypeRestBase}?slug=${paths.slice(
+    -1
+  )}&acf_format=standard`;
 
-  const data = await req.json();
+  const req = await fetch(endpoint);
+
+  let data;
+  try {
+    data = await req.json();
+  } catch (err) {
+    throw new Error(`Error fetching from ${endpoint}: ${err.message}`);
+  }
 
   if (preview.isEnabled) {
     const previewData = await getPreviewData({
@@ -84,24 +98,24 @@ export async function getPageData(uri: string) {
     return { data: data?.[0], previewData };
   }
 
-  // todo: handle nested pages by checking length of data,
-  // todo: if there is length > 1 we need to narrow down our selection to single page that has a parent if its a nested page,
-  // todo: if its not nested then we get the one with no parent id
-
   return { data: data?.[0] };
 }
 
 const getPreviewData = async ({ id, postTypeRestBase }) => {
-  const req = await fetch(
-    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/autosaves?acf_format=standard`,
-    {
-      headers: {
-        Authorization: `Basic ${btoa(
-          process.env.WP_APPLICATION_PASSWORD as string
-        )}`,
-      },
-    }
-  );
-  const autosaves = await req.json();
-  return autosaves?.[0];
+  const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/autosaves?acf_format=standard`;
+  const req = await fetch(endpoint, {
+    headers: {
+      Authorization: `Basic ${btoa(
+        process.env.WP_APPLICATION_PASSWORD as string
+      )}`,
+    },
+  });
+  try {
+    const autosaves = await req.json();
+    return autosaves?.[0];
+  } catch (err) {
+    throw new Error(
+      `Error fetching preview data for ${endpoint}: ${err.message}`
+    );
+  }
 };

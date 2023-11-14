@@ -55,7 +55,12 @@ export async function NextWordPressPreviewRouteHandler(
     const iframeToolbar = searchParams.get("toolbar");
 
     if (secret !== process.env.NEXT_PREVIEW_SECRET) {
-      return new Response("Invalid token", { status: 401 });
+      return new Response(
+        "Invalid preview token. Check 'NEXT_PREVIEW_SECRET' environment variable.",
+        {
+          status: 401,
+        }
+      );
     }
 
     if (!uri) {
