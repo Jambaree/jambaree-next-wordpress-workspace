@@ -15,7 +15,8 @@ export async function getMenuItems({ slug }: { slug: string }): Promise<
   }[]
 > {
   if (!process.env.WP_APPLICATION_PASSWORD) {
-    throw new Error(`'WP_APPLICATION_PASSWORD' environment variable is required for function 'getMenuItems'. 
+    throw new Error(`'WP_APPLICATION_PASSWORD' environment variable is required for function 'getMenuItems'.
+
 Check your ${
       process.env.NODE_ENV === "development"
         ? "local .env file"
@@ -29,9 +30,7 @@ ${
   process.env.NEXT_PUBLIC_WP_URL
     ? `See ${process.env.NEXT_PUBLIC_WP_URL}/wp-admin/profile.php#application-passwords-section`
     : ""
-}
-
-`);
+}`);
   }
 
   // get menu by slug

@@ -19,6 +19,25 @@ export async function generateMetadata({
     );
   }
 
+  if (!process.env.WP_APPLICATION_PASSWORD) {
+    throw new Error(`'WP_APPLICATION_PASSWORD' environment variable is required for function 'generateMetaData'.
+
+Check your ${
+      process.env.NODE_ENV === "development"
+        ? "local .env file"
+        : "deployment's environment variables."
+    }.
+
+You can generate an application password in your WordPress admin under Users > Your Profile > Application Passwords.
+Make sure the user has the required permissions to view site settings.
+
+${
+  process.env.NEXT_PUBLIC_WP_URL
+    ? `See ${process.env.NEXT_PUBLIC_WP_URL}/wp-admin/profile.php#application-passwords-section`
+    : ""
+}`);
+  }
+
   const uri = params?.paths?.join?.("/") || "/";
   const siteSettings = await getSiteSettings();
   const { data } = await getPageData(uri);

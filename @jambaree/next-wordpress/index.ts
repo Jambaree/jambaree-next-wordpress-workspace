@@ -5,9 +5,13 @@ export { generateSiteMap } from "./src/next-app-functions/generate-site-map";
 
 // draft mode preview route handler
 export { NextWordPressPreview } from "./src/draft/draft-route-handler";
+
 // rest api functions
 export { getPageData } from "./src/api/get-page-data";
 export { getMenuItems } from "./src/api/get-menu-items";
+
+// custom rest api functions implemented in jambaree-next-wp-plugin v2.1.0 (https://github.com/Jambaree/jambaree-next-wp-plugin)
+export { getOptionsPage } from "./src/api/get-options-page";
 
 // react components
 export { FlexibleContent } from "./src/components/flexible-content";
