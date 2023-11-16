@@ -17,7 +17,8 @@ export default async function getTemplate({
   templates,
 }: GetTemplateArgs) {
   if (archive?.slug) {
-    const template = templates?.archive?.[archive.slug];
+    const tmplName = removeFileExt(archive.slug);
+    const template = templates?.archive?.[tmplName];
     if (!template) {
       log(
         `Warn: Archive template "${archive.slug}" not found on uri '${uri}'. Did you forget to add it to the templates object in src/templates/index? `
@@ -27,7 +28,8 @@ export default async function getTemplate({
   }
 
   if (!archive) {
-    const template = templates?.[data.type]?.[data?.template || "default"];
+    const tmplName = removeFileExt(data?.template || "default");
+    const template = templates?.[data.type]?.[tmplName];
 
     if (!template) {
       log(
@@ -41,3 +43,9 @@ export default async function getTemplate({
 }
 
 export { getTemplate };
+
+function removeFileExt(filename: string) {
+  const dotIndex = filename.lastIndexOf(".");
+  if (dotIndex === -1) return filename;
+  return filename.substring(0, dotIndex);
+}
