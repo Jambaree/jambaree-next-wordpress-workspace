@@ -7,5 +7,3 @@ const previewOptions = {
 const previewHandler = NextWordPressPreview(previewOptions);
 
 export { previewHandler as GET };
-
-// export { NextWordPressPreview as GET } from "@jambaree/next-wordpress";

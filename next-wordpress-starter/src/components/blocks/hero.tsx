@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Button from "../button";
 
-export function Hero({ headline, subline, links, image }) {
+export async function Hero({ headline, subline, links, image }) {
   const [headline1, headline2] = headline ? chunkString(headline) : [];
 
   return (

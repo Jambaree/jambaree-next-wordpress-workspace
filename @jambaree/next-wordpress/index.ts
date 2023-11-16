@@ -2,6 +2,7 @@
 export { generateMetadata } from "./src/next-app-functions/generate-meta-data";
 export { generateStaticParams } from "./src/next-app-functions/generate-static-params";
 export { generateSiteMap } from "./src/next-app-functions/generate-site-map";
+export { revalidate } from "./src/next-app-functions/revalidate";
 
 // draft mode preview route handler
 export { NextWordPressPreview } from "./src/draft/draft-route-handler";

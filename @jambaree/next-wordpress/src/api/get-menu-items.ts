@@ -48,7 +48,7 @@ ${
 
   // get menu items by menu id
   const req = await fetch(
-    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/menu-items?menus=${menu.id}`,
+    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/menu-items?menus=${menu.id}&acf_format=standard`,
     args
   );
 
