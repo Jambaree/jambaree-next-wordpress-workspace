@@ -1,6 +1,8 @@
 # @jambaree/next-wordpress
 
-Welcome to `@jambaree/next-wordpress` v2. This package facilitates building Next.js sites using headless WordPress as the CMS. The shift from GraphQL to the WP REST API in this version significantly enhances performance and streamlines development.
+Welcome to `@jambaree/next-wordpress` v2. This package facilitates building Next.js sites using headless WordPress as the CMS.
+
+It is built on the WP REST API and has additional functions designed to work with the [Jambaree Headless WordPress plugin](https://github.com/Jambaree/jambaree-next-wp-plugin).
 
 ## Features
 
