@@ -49,6 +49,20 @@ export {
 } from "@jambaree/next-wordpress";
 ```
 
+## Configuration
+
+### Environment Variables
+
+The following environment variables are required for configuring `@jambaree/next-wordpress`:
+
+- `NEXT_PUBLIC_WP_URL`: The URL of your WordPress site.
+- `NEXT_SITE_URL`: The URL of your Next.js site.
+- `REVALIDATE_SECRET_KEY`: A secret key used for revalidation.
+- `WP_APPLICATION_PASSWORD`: The application password for authenticating with WordPress.
+- `NEXT_PREVIEW_SECRET`: The secret key for preview mode.
+
+Make sure to set these environment variables in your project's configuration.
+
 ## Usage
 
 ### Importing Templates file
