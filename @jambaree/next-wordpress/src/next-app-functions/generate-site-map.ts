@@ -5,6 +5,15 @@ import { getAllItems } from "../api/get-all-items";
  * used to generate a sitemap.xml file for your site.
  * This function uses the WordPress REST API to generate the sitemap.
  * @see https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
+ *
+ * Add your custom post types here, by rest_base
+ * @example generateSiteMap({postTypes: ["pages", "posts", "custom-post-type"])
+ * This would be the same as the rest_base in the WordPress API
+ * https://example.com/wp-json/wp/v2/pages
+ * https://example.com/wp-json/wp/v2/posts
+ * https://example.com/wp-json/wp/v2/custom-post-type
+ *
+ * @see https://developer.wordpress.org/rest-api/reference/
  */
 export async function generateSiteMap({
   postTypes = ["pages", "posts"],
