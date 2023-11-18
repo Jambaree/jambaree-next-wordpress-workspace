@@ -100,25 +100,6 @@ export default function DefaultPageTemplate({ data }) {
 }
 ```
 
-# API Reference
-
-This document provides detailed information about the functions and components available in the `@jambaree/next-wordpress` package.
-
-## Next.js App Functions
-
-### `generateMetadata`
-
-Generates metadata for a page using the `yoast_head_json` field from the WordPress REST API.
-
-- **Parameters**:
-  - `params`: Object - Contains routing parameters.
-  - `wpUrl`: String - The WordPress URL (optional, default is `NEXT_PUBLIC_WP_URL` env variable).
-- **Returns**: Promise\<Metadata\>
-- **Usage**:
-  ```typescript
-  const metadata = await generateMetadata({ params });
-  ```
-
 ## API Reference
 
 This document provides detailed information about the functions and components available in the `@jambaree/next-wordpress` package.
@@ -129,15 +110,24 @@ This document provides detailed information about the functions and components a
 
 Generates static routes for a Next.js site based on WordPress REST API results.
 
+See https://nextjs.org/docs/app/api-reference/functions/generate-static-params for more information.
+
 - **Parameters**:
   - `wpUrl`: `String` - The WordPress URL (optional, default is NEXT_PUBLIC_WP_URL env variable).
   - `postTypes`: `Array<String>` - The post types to include in static generation (default: ["pages", "posts"]).
 - **Returns**: `Promise<Array>`
 - **Usage**:
+  This function should be used in your `app/[[...paths]]/page.tsx` file.
+
   ```typescript
-  const staticParams = await generateStaticParams({
-    postTypes: ["pages", "posts"],
+  // with default settings
+  export { generateStaticParams } from "@jambaree/next-wordpress";
+
+  // with additional post types
+  const staticParams = generateStaticParams({
+    postTypes: ["pages", "posts", "movie"],
   });
+  export { staticParams as generateStaticParams };
   ```
 
 #### `generateSiteMap`
@@ -147,9 +137,25 @@ Generates a `sitemap.xml` file for a site using the WordPress REST API.
 - **Parameters**:
   - `postTypes`: `Array<String>` - The post types to include in the sitemap (default: ["pages", "posts"]).
 - **Returns**: `Promise<MetadataRoute.Sitemap>`
-- **Usage**:
+- **Usage**: This function should be used in your `app/sitemap.ts` file.
+
   ```typescript
-  const siteMap = await generateSiteMap({ postTypes: ["pages", "posts"] });
+  // with default settings
+  export { generateSiteMap as default } from "@jambaree/next-wordpress";
+  ```
+
+  ```typescript
+  // with additional post types
+  import { generateSiteMap } from "@jambaree/next-wordpress";
+  import { MetadataRoute } from "next";
+
+  export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+    const sitemap = await generateSiteMap({
+      postTypes: ["pages", "posts", "movie"],
+    });
+
+    return sitemap;
+  }
   ```
 
 #### `revalidate`
@@ -157,23 +163,26 @@ Generates a `sitemap.xml` file for a site using the WordPress REST API.
 Triggers revalidation of specified paths in a Next.js app.
 
 - **Parameters**:
-  - `request`: `Request` - Contains the paths to be revalidated.
+- `request`: `Request` - Contains the paths to be revalidated.
 - **Returns**: `Promise<Response>`
 - **Usage**:
-  ```typescript
-  // app/api/revalidate/route.ts
-  export { revalidate as PUT } from "@jambaree/next-wordpress";
-  ```
 
-### Draft Mode Preview Route Handler
+```typescript
+// app/api/revalidate/route.ts
+export { revalidate as PUT } from "@jambaree/next-wordpress";
+```
+
+### Using Next.js Draft Mode with WordPress Preview
 
 #### `NextWordPressPreview`
 
-Handles preview routes in Next.js apps for draft content in WordPress.
+Handles preview routes in Next.js draft mode to preview changes to WordPress content instantly.
+
+⚠ This draft mode function is used with the [Jambaree Headless WordPress plugin](https://github.com/Jambaree/jambaree-next-wp-plugin) to replace the default WordPress preview with an iframe of the Next.js preview route.
 
 - **Parameters**:
-  - `req`: NextRequest - The request object.
-  - `res`: RouteHandlerContext - The response context.
+  - `request`: Request - The request object.
+  - `context`: RouteHandlerContext - The response context.
   - `options`: PreviewOptions - Options for the preview.
     - `toolbar`: Boolean - Whether to display draft mode toolbar (default: false).
 - **Returns**: Function or Response
@@ -205,9 +214,11 @@ Handles preview routes in Next.js apps for draft content in WordPress.
 
 Fetches data for a specific page from a WordPress REST API endpoint.
 
+This function is used by the [WordpressTemplate](#wordpresstemplate) component, so you don't need to use it directly in your code but it is available if you need it.
+
 - **Parameters**:
-  - `uri`: String - The URI of the page.
-- **Returns**: Promise<Object>
+  - `uri`: `String` - The URI of the page.
+- **Returns**: `Promise<Object>`
 - **Usage**:
   ```typescript
   const pageData = await getPageData("/about");
@@ -218,8 +229,8 @@ Fetches data for a specific page from a WordPress REST API endpoint.
 Retrieves menu items from a WordPress site.
 
 - **Parameters**:
-  - `slug`: String - The slug of the menu.
-- **Returns**: Promise<Array>
+  - `slug`: `String` - The slug of the menu.
+- **Returns**: `Promise<Array>`
 - **Usage**:
   ```typescript
   const menuItems = await getMenuItems({ slug: "main-menu" });
@@ -231,9 +242,11 @@ Retrieves menu items from a WordPress site.
 
 Fetches data from an options page created in WordPress.
 
+⚠ This function requires the [Jambaree Headless WordPress plugin](https://github.com/Jambaree/jambaree-next-wp-plugin) to register the REST API endpoint for fetching options pages.
+
 - **Parameters**:
-  - `slug`: String - The slug of the options page.
-- **Returns**: Promise<Object>
+  - `slug`: `String` - The slug of the options page.
+- **Returns**: `Promise<Object>`
 - **Usage**:
   ```typescript
   const options = await getOptionsPage({ slug: "theme-options" });
@@ -243,15 +256,24 @@ Fetches data from an options page created in WordPress.
 
 #### `FlexibleContent`
 
-A React component for rendering flexible content blocks.
+A React component for rendering ACF flexible content blocks.
 
 - **Props**:
-  - `blocks`: Object - Map of React components.
-  - `rows`: Array - Array of row data.
-  - `data`: Object - Extra data passed to each component (optional).
+  - `blocks`: `Object` - Map of React components to be rendered for each ACF flexible content layout.
+  - `rows`: `Array` - Array of row data from an acf flexible content field.
+  - `data`: `Object` - Extra data passed to each component (optional).
 - **Usage**:
-  ```jsx
-  <FlexibleContent blocks={blocks} rows={rows} />
+
+  ```tsx
+  import { FlexibleContent } from "@jambaree/next-wordpress";
+  ```
+
+  ```tsx
+  import * as blocks from "@/components/blocks";
+
+  export default async function DefaultPageTemplate({ data }) {
+    return <FlexibleContent rows={data?.acf?.modules} blocks={blocks} />;
+  }
   ```
 
 #### `WordpressTemplate`
@@ -259,16 +281,37 @@ A React component for rendering flexible content blocks.
 A component for rendering WordPress templates in a Next.js app.
 
 - **Props**:
-  - `params`: Object - Routing parameters.
-  - `templates`: Object - Map of page templates.
-  - `searchParams`: Object - Search parameters (optional).
+  - `params`: `Object` - Routing parameters.
+  - `templates`: `Object` - Map of page templates.
+  - `searchParams`: `Object` - Search parameters (optional).
 - **Usage**:
-  ```jsx
-  <WordpressTemplate params={params} templates={templates} />
+
+  ```tsx
+  // src/app/[[...paths]]/page.tsx
+  import { WordpressTemplate } from "@jambaree/next-wordpress";
+  import templates from "@/templates";
+
+  export default async function PageRoute(props: {
+    params: { paths: string[] };
+    searchParams?: { [key: string]: string | string[] | undefined };
+  }) {
+    return (
+      <WordpressTemplate
+        templates={templates}
+        params={props?.params}
+        searchParams={props?.searchParams}
+      />
+    );
+  }
+
+  export {
+    generateMetadata,
+    generateStaticParams,
+  } from "@jambaree/next-wordpress";
   ```
 
 ### Deprecated Functions
 
 #### `getData` and `getSeedData`
 
-These functions have been deprecated and removed in v2. Please use `getPageData` instead. They were removed due to the migration to REST API from GraphQL for performance reasons.
+These functions have been deprecated and removed in v2. Please use `getPageData` instead. They were removed due to the migration to REST API from GraphQL.
