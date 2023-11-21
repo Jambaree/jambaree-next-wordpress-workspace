@@ -1,8 +1,7 @@
 "use client";
 
+import React, { useEffect } from "react";
 import Button from "@/components/button";
-import React from "react";
-import { useEffect } from "react";
 
 export default function Error({
   error,
@@ -17,8 +16,8 @@ export default function Error({
   }, [error]);
 
   // Function to replace URLs with anchor tags
-  const renderTextWithLinks = (text) => {
-    const urlRegex = /(https?:\/\/[^\s]+)/g;
+  const renderTextWithLinks = (text: string) => {
+    const urlRegex = /(?<temp1>https?:\/\/[^\s]+)/g;
     return text.replace(
       urlRegex,
       (url) =>
@@ -26,22 +25,22 @@ export default function Error({
     );
   };
 
-  const processedErrorMessage = renderTextWithLinks(error?.message);
+  const processedErrorMessage = renderTextWithLinks(error.message);
 
   return (
     <div className="text-center p-24 flex flex-col justify-center items-center">
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
         className="w-12 h-12"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        viewBox="0 0 24 24"
+        xmlns="http://www.w3.org/2000/svg"
       >
         <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
           d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </svg>
 
@@ -59,22 +58,28 @@ export default function Error({
       </div>
 
       <div className="flex items-center gap-x-6 flex-wrap justify-center mt-6">
-        <Button onClick={() => reset()}>Click to retry</Button>
+        <Button
+          onClick={() => {
+            reset();
+          }}
+        >
+          Click to retry
+        </Button>
 
-        <a href="/" className="flex items-center gap-x-2">
+        <a className="flex items-center gap-x-2" href="/">
           Go to home page{" "}
           <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
             className="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
               d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
         </a>

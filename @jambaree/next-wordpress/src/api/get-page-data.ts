@@ -1,21 +1,21 @@
-import { PostType, getPostTypes } from "./get-post-types";
-import { getSiteSettings } from "./get-site-settings";
 import { draftMode } from "next/headers";
+import type { WpPage } from "../../types";
+import type { PostType } from "./get-post-types";
+import { getPostTypes } from "./get-post-types";
+import { getSiteSettings } from "./get-site-settings";
 // import { getTaxonomies } from "./get-taxonomies";
 
 /**
  * Get data for a specific page from a WordPress REST API endpoint based on the URI
- * @param {string} uri - The URI of the page to fetch
- * @returns {Promise} - A promise that resolves to an object containing the data for the page
  * @example
  * ```
  * const pageData = await getPageData("/about");
  * ```
  */
-export async function getPageData(uri: string) {
+export async function getPageData(uri: string): Promise<{ data?: WpPage }> {
   const preview = draftMode();
 
-  const paths = uri?.split("/");
+  const paths = uri.split("/");
   const postTypes = await getPostTypes();
   // const taxonomies = await getTaxonomies();
   let archive: PostType | null = null;
@@ -55,7 +55,7 @@ export async function getPageData(uri: string) {
       postTypeRestBase = postTypes[key].rest_base;
     }
     // check if uri matches a post type archive uri
-    if (postTypes[key]?.has_archive === uri) {
+    if (postTypes[key].has_archive === uri) {
       archive = postTypes[key];
     }
   }
@@ -105,9 +105,7 @@ const getPreviewData = async ({ id, postTypeRestBase }) => {
   const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/autosaves?acf_format=standard`;
   const req = await fetch(endpoint, {
     headers: {
-      Authorization: `Basic ${btoa(
-        process.env.WP_APPLICATION_PASSWORD as string
-      )}`,
+      Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD!)}`,
     },
   });
   try {

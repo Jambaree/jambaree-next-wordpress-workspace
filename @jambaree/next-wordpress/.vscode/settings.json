@@ -1,8 +1,13 @@
 {
-  "workbench.colorCustomizations": {
-    "titleBar.activeBackground": "#055C9D",
-    "titleBar.activeForeground": "#ffffff",
-    "titleBar.inactiveBackground": "#003060",
-    "titleBar.inactiveForeground": "#ffffff"
-  }
+  "eslint.workingDirectories": [
+    {
+      "mode": "auto"
+    }
+  ],
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  },
+
+  "css.customData": [".vscode/tailwind.json"]
 }

@@ -1,5 +1,3 @@
-import React from "react";
-
 import Link from "next/link";
 import Button from "@/components/button";
 
@@ -18,7 +16,7 @@ export default function NotFound() {
           <Button component={Link} href="/">
             Go back home
           </Button>
-          <Link href="/contact" className="text-sm font-semibold text-gray-900">
+          <Link className="text-sm font-semibold text-gray-900" href="/contact">
             Contact support <span aria-hidden="true">&rarr;</span>
           </Link>
         </div>

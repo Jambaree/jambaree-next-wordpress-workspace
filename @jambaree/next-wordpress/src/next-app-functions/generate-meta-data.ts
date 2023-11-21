@@ -8,11 +8,17 @@ import { swapWpUrl } from "../utils/swap-wp-url";
  * The WordPress plugin YoastSEO is required for this to work.
  * @see https://nextjs.org/docs/app/api-reference/functions/generate-metadata
  */
+
+interface GenerateMetadataParams {
+  params?: {
+    paths?: string[];
+  };
+  wpUrl: string;
+}
 export async function generateMetadata({
   params,
-  // searchParams,
   wpUrl = process.env.NEXT_PUBLIC_WP_URL || "",
-}): Promise<Metadata> {
+}: GenerateMetadataParams): Promise<Metadata> {
   if (!wpUrl) {
     throw new Error(
       "No wpUrl provided. Please set NEXT_PUBLIC_WP_URL env or pass wpUrl to generateMetadata"
@@ -38,31 +44,31 @@ ${
 }`);
   }
 
-  const uri = params?.paths?.join?.("/") || "/";
+  const uri = params?.paths?.join("/") || "/";
   const siteSettings = await getSiteSettings();
   const { data } = await getPageData(uri);
+
+  const yoast = data?.yoast_head_json;
 
   return {
     generator: "Jambaree.com",
     applicationName: siteSettings.title,
     metadataBase: new URL(process.env.NEXT_PUBLIC_WP_URL || "http://localhost"),
-    title: data?.yoast_head_json?.title,
-    description: data?.yoast_head_json?.og_description,
+    title: yoast?.title,
+    description: yoast?.og_description,
 
     openGraph: {
-      title: data?.yoast_head_json?.og_title,
-      description: data?.yoast_head_json?.og_description,
-      siteName: data?.yoast_head_json?.og_site_name,
-      locale: data?.yoast_head_json?.og_locale,
-      url: swapWpUrl(data?.yoast_head_json?.og_url),
-      images: data?.yoast_head_json?.og_image
-        ? data?.yoast_head_json?.og_image?.map((ogImg) => ogImg.url)
-        : [],
+      title: yoast?.og_title,
+      description: yoast?.og_description,
+      siteName: yoast?.og_site_name,
+      locale: yoast?.og_locale,
+      url: swapWpUrl(yoast?.og_url ?? ""),
+      images: yoast?.og_image ? yoast.og_image.map((ogImg) => ogImg.url) : [],
     },
 
     twitter: {
-      card: data?.yoast_head_json?.twitter_card,
-      images: data?.yoast_head_json?.twitter_image,
+      card: yoast?.twitter_card,
+      images: yoast?.twitter_image,
     },
   } as Metadata;
 }

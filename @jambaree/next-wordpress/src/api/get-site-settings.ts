@@ -1,4 +1,11 @@
-export async function getSiteSettings() {
+import type { WpSettings } from "types";
+
+type WpSettingsResponse = {
+  code?: string;
+  message?: string;
+} & WpSettings;
+
+export async function getSiteSettings(): Promise<WpSettings> {
   if (!process.env.WP_APPLICATION_PASSWORD) {
     throw new Error(`'WP_APPLICATION_PASSWORD' environment variable is required for function 'getSiteSettings'.
 Check your ${
@@ -23,19 +30,16 @@ ${
     `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/settings`,
     {
       headers: {
-        Authorization: `Basic ${btoa(
-          process.env.WP_APPLICATION_PASSWORD as string
-        )}`,
+        Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD)}`,
       },
     }
   );
 
-  try {
-    const data = await req.json();
+  const data = (await req.json()) as WpSettingsResponse;
 
-    if (data?.code?.includes("rest_forbidden")) {
-      throw new Error(
-        `User for provided 'WP_APPLICATION_PASSWORD' does not have permission to view site settings.
+  if (data.code?.includes("rest_forbidden")) {
+    throw new Error(
+      `User for provided 'WP_APPLICATION_PASSWORD' does not have permission to view site settings.
 Check that the user has the required permissions. Administrator role is recommended.
 
 You can generate an application password in your WordPress admin under Users > Your Profile > Application Passwords.
@@ -47,11 +51,8 @@ ${
 }
 
 Response from WP: ${data.message}`
-      );
-    }
-
-    return data;
-  } catch (err) {
-    throw err;
+    );
   }
+
+  return data;
 }

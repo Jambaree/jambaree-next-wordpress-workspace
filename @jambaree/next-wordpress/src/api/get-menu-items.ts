@@ -1,19 +1,44 @@
+import type { WpLink, WpMenu, WpMenuItem } from "types";
+
+type MenuResponse = {
+  id: number;
+  title: {
+    rendered: string;
+  };
+  status: string;
+  url: string;
+  attr_title: string;
+  description: string;
+  type: string;
+  type_label: string;
+  object: string;
+  object_id: number;
+  parent: number;
+  menu_order: number;
+  target: string;
+  classes: string[];
+  xfn: string[];
+  invalid: boolean;
+  meta: any;
+  menus: number;
+  acf: any[]; // This might include WpImage or WpLink
+  _links: WpLink[]; // Replacing LinksType with WpLink
+}[];
+
 const args = {
   headers: {
-    Authorization: `Basic ${btoa(
-      process.env.WP_APPLICATION_PASSWORD as string
-    )}`,
+    Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD!)}`,
   },
 };
 
-export async function getMenuItems({ slug }: { slug: string }): Promise<
-  {
-    id: number;
-    label: string;
-    path: string;
-    url: string;
-  }[]
-> {
+export async function getMenuItems({
+  slug,
+}: {
+  /**
+   * The slug of the menu to fetch.
+   */
+  slug: string;
+}): Promise<WpMenuItem[]> {
   if (!process.env.WP_APPLICATION_PASSWORD) {
     throw new Error(`'WP_APPLICATION_PASSWORD' environment variable is required for function 'getMenuItems'.
 
@@ -39,8 +64,13 @@ ${
     args
   ).then(async (res) => {
     try {
-      const json = await res.json();
-      return json?.[0];
+      const json = (await res.json()) as {
+        id: number;
+        name: string;
+        slug: string;
+        items: number[];
+      }[];
+      return json[0];
     } catch (err) {
       throw new Error(`Error fetching menu with slug ${slug}: ${err.message}`);
     }
@@ -54,46 +84,40 @@ ${
 
   let data;
   try {
-    data = await req.json();
+    data = (await req.json()) as MenuResponse;
   } catch (err) {
     throw new Error(
       `Error fetching menu items for menu id ${menu.id}: ${err.message}`
     );
   }
 
-  const flatMenu = data?.map?.((menuItem) => {
-    return {
-      ...menuItem,
-      label: menuItem?.title?.rendered,
-      path: menuItem.url.replace(process.env.NEXT_PUBLIC_WP_URL, ""),
-    };
-  });
-
-  return structureMenuItems(flatMenu);
+  return structureMenuItems(data);
 }
 
 /**
  * Structure menu items into a tree with childItems instead of a single shallow array that the REST API returns.
  */
-function structureMenuItems(menuItems) {
+function structureMenuItems(menuItems: MenuResponse): WpMenu {
   // Create a map for easy lookup of child items
   const itemsById = new Map(
     menuItems.map((item) => [item.id, { ...item, childItems: [] }])
   );
 
   // The final structured menu items
-  const structuredItems = [];
+  const structuredItems: WpMenu = [];
 
   // Iterate over the menu items to structure them
   for (const item of menuItems) {
-    const structuredItem = itemsById.get(item.id);
+    const structuredItem = itemsById.get(item.id) as WpMenuItem;
+    structuredItem.label = item.title.rendered;
+    structuredItem.path = item.url.replace(process.env.NEXT_PUBLIC_WP_URL!, "");
 
     if (item.parent === 0) {
       // This is a top-level menu item
       structuredItems.push(structuredItem);
     } else {
       // This item is a child of another item
-      const parentItem = itemsById.get(item.parent);
+      const parentItem = itemsById.get(item.parent) as WpMenuItem | undefined;
       if (parentItem) {
         parentItem.childItems.push(structuredItem);
       }

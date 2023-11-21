@@ -1,3 +1,9 @@
+type OptionsPageResponse = {
+  code?: string;
+  message?: string;
+  [key: string]: any;
+};
+
 /**
  * Get an options page from WordPress.
  * This function requires the 'Jambaree Next WP' plugin to be installed and activated on your WordPress site.
@@ -34,17 +40,15 @@ You can generate an application password in your WordPress admin under Users > Y
     `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/jambaree/v1/options/${slug}`,
     {
       headers: {
-        Authorization: `Basic ${btoa(
-          process.env.WP_APPLICATION_PASSWORD as string
-        )}`,
+        Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD)}`,
       },
     }
   );
   let data;
   try {
-    data = await req.json();
+    data = (await req.json()) as OptionsPageResponse;
 
-    if (data?.code?.includes("rest_no_route")) {
+    if (data.code?.includes("rest_no_route")) {
       throw new Error(`Error getting options page with slug '${slug}'.
 
 code: ${data.code}
@@ -52,7 +56,7 @@ code: ${data.code}
 ${msg}`);
     }
 
-    if (data?.code?.includes("rest_forbidden")) {
+    if (data.code?.includes("rest_forbidden")) {
       throw new Error(`Error getting options page with slug '${slug}'.
 
 code: ${data.code}
@@ -60,7 +64,6 @@ code: ${data.code}
 ${msg}`);
     }
   } catch (err) {
-    console.log(err);
     throw new Error(
       `Error getting options page with slug '${slug}': ${err.message}`
     );

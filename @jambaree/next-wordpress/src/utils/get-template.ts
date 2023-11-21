@@ -1,16 +1,17 @@
+import type { WpPage } from "types";
 import log from "./log";
 
 type GetTemplateArgs = {
   uri: string;
-  data: any;
-  archive: any;
+  data: WpPage;
+  archive?: WpPage;
   templates: any;
 };
 
 /**
  * Get the template for a given uri
  */
-export default async function getTemplate({
+export default function getTemplate({
   uri,
   data,
   archive,
@@ -28,13 +29,13 @@ export default async function getTemplate({
   }
 
   if (!archive) {
-    const tmplName = removeFileExt(data?.template || "default");
+    const tmplName = removeFileExt(data.template || "default");
     const template = templates?.[data.type]?.[tmplName];
 
     if (!template) {
       log(
-        `Warn: Template "${data?.template || "default"}" not found for type "${
-          data?.type
+        `Warn: Template "${data.template || "default"}" not found for type "${
+          data.type
         }" on uri '${uri}'. Did you forget to add it to the templates object in src/templates/index? `
       );
     }
