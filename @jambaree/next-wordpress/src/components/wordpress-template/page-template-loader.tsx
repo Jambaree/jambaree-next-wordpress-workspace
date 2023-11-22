@@ -1,11 +1,11 @@
 import React from "react";
 import { notFound } from "next/navigation";
-import getTemplate from "../utils/get-template";
-import { getPageData } from "../api/get-page-data";
+import getTemplate from "../../utils/get-template";
+import { getPageData } from "../../api/get-page-data";
 import { draftMode } from "next/headers";
-import { PreviewToolbar } from "./preview-toolbar";
+import { PreviewToolbar } from "../preview-toolbar";
 
-export default async function WordpressTemplate(props: {
+export default async function PageTemplateLoader(props: {
   params: { paths: string[] };
   templates: any;
   searchParams?: { [key: string]: string | string[] | undefined };
@@ -60,4 +60,4 @@ export default async function WordpressTemplate(props: {
   );
 }
 
-export { WordpressTemplate };
+export { PageTemplateLoader };

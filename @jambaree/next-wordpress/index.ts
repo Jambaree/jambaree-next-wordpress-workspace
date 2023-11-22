@@ -16,7 +16,7 @@ export { getOptionsPage } from "./src/api/get-options-page";
 
 // react components
 export { FlexibleContent } from "./src/components/flexible-content";
-export { WordpressTemplate } from "./src/components/wordpress-template";
+export { WordpressTemplate } from "./src/components/wordpress-template/wordpress-template";
 
 // deprecated functions
 export const getData = () => {

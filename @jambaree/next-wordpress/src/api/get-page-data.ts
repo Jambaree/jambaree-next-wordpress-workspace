@@ -3,7 +3,6 @@ import type { WpPage } from "../../types";
 import type { PostType } from "./get-post-types";
 import { getPostTypes } from "./get-post-types";
 import { getSiteSettings } from "./get-site-settings";
-// import { getTaxonomies } from "./get-taxonomies";
 
 /**
  * Get data for a specific page from a WordPress REST API endpoint based on the URI
@@ -12,30 +11,26 @@ import { getSiteSettings } from "./get-site-settings";
  * const pageData = await getPageData("/about");
  * ```
  */
-export async function getPageData(uri: string): Promise<{ data?: WpPage }> {
+export async function getPageData(
+  uri: string
+): Promise<{ data?: WpPage; archive?: any; previewData?: any }> {
   const preview = draftMode();
 
   const paths = uri.split("/");
+  const slug = paths.slice(-1).toString();
   const postTypes = await getPostTypes();
-  // const taxonomies = await getTaxonomies();
+
   let archive: PostType | null = null;
-  // let taxonomy: any = null;
   let postTypeRestBase = "pages";
 
   // handle front page
   if (uri === "/") {
     const settings = await getSiteSettings();
 
-    const req = await fetch(
-      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/pages/${settings.page_on_front}?acf_format=standard`
-    );
-
-    let data;
-    try {
-      data = await req.json();
-    } catch (err) {
-      throw new Error(`Error fetching front page: ${err.message}`);
-    }
+    const data = await getSingleItem({
+      id: settings.page_on_front,
+      postTypeRestBase,
+    });
 
     if (preview.isEnabled) {
       const previewData = await getPreviewData({
@@ -74,34 +69,40 @@ export async function getPageData(uri: string): Promise<{ data?: WpPage }> {
   }
 
   // handle single items
-  const endpoint = `${
-    process.env.NEXT_PUBLIC_WP_URL
-  }/wp-json/wp/v2/${postTypeRestBase}?slug=${paths.slice(
-    -1
-  )}&acf_format=standard`;
+  const data = await getSingleItem({
+    slug: slug,
+    postTypeRestBase,
+  });
 
-  const req = await fetch(endpoint);
-
-  let data;
-  try {
-    data = await req.json();
-  } catch (err) {
-    throw new Error(`Error fetching from ${endpoint}: ${err.message}`);
+  // posts are a special case because they can have an empty slug prefix like pages
+  const possiblePostData = await getSingleItem({
+    slug: slug,
+    postTypeRestBase: "posts",
+  });
+  if (possiblePostData) {
+    postTypeRestBase = "posts";
   }
 
   if (preview.isEnabled) {
+    const previewId = possiblePostData?.id || data?.id;
     const previewData = await getPreviewData({
-      id: data?.[0]?.id,
+      id: previewId,
       postTypeRestBase,
     });
 
-    return { data: data?.[0], previewData };
+    return { data: data || possiblePostData, previewData };
   }
 
-  return { data: data?.[0] };
+  return { data: data || possiblePostData };
 }
 
-const getPreviewData = async ({ id, postTypeRestBase }) => {
+const getPreviewData = async ({
+  id,
+  postTypeRestBase,
+}: {
+  id: string;
+  postTypeRestBase: string;
+}) => {
   const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/autosaves?acf_format=standard`;
   const req = await fetch(endpoint, {
     headers: {
@@ -115,5 +116,45 @@ const getPreviewData = async ({ id, postTypeRestBase }) => {
     throw new Error(
       `Error fetching preview data for ${endpoint}: ${err.message}`
     );
+  }
+};
+
+const getSingleItem = async ({
+  id,
+  slug,
+  postTypeRestBase,
+}: {
+  id?: string;
+  slug?: string;
+  postTypeRestBase: string;
+}) => {
+  if (id) {
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}?acf_format=standard`
+    );
+    try {
+      const data = await req.json();
+      if (data.code === "rest_no_route") {
+        return null;
+      }
+      return data;
+    } catch (err) {
+      throw new Error(`Error fetching from ${endpoint}: ${err.message}`);
+    }
+  }
+
+  if (slug) {
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}?slug=${slug}&acf_format=standard`
+    );
+    try {
+      const data = await req.json();
+      if (data.code === "rest_no_route") {
+        return null;
+      }
+      return data?.[0];
+    } catch (err) {
+      throw new Error(`Error fetching from ${endpoint}: ${err.message}`);
+    }
   }
 };

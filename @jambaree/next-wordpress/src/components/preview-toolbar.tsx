@@ -10,9 +10,7 @@ export function PreviewToolbar({
   previewData,
 }: {
   uri: string;
-  searchParams?: {
-    toolbar?: string;
-  };
+  searchParams?: any;
   data?: any;
   previewData?: any;
 }) {

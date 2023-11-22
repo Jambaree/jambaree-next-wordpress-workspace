@@ -1,14 +1,17 @@
 import { WordpressTemplate } from "@jambaree/next-wordpress";
 import templates from "@/templates";
 
-export default function PageRoute(props: {
+export default function PageRoute({
+  params,
+  searchParams,
+}: {
   params: { paths: string[] };
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
   return (
     <WordpressTemplate
-      params={props.params}
-      searchParams={props.searchParams}
+      params={params}
+      searchParams={searchParams}
       templates={templates}
     />
   );
