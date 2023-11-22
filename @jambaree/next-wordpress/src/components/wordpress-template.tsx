@@ -16,18 +16,6 @@ export default async function WordpressTemplate(props: {
 
   const { data, archive, previewData } = await getPageData(uri);
 
-  if (preview.isEnabled && !previewData) {
-    return (
-      <div style={{ margin: "24px" }}>
-        <h1>No preview data found for this uri '{uri}'.</h1>
-        <p>
-          Try clicking preview again or check that post revisions are enabled on
-          this site.
-        </p>
-      </div>
-    );
-  }
-
   if (!data) {
     notFound();
   }
@@ -61,7 +49,12 @@ export default async function WordpressTemplate(props: {
       />
 
       {preview.isEnabled && (
-        <PreviewToolbar uri={uri} searchParams={props.searchParams} />
+        <PreviewToolbar
+          uri={uri}
+          data={data}
+          previewData={previewData}
+          searchParams={props.searchParams}
+        />
       )}
     </>
   );
