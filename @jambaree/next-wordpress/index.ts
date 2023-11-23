@@ -10,6 +10,7 @@ export { NextWordPressPreview } from "./src/draft/draft-route-handler";
 // rest api functions
 export { getPageData } from "./src/api/get-page-data";
 export { getMenuItems } from "./src/api/get-menu-items";
+export { getSingleItem } from "./src/api/get-single-item";
 
 // custom rest api functions implemented in jambaree-next-wp-plugin v2.1.0 (https://github.com/Jambaree/jambaree-next-wp-plugin)
 export { getOptionsPage } from "./src/api/get-options-page";
