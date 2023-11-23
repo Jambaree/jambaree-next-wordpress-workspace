@@ -1,5 +1,9 @@
 import Edges from "../edges";
 
-export function Textarea({ text }) {
+export interface TextareaProps {
+  text: string;
+}
+
+export function Textarea({ text }: TextareaProps) {
   return <Edges className="my-10" dangerouslySetInnerHTML={{ __html: text }} />;
 }

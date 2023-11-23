@@ -1,13 +1,14 @@
 import { getMenuItems } from "@jambaree/next-wordpress";
+import type { WpMenuItem } from "@jambaree/next-wordpress/types";
 
 export default async function MenuItems({ className }) {
-  const menuItems = await getMenuItems({ id: "main-menu" });
+  const menuItems = await getMenuItems({ slug: "main-menu" });
 
   return (
     <div className={className}>
-      {menuItems?.map?.((item, index) => {
+      {menuItems?.map?.((item: WpMenuItem, index) => {
         return (
-          <a key={index} href={item.path} target={item.target}>
+          <a href={item.path} key={index} target={item.target}>
             {item.label}
           </a>
         );

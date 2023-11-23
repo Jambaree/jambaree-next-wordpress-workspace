@@ -18,8 +18,9 @@ export default function log(
     separator: "-",
   }
 ) {
+  // eslint-disable-next-line no-console -- we're logging to console
   console.log(
-    chalk?.[prefixColor]?.(`${prefix}${chalk.white(` ${separator}`)}`),
+    chalk[prefixColor]?.(`${prefix}${chalk.white(` ${separator}`)}`),
     message
   );
 }

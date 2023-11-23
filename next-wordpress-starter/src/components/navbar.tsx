@@ -107,16 +107,16 @@ export default function Navbar() {
               <Link href="/">
                 <span className="sr-only">Your Company</span>
                 <img
+                  alt=""
                   className="h-8 w-auto sm:h-10"
                   src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
                 />
               </Link>
             </div>
             <div className="-my-2 -mr-2 md:hidden">
               <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                 <span className="sr-only">Open menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                <Bars3Icon aria-hidden="true" className="h-6 w-6" />
               </Popover.Button>
             </div>
             <Popover.Group as="nav" className="hidden space-x-10 md:flex">
@@ -131,11 +131,11 @@ export default function Navbar() {
                     >
                       <span>Solutions</span>
                       <ChevronDownIcon
+                        aria-hidden="true"
                         className={clsx(
                           open ? "text-gray-600" : "text-gray-400",
                           "ml-2 h-5 w-5 group-hover:text-gray-500"
                         )}
-                        aria-hidden="true"
                       />
                     </Popover.Button>
 
@@ -153,13 +153,13 @@ export default function Navbar() {
                           <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
                             {features.map((item) => (
                               <a
-                                key={item.name}
-                                href={item.href}
                                 className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
+                                href={item.href}
+                                key={item.name}
                               >
                                 <item.icon
-                                  className="h-6 w-6 flex-shrink-0 text-indigo-600"
                                   aria-hidden="true"
+                                  className="h-6 w-6 flex-shrink-0 text-indigo-600"
                                 />
                                 <div className="ml-4">
                                   <p className="text-base font-medium text-gray-900">
@@ -174,14 +174,14 @@ export default function Navbar() {
                           </div>
                           <div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
                             {callsToAction.map((item) => (
-                              <div key={item.name} className="flow-root">
+                              <div className="flow-root" key={item.name}>
                                 <a
-                                  href={item.href}
                                   className="-m-3 flex items-center rounded-md p-3 text-base font-medium text-gray-900 hover:bg-gray-100"
+                                  href={item.href}
                                 >
                                   <item.icon
-                                    className="h-6 w-6 flex-shrink-0 text-gray-400"
                                     aria-hidden="true"
+                                    className="h-6 w-6 flex-shrink-0 text-gray-400"
                                   />
                                   <span className="ml-3">{item.name}</span>
                                 </a>
@@ -196,14 +196,14 @@ export default function Navbar() {
               </Popover>
 
               <Link
-                href="/sample-page"
                 className="text-base font-medium text-gray-500 hover:text-gray-900"
+                href="/sample-page"
               >
                 Sample Page
               </Link>
               <a
-                href="#"
                 className="text-base font-medium text-gray-500 hover:text-gray-900"
+                href="#docs"
               >
                 Docs
               </a>
@@ -219,11 +219,11 @@ export default function Navbar() {
                     >
                       <span>More</span>
                       <ChevronDownIcon
+                        aria-hidden="true"
                         className={clsx(
                           open ? "text-gray-600" : "text-gray-400",
                           "ml-2 h-5 w-5 group-hover:text-gray-500"
                         )}
-                        aria-hidden="true"
                       />
                     </Popover.Button>
 
@@ -241,13 +241,13 @@ export default function Navbar() {
                           <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
                             {resources.map((item) => (
                               <a
-                                key={item.name}
-                                href={item.href}
                                 className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
+                                href={item.href}
+                                key={item.name}
                               >
                                 <item.icon
-                                  className="h-6 w-6 flex-shrink-0 text-indigo-600"
                                   aria-hidden="true"
+                                  className="h-6 w-6 flex-shrink-0 text-indigo-600"
                                 />
                                 <div className="ml-4">
                                   <p className="text-base font-medium text-gray-900">
@@ -265,15 +265,15 @@ export default function Navbar() {
                               <h3 className="text-base font-medium text-gray-500">
                                 Recent Posts
                               </h3>
-                              <ul role="list" className="mt-4 space-y-4">
+                              <ul className="mt-4 space-y-4">
                                 {recentPosts.map((item) => (
                                   <li
-                                    key={item.id}
                                     className="truncate text-base"
+                                    key={item.id}
                                   >
                                     <a
-                                      href={item.href}
                                       className="font-medium text-gray-900 hover:text-gray-700"
+                                      href={item.href}
                                     >
                                       {item.name}
                                     </a>
@@ -283,8 +283,8 @@ export default function Navbar() {
                             </div>
                             <div className="mt-5 text-sm">
                               <a
-                                href="#"
                                 className="font-medium text-indigo-600 hover:text-indigo-500"
+                                href="#posts"
                               >
                                 View all posts
                                 <span aria-hidden="true"> &rarr;</span>
@@ -306,9 +306,9 @@ export default function Navbar() {
                 Contact us
               </a> */}
               <Button
+                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
                 component={Link}
                 href="/contact"
-                className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
               >
                 Contact us
               </Button>
@@ -326,23 +326,23 @@ export default function Navbar() {
           leaveTo="opacity-0 scale-95"
         >
           <Popover.Panel
-            focus
             className="absolute inset-x-0 top-0 z-10 origin-top-right transform p-2 transition md:hidden"
+            focus
           >
             <div className="divide-y-2 divide-gray-50 rounded-lg bg-white shadow-lg ring-1 ring-black ring-opacity-5">
               <div className="px-5 pt-5 pb-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <img
+                      alt="Your Company"
                       className="h-8 w-auto"
                       src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                      alt="Your Company"
                     />
                   </div>
                   <div className="-mr-2">
                     <Popover.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500">
                       <span className="sr-only">Close menu</span>
-                      <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                      <XMarkIcon aria-hidden="true" className="h-6 w-6" />
                     </Popover.Button>
                   </div>
                 </div>
@@ -350,13 +350,13 @@ export default function Navbar() {
                   <nav className="grid gap-y-8">
                     {features.map((item) => (
                       <a
-                        key={item.name}
-                        href={item.href}
                         className="-m-3 flex items-center rounded-md p-3 hover:bg-gray-50"
+                        href={item.href}
+                        key={item.name}
                       >
                         <item.icon
-                          className="h-6 w-6 flex-shrink-0 text-indigo-600"
                           aria-hidden="true"
+                          className="h-6 w-6 flex-shrink-0 text-indigo-600"
                         />
                         <span className="ml-3 text-base font-medium text-gray-900">
                           {item.name}
@@ -369,23 +369,23 @@ export default function Navbar() {
               <div className="space-y-6 py-6 px-5">
                 <div className="grid grid-cols-2 gap-y-4 gap-x-8">
                   <Link
-                    href="/sample-page"
                     className="text-base font-medium text-gray-900 hover:text-gray-700"
+                    href="/sample-page"
                   >
                     Sample Page
                   </Link>
 
                   <a
-                    href="#"
                     className="text-base font-medium text-gray-900 hover:text-gray-700"
+                    href="#docs"
                   >
                     Docs
                   </a>
                   {resources.map((item) => (
                     <a
-                      key={item.name}
-                      href={item.href}
                       className="text-base font-medium text-gray-900 hover:text-gray-700"
+                      href={item.href}
+                      key={item.name}
                     >
                       {item.name}
                     </a>
@@ -393,8 +393,8 @@ export default function Navbar() {
                 </div>
                 <div>
                   <Link
-                    href="/contact"
                     className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+                    href="/contact"
                   >
                     Contact us
                   </Link>
