@@ -32,7 +32,7 @@ export async function getItems({ restBase = "pages" }): Promise<Items> {
 
     try {
       const req = await fetch(
-        `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${restBase}?${queryString}`
+        `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${restBase}?${queryString}&acf_format=standard&_embed`
       );
 
       const data = await req.json();
