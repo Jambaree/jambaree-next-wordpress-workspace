@@ -69,6 +69,18 @@ export async function getPageData(
     }
   }
 
+  if (uri.startsWith("private/")) {
+    const restBase = uri.split("/")[1];
+    const id = uri.split("/")[2];
+
+    const data = await getSingleItem({
+      id: id,
+      postTypeRestBase: restBase,
+    });
+
+    return { data };
+  }
+
   // handle single items
   const data = await getSingleItem({
     slug: slug,

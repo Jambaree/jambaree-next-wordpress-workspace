@@ -52,6 +52,8 @@ export async function NextWordPressPreviewRouteHandler(
     const { searchParams } = new URL(request.url);
     const secret = searchParams.get("secret");
     const uri = searchParams.get("uri");
+    const id = searchParams.get("id");
+    const rest_base = searchParams.get("rest_base");
     const iframeToolbar = searchParams.get("toolbar");
 
     if (secret !== process.env.NEXT_PREVIEW_SECRET) {
@@ -63,8 +65,8 @@ export async function NextWordPressPreviewRouteHandler(
       );
     }
 
-    if (!uri) {
-      return new Response("Missing uri", { status: 401 });
+    if (!uri && !id) {
+      return new Response("Missing uri and/or id", { status: 401 });
     }
 
     draftMode().enable();
@@ -87,10 +89,16 @@ export async function NextWordPressPreviewRouteHandler(
       toolbarOption = true;
     }
 
+    let path = uri;
+
+    if (id) {
+      path = `/private/${rest_base}/${id}`;
+    }
+
     return new Response(null, {
       status: 307,
       headers: {
-        Location: `${uri}?toolbar=${toolbarOption ? "true" : "false"}`,
+        Location: `${path}?toolbar=${toolbarOption ? "true" : "false"}`,
       },
     });
   } else if (context.params.preview?.[0] === "disable-draft") {

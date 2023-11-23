@@ -9,7 +9,7 @@ export interface HeroProps {
   image: WpImage;
   headline: string;
   subline: string;
-  links: {
+  links?: {
     link: WpLink;
     variant: string;
   }[];
@@ -41,20 +41,22 @@ export function Hero(props: HeroProps) {
           ) : null}
 
           <div className="mt-10 sm:flex sm:justify-center lg:justify-start sm:space-x-4 space-y-2 sm:space-y-0">
-            {links.map(({ link, variant }, index) => {
-              return (
-                <Button
-                  component={Link}
-                  href={link.url}
-                  key={index}
-                  size="lg"
-                  target={link.target}
-                  variant={variant}
-                >
-                  {link.title}
-                </Button>
-              );
-            })}
+            {links
+              ? links.map(({ link, variant }, index) => {
+                  return (
+                    <Button
+                      component={Link}
+                      href={link.url}
+                      key={index}
+                      size="lg"
+                      target={link.target}
+                      variant={variant}
+                    >
+                      {link.title}
+                    </Button>
+                  );
+                })
+              : null}
           </div>
         </div>
       </div>

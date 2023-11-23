@@ -10,7 +10,7 @@ export default async function PageTemplateLoader(props: {
   templates: any;
   searchParams?: { [key: string]: string | string[] | undefined };
 }) {
-  const { params, templates } = props;
+  const { params, templates, searchParams } = props;
   const uri = params?.paths?.join?.("/") || "/";
   const preview = draftMode();
 
@@ -41,8 +41,6 @@ export default async function PageTemplateLoader(props: {
 
   return (
     <>
-      <pre>{JSON.stringify({ uri }, null, 2)}</pre>
-      <pre>{JSON.stringify(mergedData, null, 2)}</pre>
       <PageTemplate
         uri={uri}
         data={mergedData}
@@ -56,7 +54,7 @@ export default async function PageTemplateLoader(props: {
           uri={uri}
           data={data}
           previewData={previewData}
-          searchParams={props.searchParams}
+          searchParams={searchParams}
         />
       )}
     </>
