@@ -32,17 +32,20 @@ export default async function PageTemplateLoader(props: {
   }
 
   // Merge preview data into data
+  const mergedData = { ...data };
   if (previewData) {
     Object.keys(previewData).forEach((key) => {
-      data[key] = previewData[key];
+      mergedData[key] = previewData[key];
     });
   }
 
   return (
     <>
+      <pre>{JSON.stringify({ uri }, null, 2)}</pre>
+      <pre>{JSON.stringify(mergedData, null, 2)}</pre>
       <PageTemplate
         uri={uri}
-        data={data}
+        data={mergedData}
         archive={archive}
         isPreview={preview.isEnabled}
         {...props}

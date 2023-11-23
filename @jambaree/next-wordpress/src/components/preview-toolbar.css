@@ -49,6 +49,34 @@
   transform: translateX(calc(100% + 10px));
 }
 
+.preview-tooltip-edit-page {
+  position: relative;
+}
+
+.preview-tooltip-edit-page:hover::after {
+  display: block;
+}
+
+.preview-tooltip-edit-page::after {
+  box-shadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.25);
+  background-color: #333;
+  border-radius: 10px;
+  color: #fff;
+  display: none;
+  padding: 10px 15px;
+  position: absolute;
+  text-align: center;
+  z-index: 999;
+  width: 150px;
+}
+
+.preview-tooltip-edit-page.right::after {
+  content: "Edit page";
+  top: 0;
+  right: 0;
+  transform: translateX(calc(100% + 10px));
+}
+
 .preview-tooltip-no-content-warning {
   position: relative;
   color: red;
