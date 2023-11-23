@@ -20,7 +20,7 @@ export const FlexibleContent = ({
       .map(({ acf_fc_layout, ...rest }: any, index: number) => {
         // capitalize each word and remove underscores
         const type = acf_fc_layout
-          ?.split("_")
+          ?.split(/[_-]/)
           .map(
             (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
           )
