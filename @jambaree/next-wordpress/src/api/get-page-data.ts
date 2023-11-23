@@ -59,7 +59,7 @@ export async function getPageData(
   // handle fetching archive pages
   if (archive) {
     const req = await fetch(
-      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?acf_format=standard`
+      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?acf_format=standard&_embed`
     );
     try {
       const data = await req.json();
@@ -104,7 +104,7 @@ const getPreviewData = async ({
   id: string;
   postTypeRestBase: string;
 }) => {
-  const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/autosaves?acf_format=standard`;
+  const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/autosaves?acf_format=standard&_embed`;
   const req = await fetch(endpoint, {
     headers: {
       Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD!)}`,

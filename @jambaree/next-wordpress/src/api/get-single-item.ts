@@ -9,7 +9,7 @@ export const getSingleItem = async ({
 }) => {
   if (id) {
     const req = await fetch(
-      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}?acf_format=standard`
+      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}?acf_format=standard&_embed`
     );
     try {
       const data = await req.json();
