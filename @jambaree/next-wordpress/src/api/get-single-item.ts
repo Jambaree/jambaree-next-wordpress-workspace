@@ -5,7 +5,7 @@ export const getSingleItem = async ({
   slug,
   postTypeRestBase,
 }: {
-  id?: string;
+  id?: string | number;
   slug?: string;
   postTypeRestBase: string;
 }) => {

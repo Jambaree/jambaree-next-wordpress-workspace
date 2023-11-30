@@ -127,6 +127,52 @@ export interface WpSettings {
   site_icon: number;
 }
 
+export interface WpSiteLogo {
+  id?: number;
+  source_url?: string;
+  alt_text?: string;
+
+  date?: string;
+  date_gmt?: string;
+  guid?: {
+    rendered: string;
+  };
+  modified?: string;
+  modified_gmt?: string;
+  slug?: string;
+  status?: string;
+  type?: string;
+  link?: string;
+  title?: {
+    rendered: string;
+  };
+  author?: number;
+  comment_status?: string;
+  ping_status?: string;
+  template?: string;
+  meta?: any[];
+  acf?: any[];
+  description?: {
+    rendered: string;
+  };
+  caption?: {
+    rendered: string;
+  };
+  media_type?: string;
+  mime_type?: string;
+  media_details?: {
+    width: number;
+    height: number;
+    file: string;
+    filesize: number;
+    sizes: any;
+    image_meta: any;
+  };
+  post?: null | number; // Assuming 'post' can be a number or null
+
+  _links?: any;
+}
+
 export interface WpMenuItem {
   id: number;
   title: {

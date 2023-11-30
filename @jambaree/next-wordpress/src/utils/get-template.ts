@@ -1,4 +1,4 @@
-import type { WpPage } from "types";
+import type { WpPage } from "@/types";
 import log from "./log";
 
 type GetTemplateArgs = {
@@ -18,7 +18,7 @@ export default function getTemplate({
   templates,
 }: GetTemplateArgs) {
   if (archive?.slug) {
-    const tmplName = removeFileExt(archive.slug);
+    const tmplName = handleTemplateName(archive.slug);
     const template = templates?.archive?.[tmplName];
     if (!template) {
       log(
@@ -29,12 +29,12 @@ export default function getTemplate({
   }
 
   if (!archive) {
-    const tmplName = removeFileExt(data.template || "default");
+    const tmplName = handleTemplateName(data.template || "default");
     const template = templates?.[data.type]?.[tmplName];
 
     if (!template) {
       log(
-        `Warn: Template "${data.template || "default"}" not found for type "${
+        `Warn: Template "${tmplName || "default"}" not found for type "${
           data.type
         }" on uri '${uri}'. Did you forget to add it to the templates object in src/templates/index? `
       );
@@ -45,8 +45,21 @@ export default function getTemplate({
 
 export { getTemplate };
 
-function removeFileExt(filename: string) {
+function handleTemplateName(filename: string) {
+  let templateName = filename;
+
   const dotIndex = filename.lastIndexOf(".");
-  if (dotIndex === -1) return filename;
-  return filename.substring(0, dotIndex);
+
+  if (dotIndex !== -1) {
+    templateName = filename.substring(0, dotIndex);
+  }
+
+  templateName = templateName
+    ?.split(/[_-]/)
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join("");
+
+  templateName = templateName.charAt(0).toLowerCase() + templateName.slice(1);
+
+  return templateName;
 }

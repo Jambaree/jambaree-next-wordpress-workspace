@@ -14,7 +14,10 @@ export default async function PageTemplateLoader(props: {
   const uri = params?.paths?.join?.("/") || "/";
   const preview = draftMode();
 
-  const { data, archive, previewData } = await getPageData(uri);
+  const { data, archive, previewData, ...rest } = await getPageData(
+    uri,
+    searchParams
+  );
 
   if (!data) {
     notFound();

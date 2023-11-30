@@ -37,6 +37,7 @@ module.exports = {
   ignorePatterns: ["node_modules/", "dist/"],
   // add rules configurations here
   rules: {
+    "@typescript-eslint/no-unsafe-assignment": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     camelcase: "off",
     "import/no-named-as-default": "off",

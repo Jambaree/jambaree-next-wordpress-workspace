@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers";
-import type { WpPage } from "../../types";
+import type { WpPage } from "../types";
 import type { PostType } from "./get-post-types";
 import { getPostTypes } from "./get-post-types";
 import { getSiteSettings } from "./get-site-settings";
@@ -13,36 +13,28 @@ import { getSingleItem } from "./get-single-item";
  * ```
  */
 export async function getPageData(
-  uri: string
+  uri: string,
+  searchParams: any
 ): Promise<{ data?: WpPage; archive?: any; previewData?: any }> {
   const preview = draftMode();
-
+  // console.log({ searchParams });
   const paths = uri.split("/");
   const slug = paths.slice(-1).toString();
   const postTypes = await getPostTypes();
-
+  // console.log({ postTypes });
   let archive: PostType | null = null;
   let postTypeRestBase = "pages";
 
+  const settings = await getSiteSettings();
+
   // handle front page
   if (uri === "/") {
-    const settings = await getSiteSettings();
-
-    const data = await getSingleItem({
-      id: settings.page_on_front,
-      postTypeRestBase,
+    const { data, previewData } = await getFrontPage({
+      settings,
+      preview,
     });
 
-    if (preview.isEnabled) {
-      const previewData = await getPreviewData({
-        id: data?.id,
-        postTypeRestBase,
-      });
-
-      return { data, previewData };
-    }
-
-    return { data };
+    return { data, previewData };
   }
 
   for (const key in postTypes) {
@@ -56,14 +48,58 @@ export async function getPageData(
     }
   }
 
+  const blogPage = await getSingleItem({
+    id: settings.page_for_posts,
+    postTypeRestBase: "pages",
+  });
+
+  if (blogPage?.slug === slug) {
+    archive = {
+      has_archive: blogPage?.slug,
+      slug: "posts",
+      rest_base: "posts",
+    };
+  }
+
   // handle fetching archive pages
   if (archive) {
-    const req = await fetch(
-      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?acf_format=standard&_embed`
+    const params = {
+      per_page: settings.posts_per_page,
+      page: searchParams?.page || 1,
+      _embed: true,
+      acf_format: "standard",
+    };
+    const queryString = new URLSearchParams(params).toString();
+
+    const archiveItemsRequest = await fetch(
+      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?${queryString}`
     );
+    const nextPageRequest = await fetch(
+      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?${queryString}`
+    );
+
     try {
-      const data = await req.json();
-      return { data, archive };
+      const hasNextPage = await nextPageRequest.json();
+      const items = await archiveItemsRequest.json();
+
+      const pageForItems = await getSingleItem({
+        slug: archive.has_archive,
+        postTypeRestBase: "pages",
+      });
+
+      return {
+        data: {
+          items,
+          page: pageForItems,
+          prevPage: searchParams?.page > 1 ? searchParams?.page - 1 : null,
+          nextPage:
+            hasNextPage.length > 0 ? Number(searchParams?.page || 1) + 1 : null,
+          totalPages: archiveItemsRequest.headers.get("X-WP-TotalPages"),
+          total: archiveItemsRequest.headers.get("X-WP-Total"),
+          currentPage: searchParams?.page || 1,
+        },
+        archive,
+      };
     } catch (err) {
       throw new Error(`Error fetching archive page: ${err.message}`);
     }
@@ -131,3 +167,20 @@ const getPreviewData = async ({
     );
   }
 };
+
+async function getFrontPage({ settings, preview, postTypeRestBase = "pages" }) {
+  const data = await getSingleItem({
+    id: settings.page_on_front,
+    postTypeRestBase,
+  });
+
+  if (preview.isEnabled) {
+    const previewData = await getPreviewData({
+      id: data?.id,
+      postTypeRestBase,
+    });
+
+    return { data, previewData };
+  }
+  return { data };
+}
