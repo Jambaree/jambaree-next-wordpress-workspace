@@ -6,7 +6,7 @@ export default function PageRoute({
   searchParams,
 }: {
   params: { paths: string[] };
-  searchParams?: any;
+  searchParams?: Record<string, string | string[] | undefined>;
 }) {
   return (
     <WordpressTemplate

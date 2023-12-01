@@ -3,6 +3,7 @@ import { PageTemplateLoader } from "./page-template-loader";
 
 export function WordpressTemplate(props: {
   params: { paths: string[] };
+  searchParams?: { [key: string]: string | string[] | undefined };
   templates: any;
 }) {
   return <PageTemplateLoader {...props} />;
