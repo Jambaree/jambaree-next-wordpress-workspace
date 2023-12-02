@@ -9,15 +9,11 @@ export default function PageRoute(props: {
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
   return (
-    <>
-      <pre>{JSON.stringify({ params: props.params }, null, 2)}</pre>
-      <pre>{JSON.stringify({ searchParams: props.searchParams }, null, 2)}</pre>
-      <WordpressTemplate
-        params={props.params}
-        searchParams={props.searchParams}
-        templates={templates}
-      />
-    </>
+    <WordpressTemplate
+      params={props.params}
+      searchParams={props.searchParams}
+      templates={templates}
+    />
   );
 }
 

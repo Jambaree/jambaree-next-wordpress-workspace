@@ -4,6 +4,7 @@ import { draftMode } from "next/headers";
 import getTemplate from "../../utils/get-template";
 import { getPageData } from "../../api/get-page-data";
 import { PreviewToolbar } from "../preview-toolbar";
+import { RouteParamsDebug } from "../route-params-debug";
 
 export default async function PageTemplateLoader(props: {
   params?: { paths?: string[] };
@@ -13,6 +14,7 @@ export default async function PageTemplateLoader(props: {
 }) {
   const { params, templates, searchParams, supressWarnings } = props;
   const uri = params?.paths?.join("/") || "/";
+
   const preview = draftMode();
 
   const { data, archive, previewData } = await getPageData(uri, searchParams);
@@ -43,6 +45,10 @@ export default async function PageTemplateLoader(props: {
 
   return (
     <>
+      {process.env.ROUTE_PARAMS_DEBUG_ENABLED ? (
+        <RouteParamsDebug params={params} searchParams={searchParams} />
+      ) : null}
+
       <PageTemplate
         archive={archive}
         data={mergedData}
