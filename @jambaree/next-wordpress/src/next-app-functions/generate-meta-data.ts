@@ -55,15 +55,15 @@ ${
 
   return {
     generator: "Jambaree.com",
-    applicationName: decodeHtmlEntities(siteSettings.title),
+    applicationName: siteSettings.title,
     metadataBase: new URL(process.env.NEXT_PUBLIC_WP_URL || "http://localhost"),
-    title: decodeHtmlEntities(yoast?.title),
-    description: decodeHtmlEntities(yoast?.og_description),
+    title: yoast?.title,
+    description: yoast?.og_description,
 
     openGraph: {
-      title: decodeHtmlEntities(yoast?.og_title),
-      description: decodeHtmlEntities(yoast?.og_description),
-      siteName: decodeHtmlEntities(yoast?.og_site_name),
+      title: yoast?.og_title,
+      description: yoast?.og_description,
+      siteName: yoast?.og_site_name,
       locale: yoast?.og_locale,
       url: swapWpUrl(yoast?.og_url ?? ""),
       images: yoast?.og_image ? yoast.og_image.map((ogImg) => ogImg.url) : [],
@@ -74,14 +74,4 @@ ${
       images: yoast?.twitter_image,
     },
   } as Metadata;
-}
-
-function decodeHtmlEntities(str?: string): string {
-  if (!str) return "";
-  return str
-    .replace(/&amp;/g, "&")
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
 }
