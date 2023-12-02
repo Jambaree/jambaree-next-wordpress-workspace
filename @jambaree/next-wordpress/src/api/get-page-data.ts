@@ -25,7 +25,7 @@ export async function getPageData(
   let postTypeRestBase = "pages";
 
   // handle front page
-  if (uri === "/") {
+  if (uri === "/" || uri === "index") {
     const settings = await getSiteSettings();
 
     const data = await getSingleItem({
