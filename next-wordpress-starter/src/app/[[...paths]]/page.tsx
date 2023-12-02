@@ -4,22 +4,17 @@ import {
 } from "@jambaree/next-wordpress";
 import templates from "@/templates";
 
-export default function PageRoute({
-  params = {
-    paths: [],
-  },
-  searchParams,
-}: {
+export default function PageRoute(props: {
   params: { paths: string[] };
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
   return (
     <>
-      <pre>{JSON.stringify({ params }, null, 2)}</pre>
-      <pre>{JSON.stringify({ searchParams }, null, 2)}</pre>
+      <pre>{JSON.stringify({ params: props.params }, null, 2)}</pre>
+      <pre>{JSON.stringify({ searchParams: props.searchParams }, null, 2)}</pre>
       <WordpressTemplate
-        params={params}
-        searchParams={searchParams}
+        params={props.params}
+        searchParams={props.searchParams}
         templates={templates}
       />
     </>
