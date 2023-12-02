@@ -1,14 +1,15 @@
 import { draftMode } from "next/headers";
+import type { WpPage } from "@/types";
 
 export const getSingleItem = async ({
   id,
   slug,
   postTypeRestBase,
 }: {
-  id?: string;
+  id?: string | number;
   slug?: string;
   postTypeRestBase: string;
-}) => {
+}): Promise<WpPage | undefined> => {
   const params: Record<string, string> = {
     acf_format: "standard", // includes ACF data in the response
     _embed: "true", // includes embedded data in the response like (featured image, author, etc.)

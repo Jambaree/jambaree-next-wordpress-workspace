@@ -156,3 +156,86 @@ export interface WpMenuItem {
 }
 
 export type WpMenu = WpMenuItem[];
+
+export interface WpMediaObject {
+  id: number;
+  date: string;
+  date_gmt: string;
+  guid: RenderedObject;
+  modified: string;
+  modified_gmt: string;
+  slug: string;
+  status: string;
+  type: string;
+  link: string;
+  title: RenderedObject;
+  author: number;
+  comment_status: string;
+  ping_status: string;
+  template: string;
+  meta: any[];
+  acf: any[];
+  description: RenderedObject;
+  caption: RenderedObject;
+  alt_text: string;
+  media_type: string;
+  mime_type: string;
+  media_details: MediaDetails;
+  post: null | any; // Replace 'any' with a more specific type if needed
+  source_url: string;
+  _links: Links;
+}
+
+type RenderedObject = {
+  rendered: string;
+};
+
+type MediaDetails = {
+  width: number;
+  height: number;
+  file: string;
+  filesize?: number;
+  sizes: { [key: string]: ImageSize };
+  image_meta: ImageMeta;
+};
+
+type ImageSize = {
+  file: string;
+  width: number;
+  height: number;
+  filesize?: number;
+  mime_type: string;
+  source_url: string;
+};
+
+type ImageMeta = {
+  aperture: string;
+  credit: string;
+  camera: string;
+  caption: string;
+  created_timestamp: string;
+  copyright: string;
+  focal_length: string;
+  iso: string;
+  shutter_speed: string;
+  title: string;
+  orientation: string;
+  keywords: string[];
+};
+
+type Links = {
+  self: Link[];
+  collection: Link[];
+  about: Link[];
+  author: AuthorLink[];
+  replies: Link[];
+};
+
+type Link = {
+  href: string;
+};
+
+type AuthorLink = {
+  embeddable: boolean;
+  href: string;
+};

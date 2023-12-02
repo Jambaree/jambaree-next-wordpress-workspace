@@ -5,5 +5,7 @@ export interface TextareaProps {
 }
 
 export function Textarea({ text }: TextareaProps) {
-  return <Edges className="my-10" dangerouslySetInnerHTML={{ __html: text }} />;
+  return (
+    <Edges className="my-10 prose" dangerouslySetInnerHTML={{ __html: text }} />
+  );
 }

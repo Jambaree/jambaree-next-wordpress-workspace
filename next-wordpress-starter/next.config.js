@@ -1,16 +1,19 @@
 /** @type {import('next').NextConfig} */
 
-const wpBaseUrl = process.env.NEXT_PUBLIC_WP_URL?.replace("https://", "");
+const wpBaseUrl = process.env.NEXT_PUBLIC_WP_URL?.replace(
+  "https://",
+  ""
+)?.replace("http://", "");
 
 const nextConfig = {
-  // experimental: {
-  //   ppr: true,
-  // },
-
   images: {
     remotePatterns: [
       {
         protocol: "https",
+        hostname: wpBaseUrl,
+      },
+      {
+        protocol: "http",
         hostname: wpBaseUrl,
       },
       {
@@ -33,11 +36,11 @@ const nextConfig = {
     ignoreDuringBuilds: true,
   },
 
-  logging: {
-    fetches: {
-      fullUrl: true,
-    },
-  },
+  // logging: {
+  //   fetches: {
+  //     fullUrl: true,
+  //   },
+  // },
 };
 
 module.exports = nextConfig;
