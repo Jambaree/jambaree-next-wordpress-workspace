@@ -3,9 +3,6 @@ export type PostType = {
    * `false` if no archive, `string` if archive slug is different from post type slug
    */
   has_archive: boolean | string;
-  /**
-   * The slug of this post type.
-   */
   slug: string;
   /**
    * The base path for this post type's REST API endpoint.

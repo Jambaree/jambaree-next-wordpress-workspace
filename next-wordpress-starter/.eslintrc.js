@@ -1,3 +1,7 @@
+const { resolve } = require("node:path");
+
+const project = resolve(process.cwd(), "tsconfig.json");
+
 /*
  * This is a custom ESLint configuration for use with
  * Next.js apps.
@@ -6,7 +10,7 @@
  * For more information, see https://github.com/vercel/style-guide
  *
  */
-const project = "./tsconfig.json";
+
 module.exports = {
   extends: [
     "@vercel/style-guide/eslint/node",
@@ -17,7 +21,6 @@ module.exports = {
     // "eslint-config-turbo",
   ].map(require.resolve),
   parserOptions: {
-    ecmaVersion: "latest",
     project,
   },
   globals: {
@@ -34,7 +37,6 @@ module.exports = {
   ignorePatterns: ["node_modules/", "dist/"],
   // add rules configurations here
   rules: {
-    "no-html-link-for-pages": "off",
     "@typescript-eslint/no-non-null-assertion": "off",
     camelcase: "off",
     "import/no-named-as-default": "off",
@@ -59,7 +61,7 @@ module.exports = {
     "@typescript-eslint/no-unsafe-member-access": "warn",
     "@typescript-eslint/no-unsafe-return": "warn",
     "no-console": "warn",
-    "@typescript-eslint/no-unsafe-assignment": "off",
+    "@typescript-eslint/no-unsafe-assignment": "warn",
 
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/consistent-type-definitions": "off",

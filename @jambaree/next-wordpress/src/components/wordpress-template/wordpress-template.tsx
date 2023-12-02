@@ -3,12 +3,7 @@ import { PageTemplateLoader } from "./page-template-loader";
 
 export function WordpressTemplate(props: {
   params: { paths: string[] };
-  searchParams?: Record<string, string | string[] | undefined>;
   templates: any;
-  /**
-   * Suppresses warnings when a template is not found.
-   */
-  supressWarnings?: boolean;
 }) {
   return <PageTemplateLoader {...props} />;
 

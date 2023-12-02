@@ -1,4 +1,4 @@
-import type { WpLink, WpMenu, WpMenuItem } from "@/types";
+import type { WpLink, WpMenu, WpMenuItem } from "types";
 
 type MenuResponse = {
   id: number;
@@ -75,30 +75,6 @@ ${
       throw new Error(`Error fetching menu with slug ${slug}: ${err.message}`);
     }
   });
-
-  if (!menu?.id) {
-    // handle missing menu
-    const availableMenus = await fetch(
-      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/menus`,
-      args
-    ).then(async (res) => {
-      try {
-        const json = (await res.json()) as {
-          id: number;
-          name: string;
-          slug: string;
-          items: number[];
-        }[];
-        return json.map((menu) => `"${menu.slug}"`);
-      } catch (err) {
-        throw new Error(`Error fetching menus`);
-      }
-    });
-
-    throw new Error(
-      `No menu found with slug "${slug}".\nAvailable menu slugs: ${availableMenus}`
-    );
-  }
 
   // get menu items by menu id
   const req = await fetch(

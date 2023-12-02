@@ -1,4 +1,4 @@
-import type { WpPage } from "@/types";
+import type { WpPage } from "types";
 import log from "./log";
 
 type GetTemplateArgs = {
@@ -6,7 +6,6 @@ type GetTemplateArgs = {
   data: WpPage;
   archive?: WpPage;
   templates: any;
-  supressWarnings?: boolean;
 };
 
 /**
@@ -17,12 +16,11 @@ export default function getTemplate({
   data,
   archive,
   templates,
-  supressWarnings,
 }: GetTemplateArgs) {
   if (archive?.slug) {
-    const tmplName = handleTemplateName(archive.slug);
+    const tmplName = removeFileExt(archive.slug);
     const template = templates?.archive?.[tmplName];
-    if (!template && !supressWarnings) {
+    if (!template) {
       log(
         `Warn: Archive template "${archive.slug}" not found on uri '${uri}'. Did you forget to add it to the templates object in src/templates/index? `
       );
@@ -31,12 +29,12 @@ export default function getTemplate({
   }
 
   if (!archive) {
-    const tmplName = handleTemplateName(data.template || "default");
+    const tmplName = removeFileExt(data.template || "default");
     const template = templates?.[data.type]?.[tmplName];
 
-    if (!template && !supressWarnings) {
+    if (!template) {
       log(
-        `Warn: Template "${tmplName || "default"}" not found for type "${
+        `Warn: Template "${data.template || "default"}" not found for type "${
           data.type
         }" on uri '${uri}'. Did you forget to add it to the templates object in src/templates/index? `
       );
@@ -47,21 +45,8 @@ export default function getTemplate({
 
 export { getTemplate };
 
-function handleTemplateName(filename: string) {
-  let templateName = filename;
-
+function removeFileExt(filename: string) {
   const dotIndex = filename.lastIndexOf(".");
-
-  if (dotIndex !== -1) {
-    templateName = filename.substring(0, dotIndex);
-  }
-
-  templateName = templateName
-    .split(/[_-]/)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
-    .join("");
-
-  templateName = templateName.charAt(0).toLowerCase() + templateName.slice(1);
-
-  return templateName;
+  if (dotIndex === -1) return filename;
+  return filename.substring(0, dotIndex);
 }

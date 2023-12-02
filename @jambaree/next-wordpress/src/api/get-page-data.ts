@@ -1,5 +1,5 @@
 import { draftMode } from "next/headers";
-import type { WpPage, WpSettings } from "../types";
+import type { WpPage } from "../../types";
 import type { PostType } from "./get-post-types";
 import { getPostTypes } from "./get-post-types";
 import { getSiteSettings } from "./get-site-settings";
@@ -13,29 +13,8 @@ import { getSingleItem } from "./get-single-item";
  * ```
  */
 export async function getPageData(
-  uri: string,
-  searchParams?: {
-    page?: string;
-  }
-): Promise<{
-  /**
-   * The data is the page data for the current page/post/custom.
-   */
-  data?: WpPage;
-  /**
-   * The items is an array of the related posts/pages/custom if the uri is an archive page,
-   * based on WordPress's posts per page setting, and the current page number as a searchParam (?page=1).
-   */
-  items?: WpPage[];
-  /**
-   * The archive is the post type archive data if the uri is an archive page.
-   */
-  archive?: PostType;
-  /**
-   * The previewData is the preview data for the current page/post/custom.
-   */
-  previewData?: WpPage;
-}> {
+  uri: string
+): Promise<{ data?: WpPage; archive?: any; previewData?: any }> {
   const preview = draftMode();
 
   const paths = uri.split("/");
@@ -45,16 +24,25 @@ export async function getPageData(
   let archive: PostType | null = null;
   let postTypeRestBase = "pages";
 
-  const settings = await getSiteSettings();
-
   // handle front page
   if (uri === "/") {
-    const { data, previewData } = await getFrontPage({
-      settings,
-      preview,
+    const settings = await getSiteSettings();
+
+    const data = await getSingleItem({
+      id: settings.page_on_front,
+      postTypeRestBase,
     });
 
-    return { data, previewData };
+    if (preview.isEnabled) {
+      const previewData = await getPreviewData({
+        id: data?.id,
+        postTypeRestBase,
+      });
+
+      return { data, previewData };
+    }
+
+    return { data };
   }
 
   for (const key in postTypes) {
@@ -68,93 +56,40 @@ export async function getPageData(
     }
   }
 
-  const blogPage = await getSingleItem({
-    id: settings.page_for_posts,
-    postTypeRestBase: "pages",
-  });
-
-  if (blogPage?.slug === slug) {
-    archive = {
-      has_archive: blogPage.slug,
-      slug: "posts",
-      rest_base: "posts",
-    };
-  }
-
   // handle fetching archive pages
   if (archive) {
-    const params = {
-      per_page: String(settings.posts_per_page),
-      _embed: "true",
-      acf_format: "standard",
-    };
-    const currentPageParams = {
-      ...params,
-      page: String(searchParams?.page || "1"),
-    };
-    const currentPageQueryString = new URLSearchParams(
-      currentPageParams
-    ).toString();
-
-    const nextPageParams = {
-      ...params,
-      page: String(Number(searchParams?.page) + 1 || "2"),
-    };
-
-    const nextPageQueryString = new URLSearchParams(nextPageParams).toString();
-
-    const archiveItemsRequest = await fetch(
-      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?${currentPageQueryString}`
+    const req = await fetch(
+      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?acf_format=standard&_embed`
     );
-    const nextPageRequest = await fetch(
-      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?${nextPageQueryString}`
-    );
-
     try {
-      const items = (await archiveItemsRequest.json()) as WpPage[];
-      const nextPageItems = (await nextPageRequest.json()) as WpPage[];
-
-      let pageForItems;
-      if (typeof archive.has_archive === "string") {
-        pageForItems = await getSingleItem({
-          slug: archive.has_archive,
-          postTypeRestBase: "pages",
-        });
-      }
-
-      return {
-        data: {
-          items,
-
-          page: pageForItems,
-          prevPage:
-            Number(searchParams?.page || 1) > 1
-              ? Number(searchParams?.page || 1) - 1
-              : null,
-          nextPage:
-            nextPageItems.length > 0
-              ? Number(searchParams?.page || 1) + 1
-              : null,
-          totalPages: archiveItemsRequest.headers.get("X-WP-TotalPages"),
-          total: archiveItemsRequest.headers.get("X-WP-Total"),
-          currentPage: searchParams?.page || 1,
-        },
-        archive,
-      };
+      const data = await req.json();
+      return { data, archive };
     } catch (err) {
-      throw new Error(`Error fetching archive page: ${err?.message}`);
+      throw new Error(`Error fetching archive page: ${err.message}`);
     }
+  }
+
+  if (uri.startsWith("private/")) {
+    const restBase = uri.split("/")[1];
+    const id = uri.split("/")[2];
+
+    const data = await getSingleItem({
+      id: id,
+      postTypeRestBase: restBase,
+    });
+
+    return { data };
   }
 
   // handle single items
   const data = await getSingleItem({
-    slug,
+    slug: slug,
     postTypeRestBase,
   });
 
   // posts are a special case because they can have an empty slug prefix like pages
   const possiblePostData = await getSingleItem({
-    slug,
+    slug: slug,
     postTypeRestBase: "posts",
   });
   if (possiblePostData) {
@@ -196,38 +131,3 @@ const getPreviewData = async ({
     );
   }
 };
-
-async function getFrontPage({
-  settings,
-  preview,
-  postTypeRestBase = "pages",
-}: {
-  /**
-   * The site settings from the WordPress REST API.
-   * You can get this easily with the `getSiteSettings` function.
-   */
-  settings: WpSettings;
-  /**
-   * The preview object from the Next.js `draftMode` function.
-   */
-  preview: ReturnType<typeof draftMode>;
-  /**
-   * The post type rest base for the front page.
-   */
-  postTypeRestBase?: string;
-}) {
-  const data = await getSingleItem({
-    id: settings.page_on_front,
-    postTypeRestBase,
-  });
-
-  if (preview.isEnabled) {
-    const previewData = await getPreviewData({
-      id: data?.id,
-      postTypeRestBase,
-    });
-
-    return { data, previewData };
-  }
-  return { data };
-}

@@ -1,15 +1,14 @@
 import { FlexibleContent } from "@jambaree/next-wordpress";
-import type { WpPage } from "@jambaree/next-wordpress/src/types";
-import type { RowItem } from "@jambaree/next-wordpress/src/components/flexible-content";
+import type { WpPage } from "@jambaree/next-wordpress/types";
+import type { BlockData } from "@/components/blocks/types";
 import * as blocks from "../../components/blocks";
 
 interface PageData extends WpPage {
   acf?: {
-    modules: RowItem[];
+    modules: BlockData[];
   };
 }
 
 export default function DefaultPageTemplate({ data }: { data: PageData }) {
-  if (!data.acf?.modules) return null;
-  return <FlexibleContent blocks={blocks} rows={data.acf.modules} />;
+  return <FlexibleContent blocks={blocks} rows={data.acf?.modules} />;
 }

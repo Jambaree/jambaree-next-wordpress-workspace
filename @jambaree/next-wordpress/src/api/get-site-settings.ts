@@ -1,4 +1,4 @@
-import type { WpSettings } from "@/types";
+import type { WpSettings } from "types";
 
 type WpSettingsResponse = {
   code?: string;
@@ -27,7 +27,7 @@ ${
   }
 
   const req = await fetch(
-    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/settings?embed=true`,
+    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/settings`,
     {
       headers: {
         Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD)}`,
