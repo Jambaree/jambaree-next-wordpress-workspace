@@ -1,4 +1,7 @@
-import { WordpressTemplate } from "@jambaree/next-wordpress";
+import {
+  WordpressTemplate,
+  generateStaticParams as jambareeGenerateStaticParams,
+} from "@jambaree/next-wordpress";
 import templates from "@/templates";
 
 export default function PageRoute({
@@ -23,5 +26,11 @@ export default function PageRoute({
 
 export {
   generateMetadata,
-  generateStaticParams,
+  // generateStaticParams,
 } from "@jambaree/next-wordpress";
+
+export async function generateStaticParams() {
+  return jambareeGenerateStaticParams({
+    postTypes: ["page"],
+  });
+}
