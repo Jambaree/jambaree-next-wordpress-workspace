@@ -47,9 +47,6 @@ export async function getPageData(
 
   const settings = await getSiteSettings();
 
-  console.log({ uri });
-  console.log({ paths });
-  console.log({ slug });
   // handle front page
   if (uri === "/") {
     console.log("getting front page now");
