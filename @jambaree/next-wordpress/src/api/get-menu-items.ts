@@ -110,7 +110,6 @@ ${
   try {
     data = (await req.json()) as MenuResponse;
   } catch (err) {
-    console.log(req.status, req.statusText, await req.text());
     throw new Error(
       `Error fetching menu items for menu id ${menu.id}: ${err.message}`
     );
