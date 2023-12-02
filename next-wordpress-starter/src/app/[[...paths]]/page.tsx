@@ -31,6 +31,6 @@ export {
 
 export async function generateStaticParams() {
   return jambareeGenerateStaticParams({
-    postTypes: ["page"],
+    postTypes: ["pages"],
   });
 }
