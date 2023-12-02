@@ -76,7 +76,7 @@ ${
     }
   });
 
-  if (!menu?.id) {
+  if (!menu.id) {
     // handle missing menu
     const availableMenus = await fetch(
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/menus`,
@@ -110,6 +110,7 @@ ${
   try {
     data = (await req.json()) as MenuResponse;
   } catch (err) {
+    console.log(req.status, req.statusText, await req.text());
     throw new Error(
       `Error fetching menu items for menu id ${menu.id}: ${err.message}`
     );
