@@ -29,12 +29,12 @@ export async function generateStaticParams({
   const allItems = await getAllItems(postTypes);
 
   for (const item of allItems) {
-    // if (item.path === "/") {
-    //   staticParams.push({
-    //     paths: ["/"],
-    //   });
-    //   continue;
-    // }
+    if (item.path === "/") {
+      staticParams.push({
+        paths: ["/"],
+      });
+      continue;
+    }
 
     const pathBreadcrumbs = item.path.split("/").filter((x) => x);
 
