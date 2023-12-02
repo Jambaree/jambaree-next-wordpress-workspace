@@ -30,7 +30,6 @@ export async function generateStaticParams({
 
   for (const item of allItems) {
     if (item.path === "/") {
-      console.log("item path home page? ", item.path);
       staticParams.push({
         paths: ["index"],
       });
