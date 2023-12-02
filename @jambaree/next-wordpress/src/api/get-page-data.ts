@@ -49,6 +49,7 @@ export async function getPageData(
 
   // handle front page
   if (uri === "/") {
+    console.log("getting front page now");
     const { data, previewData } = await getFrontPage({
       settings,
       preview,
