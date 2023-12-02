@@ -23,6 +23,11 @@ export async function getPageData(
    */
   data?: WpPage;
   /**
+   * The items is an array of the related posts/pages/custom if the uri is an archive page,
+   * based on WordPress's posts per page setting, and the current page number as a searchParam (?page=1).
+   */
+  items?: WpPage[];
+  /**
    * The archive is the post type archive data if the uri is an archive page.
    */
   archive?: PostType;
@@ -42,12 +47,12 @@ export async function getPageData(
 
   const settings = await getSiteSettings();
 
+  // console.log({ uri });
   // console.log({ paths });
   // console.log({ slug });
   // todo: handle url encoded values like this %2F ("/")
   // handle front page
-  if (uri === "/" || uri === "%2F" || !uri) {
-    console.log({ uri });
+  if (uri === "/" || uri === "%2F") {
     const { data, previewData } = await getFrontPage({
       settings,
       preview,
