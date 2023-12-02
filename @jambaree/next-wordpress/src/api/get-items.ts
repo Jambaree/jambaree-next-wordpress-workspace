@@ -29,8 +29,8 @@ export async function getItems({ restBase = "pages" }): Promise<Items> {
   while (morePagesAvailable) {
     const params = {
       per_page: "100",
-      // _embed: "true",
-      // acf_format: "standard",
+      _embed: "true",
+      acf_format: "standard",
       page,
     };
 
