@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import type { WpImage, WpLink } from "@jambaree/next-wordpress/types";
+import type { WpImage, WpLink } from "@jambaree/next-wordpress/src/types";
 import Button from "../ui/button";
 
 export interface HeroProps {

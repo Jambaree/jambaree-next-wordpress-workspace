@@ -6,6 +6,7 @@ type GetTemplateArgs = {
   data: WpPage;
   archive?: WpPage;
   templates: any;
+  supressWarnings?: boolean;
 };
 
 /**
@@ -16,11 +17,12 @@ export default function getTemplate({
   data,
   archive,
   templates,
+  supressWarnings,
 }: GetTemplateArgs) {
   if (archive?.slug) {
     const tmplName = handleTemplateName(archive.slug);
     const template = templates?.archive?.[tmplName];
-    if (!template) {
+    if (!template && !supressWarnings) {
       log(
         `Warn: Archive template "${archive.slug}" not found on uri '${uri}'. Did you forget to add it to the templates object in src/templates/index? `
       );
@@ -32,7 +34,7 @@ export default function getTemplate({
     const tmplName = handleTemplateName(data.template || "default");
     const template = templates?.[data.type]?.[tmplName];
 
-    if (!template) {
+    if (!template && !supressWarnings) {
       log(
         `Warn: Template "${tmplName || "default"}" not found for type "${
           data.type
@@ -55,7 +57,7 @@ function handleTemplateName(filename: string) {
   }
 
   templateName = templateName
-    ?.split(/[_-]/)
+    .split(/[_-]/)
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
     .join("");
 

@@ -1,23 +1,21 @@
 import React from "react";
 import { notFound } from "next/navigation";
+import { draftMode } from "next/headers";
 import getTemplate from "../../utils/get-template";
 import { getPageData } from "../../api/get-page-data";
-import { draftMode } from "next/headers";
 import { PreviewToolbar } from "../preview-toolbar";
 
 export default async function PageTemplateLoader(props: {
-  params: { paths: string[] };
+  params?: { paths?: string[] };
   templates: any;
-  searchParams?: { [key: string]: string | string[] | undefined };
+  searchParams?: Record<string, string | string[] | undefined>;
+  supressWarnings?: boolean;
 }) {
-  const { params, templates, searchParams } = props;
-  const uri = params?.paths?.join?.("/") || "/";
+  const { params, templates, searchParams, supressWarnings } = props;
+  const uri = params?.paths?.join("/") || "/";
   const preview = draftMode();
 
-  const { data, archive, previewData, ...rest } = await getPageData(
-    uri,
-    searchParams
-  );
+  const { data, archive, previewData } = await getPageData(uri, searchParams);
 
   if (!data) {
     notFound();
@@ -28,6 +26,7 @@ export default async function PageTemplateLoader(props: {
     data,
     archive,
     templates,
+    supressWarnings,
   });
 
   if (!PageTemplate) {
@@ -45,21 +44,21 @@ export default async function PageTemplateLoader(props: {
   return (
     <>
       <PageTemplate
-        uri={uri}
-        data={mergedData}
         archive={archive}
+        data={mergedData}
         isPreview={preview.isEnabled}
+        uri={uri}
         {...props}
       />
 
-      {preview.isEnabled && (
+      {preview.isEnabled ? (
         <PreviewToolbar
-          uri={uri}
           data={data}
           previewData={previewData}
           searchParams={searchParams}
+          uri={uri}
         />
-      )}
+      ) : null}
     </>
   );
 }

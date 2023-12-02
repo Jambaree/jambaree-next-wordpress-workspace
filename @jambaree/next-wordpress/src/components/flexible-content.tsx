@@ -1,54 +1,76 @@
-import React, { Fragment } from "react";
+import React from "react";
 
-interface IFlexibleContentProps {
-  blocks: any;
-  rows: any;
+export interface RowItem {
+  acf_fc_layout: string;
+  [key: string]: any;
+}
+
+export interface FlexibleContentProps {
+  /**
+   * Object of React Components that will be used to render the flexible content
+   */
+  blocks?: Record<string, React.ComponentType<any>>;
+  /**
+   * Array of acf flexible content rows from the Wordpress API
+   */
+  rows: RowItem[];
   /**
    * Extra data that will be passed to each individual component
    */
   data?: any;
+  /**
+   * Supress warnings in the console when a component is not found
+   */
+  supressWarnings?: boolean;
 }
 
-export const FlexibleContent = ({
+export function FlexibleContent({
   blocks,
   rows,
   data,
-}: IFlexibleContentProps) => {
-  if (!!rows) {
-    return rows
+  supressWarnings,
+}: FlexibleContentProps) {
+  return (
+    rows
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition -- sanitizing data, removing empty rows just in case the API returns some crap
       .filter((o) => o !== null)
-      .map(({ acf_fc_layout, ...rest }: any, index: number) => {
+      .map(({ acf_fc_layout, ...rest }: RowItem, index: number) => {
         // capitalize each word and remove underscores
         const type = acf_fc_layout
-          ?.split(/[_-]/)
+          .split(/[_-]/)
           .map(
             (word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()
           )
           .join("");
 
         const rowData = { type, ...rest };
-
         const Component = blocks?.[type];
 
-        const el = Component ? (
-          <Component
-            key={index}
-            firstItem={index === 0}
-            {...rowData}
-            {...data}
-          />
-        ) : (
-          <>
-            {console.log(`React component "${type}" was not found. Make sure the
-            component exists and you are importing it.`)}
-          </>
-        );
+        if (Component) {
+          return (
+            <Component
+              firstItem={index === 0}
+              // eslint-disable-next-line react/no-array-index-key -- there is no alternative
+              key={index}
+              {...rowData}
+              {...data}
+            />
+          );
+        }
 
-        return <Fragment key={index}>{el}</Fragment>;
-      });
-  } else {
-    return null;
-  }
-};
+        if (!supressWarnings) {
+          // eslint-disable-next-line no-console -- this is a warning
+          console.error(
+            `%cReact component "${type}" was not found. Make sure the
+            component exists and you are importing it.`,
+            "color: red;"
+          );
+          return null;
+        }
+
+        return null;
+      })
+  );
+}
 
 export default FlexibleContent;
