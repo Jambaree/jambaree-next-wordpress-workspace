@@ -50,8 +50,9 @@ export async function getPageData(
   console.log({ uri });
   console.log({ paths });
   console.log({ slug });
+  // todo: handle url encoded values like this %2F ("/")
   // handle front page
-  if (uri === "/") {
+  if (uri === "/" || uri === "%2F") {
     console.log("getting front page now");
     const { data, previewData } = await getFrontPage({
       settings,
