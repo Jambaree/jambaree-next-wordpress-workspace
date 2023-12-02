@@ -5,7 +5,9 @@ import {
 import templates from "@/templates";
 
 export default function PageRoute({
-  params,
+  params = {
+    paths: [],
+  },
   searchParams,
 }: {
   params: { paths: string[] };
