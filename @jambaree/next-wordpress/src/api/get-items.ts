@@ -28,7 +28,9 @@ export async function getItems({ restBase = "pages" }): Promise<Items> {
 
   while (morePagesAvailable) {
     const params = {
-      per_page: "50",
+      per_page: "100",
+      // _embed: "true",
+      // acf_format: "standard",
       page,
     };
 
@@ -39,25 +41,23 @@ export async function getItems({ restBase = "pages" }): Promise<Items> {
         `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${restBase}?${queryString}&acf_format=standard&_embed`
       );
 
-      const totalPages = req.headers.get("X-WP-TotalPages");
-
       const data = await req.json();
 
-      morePagesAvailable = Boolean(
-        totalPages && page < parseInt(totalPages, 10)
-      );
+      if (data.length === 0 || data.code === "rest_post_invalid_page_number") {
+        morePagesAvailable = false;
+      } else {
+        for (const key in data) {
+          // Add relative path to data
+          const path = data?.[key]?.link?.replace?.(
+            process.env.NEXT_PUBLIC_WP_URL,
+            ""
+          );
+          data[key].path = path;
+        }
 
-      for (const key in data) {
-        // Add relative path to data
-        const path = data?.[key]?.link?.replace?.(
-          process.env.NEXT_PUBLIC_WP_URL,
-          ""
-        );
-        data[key].path = path;
+        allData = allData.concat(data);
+        page++;
       }
-
-      allData = allData.concat(data);
-      page++;
     } catch (error) {
       console.error("Error fetching data:", error);
       morePagesAvailable = false;
