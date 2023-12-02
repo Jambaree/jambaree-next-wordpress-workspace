@@ -32,7 +32,7 @@ export async function generateStaticParams({
     if (item.path === "/") {
       console.log("item path home page? ", item.path);
       staticParams.push({
-        paths: ["/"],
+        paths: ["index"],
       });
       continue;
     }

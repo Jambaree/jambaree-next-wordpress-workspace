@@ -48,7 +48,7 @@ export async function getPageData(
   const settings = await getSiteSettings();
 
   // handle front page
-  if (uri === "/") {
+  if (uri === "/" || uri === "index") {
     const { data, previewData } = await getFrontPage({
       settings,
       preview,
