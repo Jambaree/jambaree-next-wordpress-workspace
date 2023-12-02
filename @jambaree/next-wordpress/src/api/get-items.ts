@@ -24,11 +24,11 @@ export async function getItems({ restBase = "pages" }): Promise<Items> {
   let page = 1;
   let morePagesAvailable = true;
 
-  // const settings = await getSiteSettings();
+  const settings = await getSiteSettings();
 
   while (morePagesAvailable) {
     const params = {
-      per_page: "100",
+      per_page: String(settings.posts_per_page || 10),
       _embed: "true",
       acf_format: "standard",
       page,
