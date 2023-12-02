@@ -1,6 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter next-wordpress-starter dev"
+    "dev": "pnpm --filter next-wordpress-starter dev",
+    "start": "pnpm --filter next-wordpress-starter start"
   }
 }
