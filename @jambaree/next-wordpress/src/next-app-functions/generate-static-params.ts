@@ -10,7 +10,7 @@ export async function generateStaticParams({
   postTypes = ["pages", "posts"],
 }: {
   /**
-   * The URL of the GraphQL endpoint.
+   * The URL of the WP SITE to fetch data from the REST API.
    * @default process.env.NEXT_PUBLIC_WP_URL
    */
   wpUrl?: string;
