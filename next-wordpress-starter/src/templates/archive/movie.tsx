@@ -20,7 +20,10 @@ export default function MovieArchive(props) {
       <p>items length: {data.items.length}</p>
 
       <pre>
-        <code>{JSON.stringify({ data }, null, 2)}</code>
+        <code>{JSON.stringify({ page: data.page }, null, 2)}</code>
+      </pre>
+      <pre>
+        <code>{JSON.stringify({ items: data.items }, null, 2)}</code>
       </pre>
       <pre>
         <code>{JSON.stringify({ archive }, null, 2)}</code>
