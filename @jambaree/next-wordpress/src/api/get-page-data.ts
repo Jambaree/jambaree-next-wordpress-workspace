@@ -84,20 +84,35 @@ export async function getPageData(
   // handle fetching archive pages
   if (archive) {
     const params = {
-      per_page: String(settings.posts_per_page || 10),
+      per_page: String(settings.posts_per_page),
       _embed: "true",
       acf_format: "standard",
+    };
+    const currentPageParams = {
+      ...params,
       page: String(searchParams?.page || "1"),
     };
+    const currentPageQueryString = new URLSearchParams(
+      currentPageParams
+    ).toString();
 
-    const currentPageQueryString = new URLSearchParams(params).toString();
+    const nextPageParams = {
+      ...params,
+      page: String(Number(searchParams?.page) + 1 || "2"),
+    };
+
+    const nextPageQueryString = new URLSearchParams(nextPageParams).toString();
 
     const archiveItemsRequest = await fetch(
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?${currentPageQueryString}`
     );
+    const nextPageRequest = await fetch(
+      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?${nextPageQueryString}`
+    );
 
     try {
       const items = (await archiveItemsRequest.json()) as WpPage[];
+      const nextPageItems = (await nextPageRequest.json()) as WpPage[];
 
       let pageForItems;
       if (typeof archive.has_archive === "string") {
@@ -106,10 +121,6 @@ export async function getPageData(
           postTypeRestBase: "pages",
         });
       }
-
-      const totalPages = archiveItemsRequest.headers.get("X-WP-TotalPages");
-      const totalItems = archiveItemsRequest.headers.get("X-WP-Total");
-      const hasNextPage = Number(totalPages) > Number(searchParams?.page || 1);
 
       return {
         data: {
@@ -120,9 +131,12 @@ export async function getPageData(
             Number(searchParams?.page || 1) > 1
               ? Number(searchParams?.page || 1) - 1
               : null,
-          nextPage: hasNextPage ? Number(searchParams?.page || 1) + 1 : null,
-          totalPages,
-          totalItems,
+          nextPage:
+            nextPageItems.length > 0
+              ? Number(searchParams?.page || 1) + 1
+              : null,
+          totalPages: archiveItemsRequest.headers.get("X-WP-TotalPages"),
+          total: archiveItemsRequest.headers.get("X-WP-Total"),
           currentPage: searchParams?.page || 1,
         },
         archive,

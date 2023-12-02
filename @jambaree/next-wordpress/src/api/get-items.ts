@@ -8,8 +8,6 @@
  * @see https://developer.wordpress.org/rest-api/reference/
  */
 
-import { getSiteSettings } from "./get-site-settings";
-
 export type Items = {
   id: number;
   slug: string;
@@ -24,14 +22,10 @@ export async function getItems({ restBase = "pages" }): Promise<Items> {
   let page = 1;
   let morePagesAvailable = true;
 
-  const settings = await getSiteSettings();
-
   while (morePagesAvailable) {
     const params = {
-      per_page: String(settings.posts_per_page || 10),
-      _embed: "true",
-      acf_format: "standard",
-      page,
+      per_page: 100,
+      page: page,
     };
 
     const queryString = new URLSearchParams(params).toString();

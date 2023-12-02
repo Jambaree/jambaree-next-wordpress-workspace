@@ -6,17 +6,9 @@ import Button from "@/components/ui/button";
 
 export default function PostArchive(props) {
   const {
-    // uri,
-    data: {
-      items,
-      page,
-      prevPage,
-      nextPage,
-      // totalItems,
-      totalPages,
-      currentPage,
-    },
-    // archive,
+    uri,
+    data: { items, page, prevPage, nextPage, totalPages, currentPage },
+    archive,
   } = props;
 
   return (
