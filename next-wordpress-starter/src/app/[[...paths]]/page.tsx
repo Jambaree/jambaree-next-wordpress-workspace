@@ -2,7 +2,7 @@ import { WordpressTemplate } from "@jambaree/next-wordpress";
 import templates from "@/templates";
 
 export default function PageRoute(props: {
-  params?: { paths?: string[] };
+  params: { paths: string[] };
   searchParams?: Record<string, string | string[] | undefined>;
 }) {
   return (

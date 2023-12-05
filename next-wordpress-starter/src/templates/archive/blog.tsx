@@ -6,13 +6,23 @@ import Button from "@/components/ui/button";
 
 export default function PostArchive(props) {
   const {
-    uri,
-    data: { items, page, prevPage, nextPage, totalPages, currentPage },
-    archive,
+    // uri,
+    data: {
+      items,
+      page,
+      prevPage,
+      nextPage,
+      // totalItems,
+      totalPages,
+      currentPage,
+    },
+    // archive,
   } = props;
 
   return (
     <div>
+      <h1>items: {items.length}</h1>
+
       <Edges>
         <h1 className="mb-5">{page?.title?.rendered}</h1>
         <div className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">

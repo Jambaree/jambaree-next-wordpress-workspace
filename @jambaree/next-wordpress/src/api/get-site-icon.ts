@@ -1,4 +1,4 @@
-import { WpMediaObject } from "@/types";
+import type { WpMediaObject } from "@/types";
 import { getSiteSettings } from "./get-site-settings";
 
 export async function getSiteIcon(): Promise<WpMediaObject> {

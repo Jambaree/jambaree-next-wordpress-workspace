@@ -10,7 +10,7 @@ export async function generateStaticParams({
   postTypes = ["pages", "posts"],
 }: {
   /**
-   * The URL of the GraphQL endpoint.
+   * The URL of the WP SITE to fetch data from the REST API.
    * @default process.env.NEXT_PUBLIC_WP_URL
    */
   wpUrl?: string;
@@ -29,12 +29,21 @@ export async function generateStaticParams({
   const allItems = await getAllItems(postTypes);
 
   for (const item of allItems) {
-    if (item.path === "/") {
-      staticParams.push({
-        paths: ["index"],
-      });
-      continue;
-    }
+
+    // if (item.path === "/") {
+    //   staticParams.push({
+    //     paths: ["/"],
+    //   });
+    //   continue;
+    // }
+  
+//       if (item.path === "/") {
+//         staticParams.push({
+//           paths: ["index"],
+//         });
+//         continue;
+//       }
+
 
     const pathBreadcrumbs = item.path.split("/").filter((x) => x);
 

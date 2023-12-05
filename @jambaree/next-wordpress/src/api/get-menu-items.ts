@@ -76,7 +76,7 @@ ${
     }
   });
 
-  if (!menu?.id) {
+  if (!menu.id) {
     // handle missing menu
     const availableMenus = await fetch(
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/menus`,

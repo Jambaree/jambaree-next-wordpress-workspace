@@ -4,7 +4,7 @@ import { draftMode } from "next/headers";
 import getTemplate from "../../utils/get-template";
 import { getPageData } from "../../api/get-page-data";
 import { PreviewToolbar } from "../preview-toolbar";
-import { RouteParamsDebug } from "../route-params.debug";
+import { RouteParamsDebug } from "../route-params-debug";
 
 export default async function PageTemplateLoader(props: {
   params?: { paths?: string[] };
