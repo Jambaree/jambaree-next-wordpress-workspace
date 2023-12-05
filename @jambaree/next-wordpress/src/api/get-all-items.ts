@@ -1,4 +1,5 @@
-import { Items, getItems } from "./get-items";
+import type { Items } from "./get-items";
+import { getItems } from "./get-items";
 import { getPostTypes } from "./get-post-types";
 /**
  * Get all items from multiple post types
@@ -33,10 +34,8 @@ export async function getAllItems(postTypes: string[]): Promise<Items> {
     postTypes.map(async (postType) => {
       const items = await getItems({ restBase: postType });
       if (items.length > 0) {
-        // @ts-ignore
         result = result.concat(items);
       }
-      return;
     })
   );
 
