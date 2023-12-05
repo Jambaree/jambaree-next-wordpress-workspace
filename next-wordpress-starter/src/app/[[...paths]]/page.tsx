@@ -18,9 +18,3 @@ export {
   generateMetadata,
   generateStaticParams,
 } from "@jambaree/next-wordpress";
-
-// export async function generateStaticParams() {
-//   return jambareeGenerateStaticParams({
-//     postTypes: ["pages"],
-//   });
-// }

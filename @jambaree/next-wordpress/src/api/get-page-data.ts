@@ -78,24 +78,24 @@ export async function getPageData(
 
   // handle fetching archive pages
   if (archive) {
-    console.log("archive: ", archive);
+    // console.log("archive: ", archive);
     const params = {
       per_page: String(settings.posts_per_page || 10),
       _embed: "true",
       acf_format: "standard",
       page: String(searchParams?.page || "1"),
     };
-    console.log("params: ", params);
+    // console.log("params: ", params);
 
     const currentPageQueryString = new URLSearchParams(params).toString();
-    console.log("currentPageQueryString: ", currentPageQueryString);
+    // console.log("currentPageQueryString: ", currentPageQueryString);
     const archiveItemsRequest = await fetch(
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?${currentPageQueryString}`
     );
 
     try {
       const items = await archiveItemsRequest.json();
-      console.log("items length: ", items.length);
+      // console.log("items length: ", items.length);
       let pageForItems;
       if (typeof archive.has_archive === "string") {
         pageForItems = await getSingleItem({
@@ -122,7 +122,7 @@ export async function getPageData(
           totalItems,
           currentPage: searchParams?.page || 1,
         },
-        items,
+
         archive,
       };
     } catch (err) {

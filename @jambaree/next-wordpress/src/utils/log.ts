@@ -1,9 +1,11 @@
+import type { ColorName } from "chalk";
 import chalk from "chalk";
 
 type LogArgs = {
   prefix?: string;
-  prefixColor?: string;
+  prefixColor?: ColorName;
   separator?: string;
+  messageColor?: ColorName;
 };
 
 export default function log(
@@ -12,15 +14,17 @@ export default function log(
     prefix = "@jambaree/next-wordpress",
     prefixColor = "red",
     separator = "-",
+    messageColor = "white",
   }: LogArgs = {
     prefix: "@jambaree/next-wordpress",
     prefixColor: "red",
     separator: "-",
+    messageColor: "white",
   }
 ) {
   // eslint-disable-next-line no-console -- we're logging to console
   console.log(
-    chalk[prefixColor]?.(`${prefix}${chalk.white(` ${separator}`)}`),
+    chalk[prefixColor](`${prefix}${chalk[messageColor](` ${separator}`)}`),
     message
   );
 }
