@@ -26,10 +26,10 @@ export async function Navbar() {
               <Image
                 alt=""
                 className="h-8 w-auto sm:h-10"
-                height={logo.media_details.height}
+                height={logo.media_details?.height}
                 priority
                 src={logo.source_url}
-                width={logo.media_details.width}
+                width={logo.media_details?.width}
               />
             ) : null}
           </Link>
