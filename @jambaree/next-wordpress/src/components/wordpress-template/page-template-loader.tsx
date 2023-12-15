@@ -19,8 +19,13 @@ export default async function PageTemplateLoader(props: {
 
   const { data, archive, previewData } = await getPageData(uri, searchParams);
 
-  if (!data) {
+  if (!data && !previewData && !archive) {
     notFound();
+  }
+
+  if (previewData) {
+    // eslint-disable-next-line no-console -- only showing in preview mode
+    console.log({ previewData });
   }
 
   const PageTemplate = await getTemplate({

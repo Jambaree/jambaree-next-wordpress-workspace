@@ -4,7 +4,6 @@ import type { WpImage } from "@/types";
  * Get the featured image for a page/post/custom item
  */
 export function getFeaturedImage(data: any): WpImage | undefined {
-  // todo: move this function to the next-wordpress package
   if (data._embedded?.["wp:featuredmedia"]?.[0]?.source_url) {
     return {
       alt: data._embedded?.["wp:featuredmedia"]?.[0]?.alt_text,
