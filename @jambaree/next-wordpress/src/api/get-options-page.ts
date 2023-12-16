@@ -1,3 +1,5 @@
+import { getAuthHeaders } from "./get-auth-headers";
+
 type OptionsPageResponse = {
   code?: string;
   message?: string;
@@ -39,9 +41,7 @@ You can generate an application password in your WordPress admin under Users > Y
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/jambaree/v1/options/${slug}`,
     {
-      headers: {
-        Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD)}`,
-      },
+      headers: getAuthHeaders(),
     }
   );
   let data;

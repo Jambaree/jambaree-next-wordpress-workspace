@@ -1,4 +1,5 @@
 import { draftMode } from "next/headers";
+import { toCamel } from "../utils/to-camel";
 import type { WpPage, WpSettings } from "../types";
 import type { PostType } from "./get-post-types";
 import { getPostTypes } from "./get-post-types";
@@ -63,32 +64,33 @@ export async function getPageData(
     }
   }
 
-  const blogPage = await getSingleItem({
-    id: settings.page_for_posts,
-    postTypeRestBase: "pages",
-  });
+  let blogPage;
+  if (settings?.page_for_posts) {
+    blogPage = await getSingleItem({
+      id: settings.page_for_posts,
+      postTypeRestBase: "pages",
+    });
 
-  if (blogPage?.slug === slug) {
-    archive = {
-      has_archive: blogPage.slug,
-      slug: "posts",
-      rest_base: "posts",
-    };
+    if (blogPage?.slug === slug) {
+      archive = {
+        has_archive: blogPage.slug,
+        slug: "posts",
+        rest_base: "posts",
+      };
+    }
   }
 
   // handle fetching archive pages
   if (archive) {
     // console.log("archive: ", archive);
     const params = {
-      per_page: String(settings.posts_per_page || 10),
+      per_page: String(settings?.posts_per_page || 10),
       _embed: "true",
       acf_format: "standard",
       page: String(searchParams?.page || "1"),
     };
-    // console.log("params: ", params);
 
     const currentPageQueryString = new URLSearchParams(params).toString();
-    // console.log("currentPageQueryString: ", currentPageQueryString);
     const archiveItemsRequest = await fetch(
       `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive.rest_base}?${currentPageQueryString}`
     );
@@ -108,23 +110,35 @@ export async function getPageData(
       const totalItems = archiveItemsRequest.headers.get("X-WP-Total");
       const hasNextPage = Number(totalPages) > Number(searchParams?.page || 1);
 
-      return {
-        data: {
-          items,
+      const data = {
+        items,
 
-          page: pageForItems,
-          prevPage:
-            Number(searchParams?.page || 1) > 1
-              ? Number(searchParams?.page || 1) - 1
-              : null,
-          nextPage: hasNextPage ? Number(searchParams?.page || 1) + 1 : null,
-          totalPages,
-          totalItems,
-          currentPage: searchParams?.page || 1,
-        },
-
-        archive,
+        page: pageForItems,
+        prevPage:
+          Number(searchParams?.page || 1) > 1
+            ? Number(searchParams?.page || 1) - 1
+            : null,
+        nextPage: hasNextPage ? Number(searchParams?.page || 1) + 1 : null,
+        totalPages,
+        totalItems,
+        currentPage: searchParams?.page || 1,
       };
+
+      if (archive.rest_base === "posts") {
+        data.posts = items;
+        const result = { data, archive };
+        return result;
+      }
+
+      if (archive.labels?.plural_name) {
+        const pluralName = toCamel(archive.labels.plural_name);
+        data[pluralName] = items;
+
+        const result = { data, archive };
+        return result;
+      }
+
+      return { data, archive };
     } catch (err) {
       throw new Error(`Error fetching archive page: ${err?.message}`);
     }

@@ -1,3 +1,5 @@
+import { getAuthHeaders } from "./get-auth-headers";
+
 export type PostType = {
   /**
    * `false` if no archive, `string` if archive slug is different from post type slug
@@ -34,11 +36,15 @@ type PostTypesResponse = {
  */
 export async function getPostTypes(): Promise<PostTypes> {
   const req = await fetch(
-    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/types`
+    `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/types?context=edit`,
+    {
+      headers: getAuthHeaders(),
+    }
   );
 
   try {
     const data = (await req.json()) as PostTypesResponse;
+
     return data;
   } catch (err) {
     throw new Error(`getPostTypes: Error fetching post types: ${err.message}`);
