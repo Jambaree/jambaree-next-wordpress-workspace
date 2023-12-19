@@ -19,6 +19,11 @@ export { getOptionsPage } from "./src/api/get-options-page";
 export { FlexibleContent } from "./src/components/flexible-content";
 export { WordpressTemplate } from "./src/components/wordpress-template/wordpress-template";
 
+// utils helpers
+export { getFeaturedImage } from "./src/utils/get-featured-image";
+export { stripWpUrl } from "./src/utils/strip-wp-url";
+export { swapWpUrl } from "./src/utils/swap-wp-url";
+
 // deprecated functions
 export const getData = () => {
   throw new Error(

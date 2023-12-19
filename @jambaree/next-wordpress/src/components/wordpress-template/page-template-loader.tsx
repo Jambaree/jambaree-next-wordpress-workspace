@@ -1,6 +1,7 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
+import { createDataProxy } from "../../helpers/data-proxy";
 import getTemplate from "../../utils/get-template";
 import { getPageData } from "../../api/get-page-data";
 import { PreviewToolbar } from "../preview-toolbar";
@@ -48,6 +49,10 @@ export default async function PageTemplateLoader(props: {
     });
   }
 
+  // Create a proxy to log warnings when user is accessing deprecated data keys
+  const preppedData =
+    archive && mergedData ? createDataProxy(mergedData) : mergedData;
+
   return (
     <>
       {process.env.ROUTE_PARAMS_DEBUG_ENABLED ? (
@@ -56,7 +61,7 @@ export default async function PageTemplateLoader(props: {
 
       <PageTemplate
         archive={archive}
-        data={mergedData}
+        data={preppedData}
         isPreview={preview.isEnabled}
         uri={uri}
         {...props}

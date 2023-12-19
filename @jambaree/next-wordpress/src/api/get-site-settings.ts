@@ -1,4 +1,5 @@
 import type { WpSettings } from "@/types";
+import { getAuthHeaders } from "./get-auth-headers";
 
 type WpSettingsResponse = {
   code?: string;
@@ -29,9 +30,7 @@ ${
   const req = await fetch(
     `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/settings?embed=true`,
     {
-      headers: {
-        Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD)}`,
-      },
+      headers: getAuthHeaders(),
     }
   );
 
