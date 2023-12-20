@@ -11,3 +11,5 @@
 - Add support for Next.js sitemap generation
   <!-- - Add support for archive pages (WIP) -->
   <!-- - Add support for custom taxonomies (WIP) -->
+
+@todo: update changelog automatically
