@@ -15,5 +15,9 @@
   },
   "devDependencies": {
     "@vercel/style-guide": "^5.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Jambaree/jambaree-next-wordpress-workspace/tree/main/%40jambaree/next-wordpress"
   }
 }
