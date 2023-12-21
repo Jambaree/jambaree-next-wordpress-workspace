@@ -185,15 +185,16 @@ const getPreviewData = async ({
   id: string;
   postTypeRestBase: string;
 }) => {
-  const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/autosaves?acf_format=standard&_embed`;
+  const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}/revisions?acf_format=standard&_embed`;
   const req = await fetch(endpoint, {
     headers: {
       Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD!)}`,
     },
   });
   try {
-    const autosaves = await req.json();
-    return autosaves?.[0];
+    const revisions = await req.json();
+
+    return revisions?.[0];
   } catch (err) {
     throw new Error(
       `Error fetching preview data for ${endpoint}: ${err.message}`
