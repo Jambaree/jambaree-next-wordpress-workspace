@@ -1,10 +1,11 @@
+import type { Templates } from "@jambaree/next-wordpress/src/utils/get-template";
 import DefaultPageTemplate from "./page/default";
 import DefaultPostTemplate from "./post/default";
 import MovieArchive from "./archive/movie";
 import ContactPageTemplate from "./page/contact";
 import PostArchive from "./archive/blog";
 
-const templates = {
+const templates: Templates = {
   page: {
     default: DefaultPageTemplate,
     contact: ContactPageTemplate,

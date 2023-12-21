@@ -1,19 +1,23 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
+import type { WpPage } from "@/types";
+import type { Templates } from "../../utils/get-template";
+import { deepMerge } from "../../utils/deep-merge";
 import { createDataProxy } from "../../helpers/data-proxy";
 import getTemplate from "../../utils/get-template";
+import type { ArchivePageData } from "../../api/get-page-data";
 import { getPageData } from "../../api/get-page-data";
 import { PreviewToolbar } from "../preview-toolbar";
 import { RouteParamsDebug } from "../route-params-debug";
 
 export default async function PageTemplateLoader(props: {
   params?: { paths?: string[] };
-  templates: any;
+  templates: Templates;
   searchParams?: Record<string, string | string[] | undefined>;
   supressWarnings?: boolean;
 }) {
-  const { params, templates, searchParams, supressWarnings } = props;
+  const { params, templates, searchParams, supressWarnings, ...rest } = props;
   const uri = params?.paths?.join("/") || "/";
 
   const preview = draftMode();
@@ -24,12 +28,7 @@ export default async function PageTemplateLoader(props: {
     notFound();
   }
 
-  if (previewData) {
-    // eslint-disable-next-line no-console -- only showing in preview mode
-    console.log({ previewData });
-  }
-
-  const PageTemplate = await getTemplate({
+  const PageTemplate = getTemplate({
     uri,
     data,
     archive,
@@ -41,17 +40,17 @@ export default async function PageTemplateLoader(props: {
     notFound();
   }
 
-  // Merge preview data into data
-  const mergedData = { ...data };
+  let mergedData: WpPage | ArchivePageData = data!;
   if (previewData) {
-    Object.keys(previewData).forEach((key) => {
-      mergedData[key] = previewData[key];
-    });
+    // eslint-disable-next-line no-console -- only showing in preview mode
+    console.log({ previewData });
+    mergedData = deepMerge<WpPage | ArchivePageData>(mergedData, previewData); // Merge previewData into mergedData
   }
-
-  // Create a proxy to log warnings when user is accessing deprecated data keys
-  const preppedData =
-    archive && mergedData ? createDataProxy(mergedData) : mergedData;
+  if (archive) {
+    mergedData = createDataProxy(
+      mergedData as ArchivePageData
+    ) as ArchivePageData;
+  }
 
   return (
     <>
@@ -61,10 +60,12 @@ export default async function PageTemplateLoader(props: {
 
       <PageTemplate
         archive={archive}
-        data={preppedData}
+        data={mergedData}
         isPreview={preview.isEnabled}
+        params={params}
+        searchParams={searchParams}
         uri={uri}
-        {...props}
+        {...rest}
       />
 
       {preview.isEnabled ? (

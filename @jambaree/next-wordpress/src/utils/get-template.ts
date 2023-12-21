@@ -1,11 +1,25 @@
+import type { ReactNode } from "react";
 import type { WpPage } from "@/types";
+import type { PostType } from "@/api/get-post-types";
+import type { ArchivePageData } from "@/api/get-page-data";
 import log from "./log";
+
+// Define a type for the template objects
+type TemplateObject = Record<string, React.ComponentType<any> | ReactNode>;
+
+// Define a type for the templates
+export type Templates = Record<
+  string,
+  {
+    default?: React.ComponentType<any> | ReactNode;
+  } & TemplateObject
+>;
 
 type GetTemplateArgs = {
   uri: string;
-  data: WpPage;
-  archive?: WpPage;
-  templates: any;
+  data: WpPage | ArchivePageData | undefined;
+  archive?: PostType | undefined;
+  templates: Templates;
   supressWarnings?: boolean;
 };
 
@@ -18,10 +32,10 @@ export default function getTemplate({
   archive,
   templates,
   supressWarnings,
-}: GetTemplateArgs) {
+}: GetTemplateArgs): React.ComponentType<any> | undefined {
   if (archive?.slug) {
     const tmplName = handleTemplateName(archive.slug);
-    const template = templates?.archive?.[tmplName];
+    const template = templates.archive[tmplName];
     if (!template && !supressWarnings) {
       log(
         `Warn: Archive template "${archive.slug}" not found on uri '${uri}'. Did you forget to add it to the templates object in src/templates/index? `
@@ -30,9 +44,9 @@ export default function getTemplate({
     return template;
   }
 
-  if (!archive) {
+  if (!archive && data) {
     const tmplName = handleTemplateName(data.template || "default");
-    const template = templates?.[data.type]?.[tmplName];
+    const template = templates[data.type || ""][tmplName];
 
     if (!template && !supressWarnings) {
       log(

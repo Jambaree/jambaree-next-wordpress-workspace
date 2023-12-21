@@ -1,10 +1,11 @@
 import React from "react";
+import type { Templates } from "../../utils/get-template";
 import { PageTemplateLoader } from "./page-template-loader";
 
 export function WordpressTemplate(props: {
   params: { paths: string[] };
   searchParams?: Record<string, string | string[] | undefined>;
-  templates: any;
+  templates: Templates;
   /**
    * Suppresses warnings when a template is not found.
    */
