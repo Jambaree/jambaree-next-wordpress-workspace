@@ -39,14 +39,20 @@ export default async function PageTemplateLoader(props: {
     notFound();
   }
 
-  let mergedData: WpPage = data!;
+  type ArchivePageData = {
+    page: WpPage;
+    posts?: WpPage[];
+    [x: string]: any;
+  };
+
+  let mergedData: WpPage | ArchivePageData = data!;
   if (previewData) {
     // eslint-disable-next-line no-console -- only showing in preview mode
     console.log({ previewData });
     mergedData = deepMerge<WpPage>(mergedData, previewData); // Merge previewData into mergedData
   }
   if (archive) {
-    mergedData = createDataProxy(mergedData) as WpPage;
+    mergedData = createDataProxy(mergedData) as ArchivePageData;
   }
 
   return (
