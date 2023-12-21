@@ -1,5 +1,5 @@
 import React from "react";
-import type { Templates } from "@/utils/get-template";
+import type { Templates } from "../../utils/get-template";
 import { PageTemplateLoader } from "./page-template-loader";
 
 export function WordpressTemplate(props: {
