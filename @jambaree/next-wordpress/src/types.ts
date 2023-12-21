@@ -255,3 +255,7 @@ export interface WpArchive {
   yoast_head?: string;
   yoast_head_json?: YoastHeadJson;
 }
+
+export interface WpRevision extends WpPage {
+  parent: number;
+}

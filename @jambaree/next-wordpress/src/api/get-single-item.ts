@@ -2,10 +2,12 @@ import { draftMode } from "next/headers";
 import type { WpPage } from "@/types";
 
 export const getSingleItem = async ({
+  uri,
   id,
   slug,
   postTypeRestBase,
 }: {
+  uri?: string;
   id?: string | number;
   slug?: string;
   postTypeRestBase: string;
@@ -19,29 +21,29 @@ export const getSingleItem = async ({
   let headers;
   if (preview.isEnabled) {
     headers = {
-      Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD!)}`,
+      Authorization: `Basic ${btoa(process.env.WP_APPLICATION_PASSWORD!)}`, // allows previewing private posts
     };
-    params.status = "any";
+    params.status = "any"; // allows previewing of drafts and pending posts
   }
 
   if (id) {
     const queryString = new URLSearchParams(params).toString();
+    const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}?${queryString}`;
+    const req = await fetch(endpoint, {
+      headers,
+    });
 
-    const req = await fetch(
-      `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}/${id}?${queryString}`,
-      {
-        headers,
-      }
-    );
     try {
-      const data = await req.json();
-      if (data.code === "rest_no_route") {
-        return null;
+      const data = (await req.json()) as WpPage | { code?: string } | undefined;
+
+      if (data && "id" in data) {
+        return data;
       }
-      return data;
-    } catch (err) {
+      return undefined;
+    } catch (err: any) {
       throw new Error(
-        `Error fetching from /wp-json/wp/v2/${postTypeRestBase}/${id}: ${err.message}`
+        `Error fetching from endpoint: ${endpoint}
+Error Message: ${err.message}`
       );
     }
   }
@@ -49,22 +51,36 @@ export const getSingleItem = async ({
   if (slug) {
     params.slug = slug;
     const queryString = new URLSearchParams(params).toString();
-
     const endpoint = `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${postTypeRestBase}?${queryString}`;
-
     const req = await fetch(endpoint, {
       headers,
     });
-    try {
-      const data = await req.json();
 
-      if (data.code === "rest_no_route") {
-        return null;
+    try {
+      type WpItemsResponse = WpPage[] | { code?: string } | undefined;
+      const data = (await req.json()) as WpItemsResponse;
+
+      if (uri && Array.isArray(data) && data.length > 1) {
+        // if there are multiple items with the same slug, find the one that matches the uri
+        const matchedItem = data.find((item: WpPage) => {
+          const itemPath = item.link?.replace(
+            process.env.NEXT_PUBLIC_WP_URL!,
+            ""
+          );
+          return itemPath === `/${uri}/`;
+        });
+
+        return matchedItem || data[0];
       }
-      return data?.[0];
-    } catch (err) {
+
+      if (Array.isArray(data)) {
+        return data[0];
+      }
+      return undefined;
+    } catch (err: any) {
       throw new Error(
-        `Error fetching from /wp-json/wp/v2/${postTypeRestBase}?slug=${slug}: ${err.message}`
+        `Error fetching from endpoint: ${endpoint}
+Error Message: ${err.message}`
       );
     }
   }

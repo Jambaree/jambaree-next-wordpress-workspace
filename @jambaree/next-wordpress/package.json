@@ -1,6 +1,6 @@
 {
   "name": "@jambaree/next-wordpress",
-  "version": "2.0.0-beta.40",
+  "version": "2.0.0-beta.41",
   "author": "Caleb Barnes <caleb.d.barnes@gmail.com> (https://github.com/CalebBarnes)",
   "dependencies": {
     "@types/node": "^20.8.10",

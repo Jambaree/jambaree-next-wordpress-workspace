@@ -13,6 +13,10 @@ export type PostType = {
    * The base path for this post type's REST API endpoint.
    */
   rest_base: string;
+
+  labels?: {
+    plural_name?: string;
+  };
 };
 
 type PostTypes = {
@@ -46,7 +50,7 @@ export async function getPostTypes(): Promise<PostTypes> {
     const data = (await req.json()) as PostTypesResponse;
 
     return data;
-  } catch (err) {
+  } catch (err: any) {
     throw new Error(`getPostTypes: Error fetching post types: ${err.message}`);
   }
 }

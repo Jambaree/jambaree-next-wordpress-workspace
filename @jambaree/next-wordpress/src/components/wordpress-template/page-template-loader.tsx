@@ -6,15 +6,16 @@ import type { Templates } from "../../utils/get-template";
 import { deepMerge } from "../../utils/deep-merge";
 import { createDataProxy } from "../../helpers/data-proxy";
 import getTemplate from "../../utils/get-template";
-import type { ArchivePageData } from "../../api/get-page-data";
-import { getPageData } from "../../api/get-page-data";
+import type { ArchivePageData } from "../../api/page-data/get-page-data";
+import { getPageData } from "../../api/page-data/get-page-data";
 import { PreviewToolbar } from "../preview-toolbar";
 import { RouteParamsDebug } from "../route-params-debug";
+import type { RouteParams, SearchParams } from "./wordpress-template";
 
 export default async function PageTemplateLoader(props: {
-  params?: { paths?: string[] };
+  params?: RouteParams;
   templates: Templates;
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: SearchParams;
   supressWarnings?: boolean;
 }) {
   const { params, templates, searchParams, supressWarnings, ...rest } = props;

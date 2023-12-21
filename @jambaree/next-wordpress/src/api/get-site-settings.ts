@@ -6,7 +6,7 @@ type WpSettingsResponse = {
   message?: string;
 } & WpSettings;
 
-export async function getSiteSettings(): Promise<WpSettings | undefined> {
+export async function getSiteSettings(): Promise<WpSettings> {
   if (!process.env.WP_APPLICATION_PASSWORD) {
     throw new Error(`'WP_APPLICATION_PASSWORD' environment variable is required for function 'getSiteSettings'.
 Check your ${

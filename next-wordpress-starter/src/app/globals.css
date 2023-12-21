@@ -111,3 +111,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.edges {
+  @apply mx-auto max-w-7xl px-2 py-2 sm:px-4 lg:px-8;
+}

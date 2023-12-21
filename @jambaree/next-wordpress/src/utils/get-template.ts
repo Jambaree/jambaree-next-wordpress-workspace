@@ -1,8 +1,21 @@
 import type { ReactNode } from "react";
 import type { WpPage } from "@/types";
 import type { PostType } from "@/api/get-post-types";
-import type { ArchivePageData } from "@/api/get-page-data";
+import type { ArchivePageData } from "@/api/page-data/get-page-data";
+import type {
+  RouteParams,
+  SearchParams,
+} from "@/components/wordpress-template/wordpress-template";
 import log from "./log";
+
+export interface TemplateProps {
+  uri: string;
+  data?: WpPage | ArchivePageData | undefined;
+  archive?: PostType | undefined;
+  isPreview?: boolean;
+  params?: RouteParams;
+  searchParams?: SearchParams;
+}
 
 // Define a type for the template objects
 type TemplateObject = Record<string, React.ComponentType<any> | ReactNode>;
@@ -32,7 +45,7 @@ export default function getTemplate({
   archive,
   templates,
   supressWarnings,
-}: GetTemplateArgs): React.ComponentType<any> | undefined {
+}: GetTemplateArgs): React.ComponentType<TemplateProps> | undefined {
   if (archive?.slug) {
     const tmplName = handleTemplateName(archive.slug);
     const template = templates.archive[tmplName];

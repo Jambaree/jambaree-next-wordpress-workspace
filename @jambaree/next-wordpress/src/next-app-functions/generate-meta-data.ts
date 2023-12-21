@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getSiteSettings } from "../api/get-site-settings";
-import { getPageData } from "../api/get-page-data";
+import { getPageData } from "../api/page-data/get-page-data";
 import { swapWpUrl } from "../utils/swap-wp-url";
 /**
  * The generateMetadata function can be exported from your Next.js page.js and used to generate metadata for your page.

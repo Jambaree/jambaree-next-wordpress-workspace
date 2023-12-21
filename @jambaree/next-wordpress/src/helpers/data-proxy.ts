@@ -1,4 +1,4 @@
-import type { ArchivePageData } from "../api/get-page-data";
+import type { ArchivePageData } from "../api/page-data/get-page-data";
 
 /**
  * This function creates a proxy for the data object that will warn the user
