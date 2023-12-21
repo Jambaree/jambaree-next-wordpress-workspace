@@ -2,6 +2,7 @@
   "private": true,
   "scripts": {
     "dev": "pnpm --filter next-wordpress-starter dev",
+    "dev:saw": "pnpm --filter s-r-sawmills dev",
     "build": "pnpm --filter next-wordpress-starter build",
     "start": "pnpm --filter next-wordpress-starter start"
   }
