@@ -6,6 +6,12 @@ import { getPostTypes } from "./get-post-types";
 import { getSiteSettings } from "./get-site-settings";
 import { getSingleItem } from "./get-single-item";
 
+export type ArchivePageData = {
+  page: WpPage;
+  posts?: WpPage[];
+  [x: string]: any;
+};
+
 /**
  * Get data for a specific page from a WordPress REST API endpoint based on the URI
  * @example
@@ -22,7 +28,7 @@ export async function getPageData(
   /**
    * The data is the page data for the current page/post/custom.
    */
-  data?: WpPage;
+  data?: WpPage | ArchivePageData;
   /**
    * The archive is the post type archive data if the uri is an archive page.
    */

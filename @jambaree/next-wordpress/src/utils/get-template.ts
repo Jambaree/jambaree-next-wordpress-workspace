@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import type { WpPage } from "@/types";
 import type { PostType } from "@/api/get-post-types";
+import type { ArchivePageData } from "@/api/get-page-data";
 import log from "./log";
 
 // Define a type for the template objects
@@ -16,7 +17,7 @@ export type Templates = Record<
 
 type GetTemplateArgs = {
   uri: string;
-  data: WpPage | undefined;
+  data: WpPage | ArchivePageData | undefined;
   archive?: PostType | undefined;
   templates: Templates;
   supressWarnings?: boolean;

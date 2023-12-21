@@ -6,6 +6,7 @@ import type { Templates } from "../../utils/get-template";
 import { deepMerge } from "../../utils/deep-merge";
 import { createDataProxy } from "../../helpers/data-proxy";
 import getTemplate from "../../utils/get-template";
+import type { ArchivePageData } from "../../api/get-page-data";
 import { getPageData } from "../../api/get-page-data";
 import { PreviewToolbar } from "../preview-toolbar";
 import { RouteParamsDebug } from "../route-params-debug";
@@ -39,20 +40,16 @@ export default async function PageTemplateLoader(props: {
     notFound();
   }
 
-  type ArchivePageData = {
-    page: WpPage;
-    posts?: WpPage[];
-    [x: string]: any;
-  };
-
   let mergedData: WpPage | ArchivePageData = data!;
   if (previewData) {
     // eslint-disable-next-line no-console -- only showing in preview mode
     console.log({ previewData });
-    mergedData = deepMerge<WpPage>(mergedData, previewData); // Merge previewData into mergedData
+    mergedData = deepMerge<WpPage | ArchivePageData>(mergedData, previewData); // Merge previewData into mergedData
   }
   if (archive) {
-    mergedData = createDataProxy(mergedData) as ArchivePageData;
+    mergedData = createDataProxy(
+      mergedData as ArchivePageData
+    ) as ArchivePageData;
   }
 
   return (
