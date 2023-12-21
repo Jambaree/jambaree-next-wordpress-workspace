@@ -1,6 +1,7 @@
 import React from "react";
 import { notFound } from "next/navigation";
 import { draftMode } from "next/headers";
+import { deepMerge } from "@/utils/deep-merge";
 import { createDataProxy } from "../../helpers/data-proxy";
 import getTemplate from "../../utils/get-template";
 import { getPageData } from "../../api/get-page-data";
@@ -41,15 +42,13 @@ export default async function PageTemplateLoader(props: {
     notFound();
   }
 
-  // Merge preview data into data
-  const mergedData = { ...data };
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- Merge previewData with data
+  const mergedData = deepMerge({}, data); // Start with a clone of data
   if (previewData) {
-    Object.keys(previewData).forEach((key) => {
-      mergedData[key] = previewData[key];
-    });
+    deepMerge(mergedData, previewData); // Merge previewData into mergedData
   }
 
-  // Create a proxy to log warnings when user is accessing deprecated data keys
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- Create a proxy to log warnings when user is accessing deprecated data keys
   const preppedData =
     archive && mergedData ? createDataProxy(mergedData) : mergedData;
 
@@ -61,6 +60,7 @@ export default async function PageTemplateLoader(props: {
 
       <PageTemplate
         archive={archive}
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- preppedData is a proxy of mergedData
         data={preppedData}
         isPreview={preview.isEnabled}
         uri={uri}

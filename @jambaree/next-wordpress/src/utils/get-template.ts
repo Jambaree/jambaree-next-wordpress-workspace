@@ -18,7 +18,7 @@ export default function getTemplate({
   archive,
   templates,
   supressWarnings,
-}: GetTemplateArgs) {
+}: GetTemplateArgs): React.ComponentType<any> | undefined {
   if (archive?.slug) {
     const tmplName = handleTemplateName(archive.slug);
     const template = templates?.archive?.[tmplName];
@@ -32,7 +32,7 @@ export default function getTemplate({
 
   if (!archive) {
     const tmplName = handleTemplateName(data.template || "default");
-    const template = templates?.[data.type]?.[tmplName];
+    const template = templates?.[data.type || ""]?.[tmplName];
 
     if (!template && !supressWarnings) {
       log(
