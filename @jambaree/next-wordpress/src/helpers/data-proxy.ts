@@ -1,8 +1,8 @@
 import type { ArchivePageData } from "../api/get-page-data";
 
 /**
- * This function creates a proxy for your data object that will warn you
- * if you are using the deprecated `data.items` key in your archive templates.
+ * This function creates a proxy for the data object that will warn the user
+ * if they are using the deprecated `data.items` key in an archive template.
  */
 export function createDataProxy(data: ArchivePageData): any {
   return new Proxy(data, {
