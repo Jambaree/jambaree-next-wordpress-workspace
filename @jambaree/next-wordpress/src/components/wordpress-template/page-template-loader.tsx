@@ -43,7 +43,7 @@ export default async function PageTemplateLoader(props: {
 
   let mergedData: WpPage | ArchivePageData = data!;
   if (previewData) {
-    // eslint-disable-next-line no-console -- only showing in preview mode
+    // eslint-disable-next-line no-console -- only logging in preview mode
     console.log({ previewData });
     mergedData = deepMerge<WpPage | ArchivePageData>(mergedData, previewData); // Merge previewData into mergedData
   }
