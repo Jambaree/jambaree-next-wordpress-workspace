@@ -1,4 +1,4 @@
-import type { Templates } from "@jambaree/next-wordpress/src/utils/get-template";
+import type { Templates } from "@jambaree/next-wordpress";
 import DefaultPageTemplate from "./page/default";
 import DefaultPostTemplate from "./post/default";
 import MovieArchive from "./archive/movie";

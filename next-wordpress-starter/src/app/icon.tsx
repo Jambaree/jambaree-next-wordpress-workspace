@@ -1,4 +1,4 @@
-export { Icon as default } from "@jambaree/next-wordpress/src/components/icon";
+export { Icon as default } from "@jambaree/next-wordpress";
 
 export const runtime = "edge";
 export const contentType = "image/png";

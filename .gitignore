@@ -1,11 +1,9 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-/node_modules
+node_modules
 /.pnp
 .pnp.js
-@jambaree/next-wordpress/node_modules
-@jambaree/next-wordpress/lib
 next-wordpress-starter/node_modules
 # testing
 /coverage

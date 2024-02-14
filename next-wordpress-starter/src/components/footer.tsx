@@ -1,5 +1,5 @@
 import { getMenuItems } from "@jambaree/next-wordpress";
-import type { WpMenuItem } from "@jambaree/next-wordpress/types";
+import type { WpMenuItem } from "@jambaree/next-wordpress";
 import Link from "next/link";
 
 const navigation = {

@@ -1,11 +1,6 @@
-import type {
-  WpImage,
-  // WpLink
-} from "@jambaree/next-wordpress/src/types";
-// import Link from "next/link";
+import type { WpImage } from "@jambaree/next-wordpress";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
-// import Button from "../ui/button";
 
 export function TextImage({
   text,

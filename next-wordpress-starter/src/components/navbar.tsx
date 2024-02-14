@@ -1,11 +1,9 @@
-import { getMenuItems } from "@jambaree/next-wordpress";
+import {
+  getMenuItems,
+  getSiteLogo,
+  getSiteSettings,
+} from "@jambaree/next-wordpress";
 import Link from "next/link";
-import { getSiteLogo } from "@jambaree/next-wordpress/src/api/get-site-logo";
-import { getSiteSettings } from "@jambaree/next-wordpress/src/api/get-site-settings";
-import type {
-  WpMediaObject,
-  WpSettings,
-} from "@jambaree/next-wordpress/src/types";
 import Image from "next/image";
 import Edges from "./edges";
 import Button from "./ui/button";
@@ -13,8 +11,8 @@ import { DesktopMenu } from "./menus/desktop-menu";
 
 export async function Navbar() {
   const menuItems = await getMenuItems({ slug: "main-menu" });
-  const logo: WpMediaObject = await getSiteLogo();
-  const settings: WpSettings = await getSiteSettings();
+  const logo = await getSiteLogo();
+  const settings = await getSiteSettings();
 
   return (
     <header className="py-4 w-full">

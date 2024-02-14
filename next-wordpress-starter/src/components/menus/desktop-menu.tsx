@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import type { WpMenuItem } from "@jambaree/next-wordpress/types";
+import type { WpMenuItem } from "@jambaree/next-wordpress";
 import {
   DropdownMenu,
   DropdownMenuContent,

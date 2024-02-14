@@ -1,11 +1,10 @@
 import { FlexibleContent } from "@jambaree/next-wordpress";
-import type { WpPage } from "@jambaree/next-wordpress/src/types";
-import type { RowItem } from "@jambaree/next-wordpress/src/components/flexible-content";
+import type { WpPage, Row } from "@jambaree/next-wordpress";
 import * as blocks from "../../components/blocks";
 
 interface PageData extends WpPage {
   acf?: {
-    modules: RowItem[];
+    modules: Row[];
   };
 }
 

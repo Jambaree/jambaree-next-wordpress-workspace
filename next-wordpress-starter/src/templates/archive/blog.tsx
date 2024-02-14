@@ -1,12 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
-import { swapWpUrl } from "@jambaree/next-wordpress/src/utils/swap-wp-url";
-import { getFeaturedImage } from "@jambaree/next-wordpress/src/utils/get-featured-image";
+import { swapWpUrl, getFeaturedImage } from "@jambaree/next-wordpress";
 import Edges from "@/components/edges";
 import Button from "@/components/ui/button";
 
 export default function PostArchive(props) {
-  // console.log(props);
   const {
     // uri,
     data: {
@@ -21,7 +19,6 @@ export default function PostArchive(props) {
     // archive,
   } = props;
 
-  // console.log({ items });
   return (
     <div>
       <h1>items: {posts.length}</h1>

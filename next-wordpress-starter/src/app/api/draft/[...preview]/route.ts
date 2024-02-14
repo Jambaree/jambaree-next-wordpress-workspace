@@ -8,4 +8,4 @@
 
 // export { previewHandler as GET };
 
-export { NextWordPressPreview as GET } from "@jambaree/next-wordpress";
+export { preview as GET } from "@jambaree/next-wordpress";

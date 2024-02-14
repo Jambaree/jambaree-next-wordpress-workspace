@@ -1,8 +1,8 @@
-import { generateSiteMap } from "@jambaree/next-wordpress";
+import { generateSitemap } from "@jambaree/next-wordpress";
 import type { MetadataRoute } from "next/types";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const items = await generateSiteMap({
+  const items = await generateSitemap({
     postTypes: ["pages", "posts"],
   });
 

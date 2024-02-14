@@ -1,14 +1,5 @@
-// import { getItems } from "@jambaree/next-wordpress/src/api/get-items";
-
 export default function MovieArchive(props) {
   const { uri, data, archive } = props;
-  //   console.log({ data });
-
-  // const req = await fetch(
-  //   `${process.env.NEXT_PUBLIC_WP_URL}/wp-json/wp/v2/${archive?.rest_base}`
-  // );
-  // const movies = await req.json();
-  // console.log(movies.length);
 
   return (
     <div>
